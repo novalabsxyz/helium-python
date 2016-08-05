@@ -28,7 +28,7 @@ class TestHeliumResources(HeliumMockTestCase):
             sensor.no_such_attribute
 
         # short id
-        self.assertIsNotNone(self.first_sensor.short_id())
+        self.assertIsNotNone(self.first_sensor.short_id)
 
     def test_404_resource(self):
         sensor = helium.Sensor.find(self.client,
