@@ -19,4 +19,8 @@ after_success:
   coveralls
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - marc@helium.com
+    on_failure: change
+    on_success: never

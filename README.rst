@@ -1,6 +1,7 @@
-helium-python  |build-status| |coverage-status| |docs|
-===============================================
+helium-python
+==============
 
+ |build-status| |coverage-status| |code-climate| |docs|
 
 .. |build-status| image:: https://travis-ci.org/helium/helium-python.svg?branch=master
    :target: https://travis-ci.org/helium/helium-python
@@ -8,6 +9,9 @@ helium-python  |build-status| |coverage-status| |docs|
 .. |coverage-status| image:: https://coveralls.io/repos/github/helium/helium-python/badge.svg?branch=master
    :target: https://coveralls.io/github/helium/helium-python?branch=master
    :alt: Test coverage percentage
+.. |code-climate| image:: https://codeclimate.com/github/helium/helium-python/badges/gpa.svg
+   :target: https://codeclimate.com/github/helium/helium-python
+   :alt: Code Climate
 .. |docs| image:: https://readthedocs.org/projects/helium-python/badge/?version=latest
    :target: http://helium-python.readthedocs.org/
    :alt: Documentation
