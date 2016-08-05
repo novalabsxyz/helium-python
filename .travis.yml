@@ -13,7 +13,7 @@ env:
   - TRAVIS="True"
 
 script:
-  - nostests --with-coverage --cover-package=helium
+  - nosetests --with-coverage --cover-package=helium
 
 after_success:
   coveralls
