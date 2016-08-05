@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - "2.7"
+  - "3.5"
+
+install:
+  - pip install -r requirements.dev.txt
+  - pip install coveralls
+
+env:
+  global:
+  - TRAVIS="True"
+
+script:
+  - nostests --with-coverage --cover-package=helium
+
+after_success:
+  coveralls
+
+notifications:
+  email: false

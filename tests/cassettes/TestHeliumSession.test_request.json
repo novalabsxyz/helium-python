@@ -1,0 +1,48 @@
+{
+  "http_interactions": [
+    {
+      "recorded_at": "2016-08-05T21:14:26",
+      "request": {
+        "body": {
+          "encoding": "utf-8",
+          "string": ""
+        },
+        "headers": {
+          "Accept": "application/json",
+          "Accept-Charset": "utf-8",
+          "Accept-Encoding": "gzip, deflate",
+          "Authorization": "<AUTH_TOKEN>",
+          "Connection": "keep-alive",
+          "Content-Type": "application/json",
+          "User-Agent": "helium-python/0.1.0"
+        },
+        "method": "GET",
+        "uri": "https://api.helium.com/v1/user"
+      },
+      "response": {
+        "body": {
+          "base64_string": "H4sIAAAAAAAEA32OvQqDMBRGX6Xc2UgSf5pmsuDQB3ByS+OFBoyK3ghFfPeaSteOH9/hcDboDBnQGxii2T0D4RLXYDyChgf2Lvga17u1YxjoUqMfYU/Adcfb4crMeSzV64umdoQEPJ5O9Mb1/0A7oyGMLslFzgRn8tZIoTOlC9kepjAdfT+gYFwxXjZC6cjIVKgyu+ZtDKL3FIPDgjPs+weYEGLT1wAAAA==",
+          "encoding": null,
+          "string": ""
+        },
+        "headers": {
+          "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+          "Access-Control-Allow-Origin": "*",
+          "Airship-Quip": "sharkfed",
+          "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18",
+          "Content-Encoding": "gzip",
+          "Content-Type": "application/json",
+          "Date": "Fri, 05 Aug 2016 21:14:26 GMT",
+          "Server": "Warp/3.2.7",
+          "Transfer-Encoding": "chunked"
+        },
+        "status": {
+          "code": 200,
+          "message": "OK"
+        },
+        "url": "https://api.helium.com/v1/user"
+      }
+    }
+  ],
+  "recorded_with": "betamax/0.7.1"
+}
