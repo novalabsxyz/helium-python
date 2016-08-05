@@ -87,10 +87,11 @@ class Resource(Base):
             setattr(self, k, v)
 
     def __eq__(self, other):
-        return self.id is not None and self.id == other.id
+        return (isinstance(other, self.__class__)
+                and self.id is not None and self.id == other.id)
 
     def __ne__(self, other):
-        return self.id is not None and self.id != other.id
+        return not self.__eq__(other)
 
     def __hash__(self):
         return hash(self.id)

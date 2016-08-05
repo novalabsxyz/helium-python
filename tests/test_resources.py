@@ -12,11 +12,23 @@ class TestHeliumResources(HeliumMockTestCase):
     def test_resource(self):
         sensor = helium.Sensor.find(self.client, self.first_sensor.id)
         self.assertIsNotNone(sensor)
+
+        # equality
         self.assertEqual(self.first_sensor, sensor)
-        # Force __getattr__ lookup
+        self.assertNotEqual(self.first_sensor,
+                            helium.Sensor({id: None}, None))
+        self.assertNotEqual(self.first_sensor, object())
+
+        # hash
+        self.assertIsNotNone(hash(self.first_sensor))
+
+        # __getattr__ lookup
         self.assertIsNotNone(sensor.meta)
         with self.assertRaises(AttributeError):
             sensor.no_such_attribute
+
+        # short id
+        self.assertIsNotNone(self.first_sensor.short_id())
 
     def test_404_resource(self):
         sensor = helium.Sensor.find(self.client,

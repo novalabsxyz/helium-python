@@ -50,5 +50,5 @@ def error_for(response):
         if 400 <= response.status_code < 500:
             klass = ClientError
         if 500 <= response.status_code < 600:
-            klass = ServerError
+            klass = ServerError  # pragma: no cover
     return klass(response)
