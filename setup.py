@@ -25,5 +25,5 @@ setup(
   url='https://github.com/helium/helium-python',
   packages=packages,
   install_requires=requires,
-  license='BSD',
+  license='MIT',
 )

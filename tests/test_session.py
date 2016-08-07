@@ -10,7 +10,7 @@ class TestHeliumSession(HeliumMockTestCase):
         self.assertEqual(self.session.headers.get('Authorization'),
                          'test_auth')
 
-        session = helium.HeliumSession(api_token='XX')
+        session = helium.Session(api_token='XX')
         self.assertEqual(session.headers.get('Authorization'), 'XX')
 
     def test_request(self):

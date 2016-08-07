@@ -1,4 +1,6 @@
-"""The module that holds much of the metadata about this library"""
+"""The module that holds metadata about this library."""
+
+from __future__ import unicode_literals
 
 __package_name__ = 'helium-python'
 __title__ = 'helium'

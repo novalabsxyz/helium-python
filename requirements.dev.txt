@@ -6,3 +6,7 @@ wheel>=0.21.0
 betamax>=0.5.0
 betamax_serializers>=0.2.0
 betamax_matchers>=0.3.0
+flake8
+flake8_docstrings
+flake8_future_import
+sphinx

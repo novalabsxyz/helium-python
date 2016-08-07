@@ -1,8 +1,8 @@
 from .exceptions import (
-    HeliumError, ClientError, ServerError,
+    Error, ClientError, ServerError,
 )
 from .resources import Resource, Sensor
-from .session import HeliumSession, HeliumClient
+from .session import Session, Client
 from .__about__ import (
     __package_name__, __title__, __author__, __author_email__,
     __license__, __copyright__, __version__, __version_info__,
@@ -10,11 +10,11 @@ from .__about__ import (
 )
 
 __all__ = (
-    HeliumError,
+    Error,
     ServerError,
     ClientError,
-    HeliumSession,
-    HeliumClient,
+    Session,
+    Client,
     Resource,
     Sensor,
     # Metadata attributes

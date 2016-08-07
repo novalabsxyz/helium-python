@@ -28,7 +28,7 @@ class HeliumMockTestCase(unittest.BetamaxTestCase):
     """unittest test case that wraps and configures betamax for tests that
     require mocking HTTP requests in helium-python
     """
-    SESSION_CLASS = helium.HeliumClient
+    SESSION_CLASS = helium.Client
 
     def setUp(self):
         super(HeliumMockTestCase, self).setUp()

@@ -1,7 +1,60 @@
 helium-python
-==============
+===============
 
- |build-status| |coverage-status| |code-climate| |docs|
+|build-status| |coverage-status| |code-climate| |docs|
+
+A Python package for building applications with the Helium
+API. Helium <https://www.helium.com/> is an integrated platform of
+smart sensors, communication, edge-compute and API that enables
+numerous sensing applications. For more information about the
+underlying REST API, check out the Helium docs at <https://docs.helium.com/>
+
+Installation
+------------
+
+Assuming you're using ``pip``, add this line to your ``setup.py``::
+
+   requires = ['helium-python']
+
+or to your ``requirements.txt`` file::
+
+   helium-python
+
+
+Development
+------------
+
+Clone this repository and run::
+
+  pip install -r requirements.dev.txt
+
+This will install the required packages to develop and test the library.
+
+To run tests::
+
+  nosetests
+
+
+To make a release tag the repository with a valid semantic version
+<https://semver.org> version and push tags. The build automation will
+automatically build and push releases to PyPi
+<https://pypi.python.org>
+
+
+Contributing
+------------
+
+Bug reports and pull requests are welcome on GitHub at
+<https://github.com/helium/helium-python>. This project is intended to
+be a safe, welcoming space for collaboration, and contributors are
+expected to adhere to the Contributor Covenant code of conduct
+<http://contributor-covenant.org/>.
+
+License
+----------
+
+The gem is available as open source under the terms of the MIT License
+<http://opensource.org/licenses/MIT>.
 
 .. |build-status| image:: https://travis-ci.org/helium/helium-python.svg?branch=master
    :target: https://travis-ci.org/helium/helium-python

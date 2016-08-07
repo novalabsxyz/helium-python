@@ -1,8 +1,12 @@
 *.pyc
+*.swp
+docs/_build
 build
 dist
-helium_python.egg-info
-.venv
+*.egg-info/
+*.egg
+venv/
+venv*/
 .env
 .coverage
 .python-version

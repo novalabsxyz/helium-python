@@ -1,11 +1,17 @@
-"""Exceptions for the Helium API library"""
+"""Exceptions for the Helium API library."""
+
+from __future__ import unicode_literals
 
 
-class HeliumError(Exception):
-    """The base exception class.
-    """
+class Error(Exception):
+    """The base exception class."""
+
     def __init__(self, response):
-        super(HeliumError, self).__init__(response)
+        """Construct an Error.
+
+        :param :class:requests.Response response:
+        """
+        super(Error, self).__init__(response)
         #: Response code that triggered the error
         self.response = response
         self.code = response.status_code
@@ -32,11 +38,11 @@ class HeliumError(Exception):
         return self.msg
 
 
-class ClientError(HeliumError):
+class ClientError(Error):
     pass
 
 
-class ServerError(HeliumError):
+class ServerError(Error):
     pass
 
 error_classes = {
