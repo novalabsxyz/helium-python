@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import os
 from betamax import Betamax
 from betamax.fixtures import unittest
@@ -16,7 +18,7 @@ else:
 
 with Betamax.configure() as config:
     config.cassette_library_dir = 'tests/cassettes'
-    record_mode = 'none' if os.environ.get('TRAVIS') else 'new_episodes'
+    record_mode = 'none' if os.environ.get('TRAVIS') else 'once'
     cassette_options = config.default_cassette_options
     cassette_options['record_mode'] = record_mode
     cassette_options['serialize_with'] = 'prettyjson'

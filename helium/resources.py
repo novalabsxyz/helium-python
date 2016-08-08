@@ -25,19 +25,19 @@ class Base(object):
         return value
 
     @classmethod
-    def _boolean(cls, response, true_code, false_code):
+    def _boolean(cls, response, true_code):
         if response is not None:
             status_code = response.status_code
             if status_code == true_code:
                 return True
-            if status_code != false_code and status_code >= 400:
+            if status_code >= 400:
                 raise error_for(response)
         return False
 
     @classmethod
     def _json(cls, response, status_code):
         ret = None
-        if cls._boolean(response, status_code, None) and response.content:
+        if cls._boolean(response, status_code) and response.content:
             ret = response.json().get('data')
         return ret
 
@@ -69,7 +69,7 @@ class Resource(Base):
         url = session._build_url(cls._resource_type())
         response = session.get(url)
         json = cls._json(response, 200)
-        return [cls._instance_or_none(session, entry) for entry in json]
+        return [cls(entry, session) for entry in json]
 
     @classmethod
     def find(cls, session, resource_id):
@@ -86,12 +86,7 @@ class Resource(Base):
         """
         url = session._build_url(cls._resource_type(), resource_id)
         response = session.get(url)
-        return cls._instance_or_none(session, cls._json(response, 200))
-
-    @classmethod
-    def _instance_or_none(cls, session, json):
-        if json is None:
-            return None
+        json = cls._json(response, 200)
         return cls(json, session)
 
     @classmethod
