@@ -12,8 +12,9 @@ class Session(requests.Session):
     This sets up the correct headers, content-types and
     authentication, if provided
 
-    :param api_token: Your Helium API Token
-    :param base_url: The base URL
+    Keyword Args:
+        api_token: Your Helium API Token
+        base_url: The base URL to the Helium API
     """
 
     def __init__(self, api_token=None, base_url='https://api.helium.com/v1'):
@@ -31,15 +32,12 @@ class Session(requests.Session):
     def token_auth(self, api_token):
         """Sets the authentication token for the session
 
-        :param api_token: Your Helium API token
+        Args:
+            api_token(str): Your Helium API token
         """
         self.headers.update({
             'Authorization': api_token
         })
-
-    def request(self, *args, **kwargs):
-        response = super(Session, self).request(*args, **kwargs)
-        return response
 
     def _build_url(self, *args, **kwargs):
         """Builds an API URL"""
@@ -49,26 +47,47 @@ class Session(requests.Session):
 
 
 class Client(Session):
+    """Construct a client to the Helium API.
+
+    The Client offers up methods to retrieve the "roots" of Helium
+    resources such as sensors and label.
+
+    Once resources are retrieved they are attached to the client that
+    constructed them and handle further requests independently.
+
+    """
     def all_sensors(self):
         """Iterate over all sensors.
+
+        Returns:
+           iterable(Sensor): An iterator over sensor for the authorized api key
         """
         return Sensor.all(self)
 
     def find_sensor(self, sensor_id):
         """Find a single sensor.
 
-        :param str sensor_id: The UUID of the sensor to retrieve
+        Args:
+           sensor_id(str): The UUID of the sensor to look up
+        Returns:
+           Sensor: A sensor resource
         """
         return Sensor.find(self, sensor_id)
 
     def all_labels(self):
         """Iterate over all labels.
+
+        Returns:
+           iterable(Label): An iterable over labels for the authorized api key
         """
         return Label.all(self)
 
     def find_label(self, label_id):
         """Find a single label.
 
-        :param str label_id: The UUID of the label to retrieve
+        Args:
+           label_id(str): The UUID of the label to look up
+        Returns:
+           Label: A label resource
         """
         return Label.find(self, label_id)

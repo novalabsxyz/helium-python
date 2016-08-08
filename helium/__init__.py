@@ -1,7 +1,7 @@
 from .exceptions import (
     Error, ClientError, ServerError,
 )
-from .resources import Resource, Sensor
+from .resources import Resource, Sensor, Label
 from .session import Session, Client
 from .__about__ import (
     __package_name__, __title__, __author__, __author_email__,
@@ -17,6 +17,7 @@ __all__ = (
     Client,
     Resource,
     Sensor,
+    Label,
     # Metadata attributes
     '__package_name__',
     '__title__',

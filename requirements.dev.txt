@@ -10,3 +10,4 @@ flake8
 flake8_docstrings
 flake8_future_import
 sphinx
+sphinx-autobuild
