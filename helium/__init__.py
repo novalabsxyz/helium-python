@@ -1,5 +1,5 @@
 from .exceptions import (
-    Error, ClientError, ServerError,
+    Error, ClientError, ServerError, NotFoundError,
 )
 from .resources import Resource, Sensor, Label
 from .session import Session, Client
@@ -13,6 +13,7 @@ __all__ = (
     Error,
     ServerError,
     ClientError,
+    NotFoundError,
     Session,
     Client,
     Resource,

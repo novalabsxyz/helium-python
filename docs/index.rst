@@ -10,7 +10,7 @@ this library is designed to leverage the constructs heavily.
 Modules
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    client
    resources

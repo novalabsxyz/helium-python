@@ -37,23 +37,35 @@ class Base(object):
     @classmethod
     def _json(cls, response, status_code):
         ret = None
-        if cls._boolean(response, status_code, 404) and response.content:
-            ret = response.json()
-            ret = ret.get('data', ret)
+        if cls._boolean(response, status_code, None) and response.content:
+            ret = response.json().get('data')
         return ret
 
 
 class Resource(Base):
     """The base class for all Helium resources.
 
-    The Helium API uses JSONAPI extensively. The
-    :class:`Resource<Resource>` object provides a number of useful
-    JSONAPI abstractions
+    The Helium API uses JSONAPI extensively. The :class:`Resource`
+    object provides a number of useful JSONAPI abstractions.
+
+    A resource will at least have ``id``, ``created`` and ``updated``
+    attributes. Any other JSONAPI ``attributes`` in the given json are
+    promoted to object attributed
+
+    Args:
+      json(dict): The json to construct the resource from.
+      session(Session): The session use for this resource
 
     """
 
     @classmethod
     def all(cls, session):
+        """Get all resources of the given resource class. This should be
+        called on sub-classes only.
+
+        Args:
+          session(Session): The session to look up the resources in
+        """
         url = session._build_url(cls._resource_type())
         response = session.get(url)
         json = cls._json(response, 200)
@@ -61,6 +73,17 @@ class Resource(Base):
 
     @classmethod
     def find(cls, session, resource_id):
+        """Retrieve a single resource. This should only be called from
+        sub-classes.
+
+        Args:
+          session(Session): The session to find the resource in
+          resource_id: The ``id`` for the resource to look up
+
+        Returns: An instance of a resource, or throws a
+          :class:`NotFoundError` if the resource can not be found.
+
+        """
         url = session._build_url(cls._resource_type(), resource_id)
         response = session.get(url)
         return cls._instance_or_none(session, cls._json(response, 200))
@@ -78,7 +101,6 @@ class Resource(Base):
     def _update_attributes(self, json):
         super(Resource, self)._update_attributes(json)
         self.id = json.get('id', None)
-        self.type = json.get('type', None)
         meta = json.get('meta', None)
         if meta is not None:
             self.created = meta.get('created')
@@ -101,12 +123,18 @@ class Resource(Base):
 
     @property
     def short_id(self):
+        """Get the short version of the UUID for the resource.
+        """
         return self.id.split('-')[0]
 
 
 class Sensor(Resource):
-    pass
+    def _update_attributes(self, json):
+        super(Sensor, self)._update_attributes(json)
+        self.name = json.get('name')
 
 
 class Label(Resource):
-    pass
+    def _update_attributes(self, json):
+        super(Label, self)._update_attributes(json)
+        self.name = json.get('name')

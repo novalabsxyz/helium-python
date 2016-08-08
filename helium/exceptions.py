@@ -38,6 +38,10 @@ class Error(Exception):
         return self.msg
 
 
+class NotFoundError(Error):
+    pass
+
+
 class ClientError(Error):
     pass
 
@@ -46,6 +50,7 @@ class ServerError(Error):
     pass
 
 error_classes = {
+    404: NotFoundError
 }
 
 
