@@ -1,6 +1,7 @@
+"""Base Resource behavior"""
+
 from __future__ import unicode_literals
 from future.utils import iteritems
-
 from .exceptions import error_for
 
 
@@ -53,6 +54,7 @@ class Resource(Base):
     promoted to object attributed
 
     Args:
+
       json(dict): The json to construct the resource from.
       session(Session): The session use for this resource
 
@@ -64,11 +66,17 @@ class Resource(Base):
         called on sub-classes only.
 
         Args:
+
           session(Session): The session to look up the resources in
+
+        Returns:
+
+          iterable(Resource): An iterator over all the resources of
+        this type
+
         """
         url = session._build_url(cls._resource_type())
-        response = session.get(url)
-        json = cls._json(response, 200)
+        json = cls._json(session.get(url), 200)
         return [cls(entry, session) for entry in json]
 
     @classmethod
@@ -77,16 +85,42 @@ class Resource(Base):
         sub-classes.
 
         Args:
+
           session(Session): The session to find the resource in
           resource_id: The ``id`` for the resource to look up
 
-        Returns: An instance of a resource, or throws a
+        Returns:
+
+          Resource: An instance of a resource, or throws a
           :class:`NotFoundError` if the resource can not be found.
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
-        response = session.get(url)
-        json = cls._json(response, 200)
+        json = cls._json(session.get(url), 200)
+        return cls(json, session)
+
+    @classmethod
+    def create(cls, session, **kwargs):
+        """Create a resource of the resource.
+
+        This should only be called from sub-classes
+
+        Args:
+
+          session(Session): The session to create the resource in.
+
+          kwargs: Any attributes that are valid for the given resource type.
+
+        Returns:
+
+          Resource: An instance of a resource.
+
+        """
+
+        resource_type = cls._resource_type()
+        url = session._build_url(resource_type)
+        attributes = session._build_attributes(resource_type, None, kwargs)
+        json = cls._json(session.post(url, json=attributes), 201)
         return cls(json, session)
 
     @classmethod
@@ -122,14 +156,46 @@ class Resource(Base):
         """
         return self.id.split('-')[0]
 
+    def update(self, **kwargs):
+        """Updates attributes of this resource.
+
+        Not all attributes can be updated. If the server rejects
+        attribute updates an error will be thrown.
+
+        Keyword Arguments:
+
+          kwargs: Attributes that are to be updated
+
+        Returns:
+
+          Resource: A new instance of this type of resource with the
+          updated attribute. On errors an exception is thrown.
+
+        """
+        resource_type = self._resource_type()
+        klass = self.__class__
+        session = self.session
+        url = session._build_url(resource_type, self.id)
+        attributes = session._build_attributes(resource_type, self.id, kwargs)
+        json = klass._json(session.patch(url, json=attributes), 200)
+        return klass(json, session)
+
+    def delete(self):
+        """Delete the resource.
+
+        Returns:
+
+          True if the delete is successful. Will throw an error if
+          other errors occur
+
+        """
+        url = self.session._build_url(self._resource_type(), self.id)
+        return self._boolean(self.session.delete(url), 204)
+
 
 class Sensor(Resource):
-    def _update_attributes(self, json):
-        super(Sensor, self)._update_attributes(json)
-        self.name = json.get('name')
+    pass
 
 
 class Label(Resource):
-    def _update_attributes(self, json):
-        super(Label, self)._update_attributes(json)
-        self.name = json.get('name')
+    pass

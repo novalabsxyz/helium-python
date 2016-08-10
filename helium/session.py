@@ -45,6 +45,17 @@ class Session(requests.Session):
         parts.extend(args)
         return '/'.join(parts)
 
+    def _build_attributes(self, type, id, attributes):
+        result = {
+            "data": {
+                "attributes": attributes,
+                "type": type
+            }
+        }
+        if id is not None:
+            result['data']['id'] = id
+        return result
+
 
 class Client(Session):
     """Construct a client to the Helium API.
