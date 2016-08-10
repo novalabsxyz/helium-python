@@ -11,8 +11,8 @@ emails = ''
 packages = ['helium']
 requires = [
     "future>=0.15",
-    "requests >= 2.9.0",
-    "uritemplate >= 0.6",
+    "requests==2.10.0",
+    "uritemplate>=0.6",
 ]
 
 setup(
