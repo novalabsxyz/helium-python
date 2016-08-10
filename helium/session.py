@@ -47,9 +47,9 @@ class Session(requests.Session):
 
     def _build_attributes(self, type, id, attributes):
         result = {
-            "data": {
-                "attributes": attributes,
-                "type": type
+            'data': {
+                'attributes': attributes,
+                'type': type
             }
         }
         if id is not None:
