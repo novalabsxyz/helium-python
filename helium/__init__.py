@@ -1,7 +1,15 @@
+"""The public interface to the helium-python library."""
+
 from .exceptions import (
     Error, ClientError, ServerError, NotFoundError,
 )
-from .resources import Resource, Sensor, Label
+from .resource import Resource, to_many, to_one, RelationType
+from .user import User
+from .sensor import Sensor
+from .metadata import Metadata
+from .label import Label
+from .element import Element
+from .organization import Organization
 from .session import Session, Client
 from .__about__ import (
     __package_name__, __title__, __author__, __author_email__,
@@ -16,8 +24,12 @@ __all__ = (
     NotFoundError,
     Session,
     Client,
-    Resource,
+    Resource, to_one, to_many, RelationType,
+    Organization,
+    User,
     Sensor,
+    Metadata,
+    Element,
     Label,
     # Metadata attributes
     '__package_name__',

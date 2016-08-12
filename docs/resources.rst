@@ -10,11 +10,21 @@ Resource
 
 .. autoclass:: Resource
 
+Organization
+------------
+
+.. autoclass:: Organization
 
 Sensor
 ----------
 
 .. autoclass:: Sensor
+
+Element
+---------------
+
+.. autoclass:: Element
+
 
 Label
 ----------

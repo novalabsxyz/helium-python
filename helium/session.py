@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 import requests
 from .__about__ import __version__
-from .resources import Sensor, Label
+from . import Label, Sensor, Organization, User
 
 
 class Session(requests.Session):
@@ -42,7 +42,7 @@ class Session(requests.Session):
     def _build_url(self, *args, **kwargs):
         """Builds an API URL"""
         parts = [kwargs.get('base_url', self.base_url)]
-        parts.extend(args)
+        parts.extend([part for part in args if part is not None])
         return '/'.join(parts)
 
     def _build_attributes(self, type, id, attributes):
@@ -67,15 +67,16 @@ class Client(Session):
     constructed them and handle further requests independently.
 
     """
-    def all_sensors(self):
+    def sensors(self):
         """Iterate over all sensors.
 
         Returns:
-           iterable(Sensor): An iterator over sensor for the authorized api key
+
+           iterable(Sensor): An iterator over sensor for the authorized API key
         """
         return Sensor.all(self)
 
-    def find_sensor(self, sensor_id):
+    def sensor(self, sensor_id):
         """Find a single sensor.
 
         Args:
@@ -85,20 +86,42 @@ class Client(Session):
         """
         return Sensor.find(self, sensor_id)
 
-    def all_labels(self):
+    def labels(self):
         """Iterate over all labels.
 
         Returns:
-           iterable(Label): An iterable over labels for the authorized api key
+
+           iterable(Label): An iterable over labels for the authorized API key
         """
         return Label.all(self)
 
-    def find_label(self, label_id):
+    def label(self, label_id):
         """Find a single label.
 
         Args:
+
            label_id(str): The UUID of the label to look up
+
         Returns:
+
            Label: A label resource
         """
         return Label.find(self, label_id)
+
+    def authorized_organization(self):
+        """Gets the authorized organization.
+
+        Returns:
+
+          Organization: The organization for the authorized API key
+        """
+        return Organization.authorized(self)
+
+    def authorized_user(self):
+        """Gets the authorized user.
+
+        Returns:
+
+          User: The user for the authorized API key
+        """
+        return User.authorized(self)

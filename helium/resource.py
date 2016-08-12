@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from .exceptions import error_for
+import inflection
 
 
 class Base(object):
@@ -36,11 +37,89 @@ class Base(object):
         return False
 
     @classmethod
-    def _json(cls, response, status_code):
+    def _json(cls, response, status_code, extract='data'):
         ret = None
         if cls._boolean(response, status_code) and response.content:
-            ret = response.json().get('data')
+            ret = response.json().get(extract)
         return ret
+
+
+class RelationType(object):
+    INCLUDE = 0
+    DIRECT = 1
+
+
+def to_one(dest_class, singleton=False):
+    def method_builder(cls):
+        dest_resource_type = dest_class._resource_type()
+        dest_method_name = dest_resource_type
+
+        method_doc = """Fetch the {2} associated with this :class:`{0}`.
+
+        Returns:
+
+          {1}: The :class:`{1}` of :class:`{0}`
+        """.format(cls.__name__, dest_class.__name__, dest_method_name)
+
+        def method(self):
+            session = self.session
+            url = session._build_url(cls._resource_type(),
+                                     None if singleton else self.id,
+                                     dest_resource_type)
+            json = dest_class._json(session.get(url), 200)
+            return dest_class(json, session)
+
+        method.__doc__ = method_doc
+        setattr(cls, dest_method_name, method)
+        return cls
+    return method_builder
+
+
+def to_many(dest_class, reverse=None, singleton=False,
+            type=RelationType.DIRECT, reverse_type=RelationType.DIRECT):
+    def method_builder(cls):
+        dest_resource_type = dest_class._resource_type()
+        dest_method_name = inflection.pluralize(dest_resource_type)
+
+        method_doc = """Fetch the {2} associated with this :class:`{0}`.
+
+        Returns:
+
+          iterable({1}): An iterator over all the :class:`{1}` of :class:`{0}`
+        """.format(cls.__name__, dest_class.__name__, dest_method_name)
+
+        def include_method(self):
+            session = self.session
+            url = session._build_url(cls._resource_type(),
+                                     None if singleton else self.id)
+            params = {
+                'include': dest_resource_type
+            }
+            json = dest_class._json(session.get(url, params=params), 200,
+                                    extract="included")
+            return [dest_class(entry, session) for entry in json]
+
+        def direct_method(self):
+            session = self.session
+            url = session._build_url(cls._resource_type(),
+                                     None if singleton else self.id,
+                                     dest_class._resource_type())
+            json = dest_class._json(session.get(url), 200)
+            return [dest_class(entry, session) for entry in json]
+
+        if type == RelationType.DIRECT:
+            method = direct_method
+        elif type == RelationType.INCLUDE:
+            method = include_method
+        else:
+            raise ValueError("Invalid RelationType: {}".format(type))
+
+        method.__doc__ = method_doc
+        setattr(cls, dest_method_name, method)
+        if reverse is not None:
+            reverse(cls, type=reverse_type)(dest_class)
+        return cls
+    return method_builder
 
 
 class Resource(Base):
@@ -51,7 +130,7 @@ class Resource(Base):
 
     A resource will at least have ``id``, ``created`` and ``updated``
     attributes. Any other JSONAPI ``attributes`` in the given json are
-    promoted to object attributed
+    promoted to object attributes
 
     Args:
 
@@ -124,6 +203,10 @@ class Resource(Base):
         return cls(json, session)
 
     @classmethod
+    def to_many(cls, dest_class):
+        to_many(dest_class)(cls)
+
+    @classmethod
     def _resource_type(cls):
         return cls.__name__.lower()
 
@@ -191,11 +274,3 @@ class Resource(Base):
         """
         url = self.session._build_url(self._resource_type(), self.id)
         return self._boolean(self.session.delete(url), 204)
-
-
-class Sensor(Resource):
-    pass
-
-
-class Label(Resource):
-    pass
