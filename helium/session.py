@@ -30,7 +30,7 @@ class Session(requests.Session):
             self.token_auth(api_token)
 
     def token_auth(self, api_token):
-        """Sets the authentication token for the session
+        """Set the authentication token for the session.
 
         Args:
             api_token(str): Your Helium API token
@@ -40,7 +40,6 @@ class Session(requests.Session):
         })
 
     def _build_url(self, *args, **kwargs):
-        """Builds an API URL"""
         parts = [kwargs.get('base_url', self.base_url)]
         parts.extend([part for part in args if part is not None])
         return '/'.join(parts)
@@ -67,6 +66,7 @@ class Client(Session):
     constructed them and handle further requests independently.
 
     """
+
     def sensors(self):
         """Iterate over all sensors.
 
@@ -109,19 +109,19 @@ class Client(Session):
         return Label.find(self, label_id)
 
     def authorized_organization(self):
-        """Gets the authorized organization.
+        """Get the authorized organization.
 
         Returns:
 
           Organization: The organization for the authorized API key
         """
-        return Organization.authorized(self)
+        return Organization.singleton(self)
 
     def authorized_user(self):
-        """Gets the authorized user.
+        """Get the authorized user.
 
         Returns:
 
           User: The user for the authorized API key
         """
-        return User.authorized(self)
+        return User.singleton(self)

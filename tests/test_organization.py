@@ -8,7 +8,7 @@ import helium
 class TestHeliumOrganization(HeliumMockTestCase):
     def setUp(self):
         super(TestHeliumOrganization, self).setUp()
-        self.organization = helium.Organization.authorized(self.client)
+        self.organization = helium.Organization.singleton(self.client)
         self.assertIsNotNone(self.organization)
 
     def test_users(self):

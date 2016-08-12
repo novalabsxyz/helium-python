@@ -1,4 +1,4 @@
-"""Base Resource behavior"""
+"""Base Resource behavior."""
 
 from __future__ import unicode_literals
 from future.utils import iteritems
@@ -7,8 +7,7 @@ import inflection
 
 
 class Base(object):
-    """The base class for all things that relate to a Helium session.
-    """
+    """The base class for all things that relate to a Helium session."""
 
     def __init__(self, json, session):
         super(Base, self).__init__()
@@ -49,7 +48,7 @@ class RelationType(object):
     DIRECT = 1
 
 
-def to_one(dest_class, singleton=False):
+def to_one(dest_class):
     def method_builder(cls):
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type
@@ -63,8 +62,8 @@ def to_one(dest_class, singleton=False):
 
         def method(self):
             session = self.session
-            url = session._build_url(cls._resource_type(),
-                                     None if singleton else self.id,
+            id = None if hasattr(self, '_singleton') else self.id
+            url = session._build_url(cls._resource_type(), id,
                                      dest_resource_type)
             json = dest_class._json(session.get(url), 200)
             return dest_class(json, session)
@@ -75,8 +74,8 @@ def to_one(dest_class, singleton=False):
     return method_builder
 
 
-def to_many(dest_class, reverse=None, singleton=False,
-            type=RelationType.DIRECT, reverse_type=RelationType.DIRECT):
+def to_many(dest_class, type=RelationType.DIRECT,
+            reverse=None, reverse_type=RelationType.DIRECT):
     def method_builder(cls):
         dest_resource_type = dest_class._resource_type()
         dest_method_name = inflection.pluralize(dest_resource_type)
@@ -90,8 +89,8 @@ def to_many(dest_class, reverse=None, singleton=False,
 
         def include_method(self):
             session = self.session
-            url = session._build_url(cls._resource_type(),
-                                     None if singleton else self.id)
+            id = None if hasattr(self, '_singleton') else self.id
+            url = session._build_url(cls._resource_type(), id)
             params = {
                 'include': dest_resource_type
             }
@@ -101,8 +100,8 @@ def to_many(dest_class, reverse=None, singleton=False,
 
         def direct_method(self):
             session = self.session
-            url = session._build_url(cls._resource_type(),
-                                     None if singleton else self.id,
+            id = None if hasattr(self, '_singleton') else self.id
+            url = session._build_url(cls._resource_type(), id,
                                      dest_class._resource_type())
             json = dest_class._json(session.get(url), 200)
             return [dest_class(entry, session) for entry in json]
@@ -141,8 +140,9 @@ class Resource(Base):
 
     @classmethod
     def all(cls, session):
-        """Get all resources of the given resource class. This should be
-        called on sub-classes only.
+        """Get all resources of the given resource class.
+
+        This should be called on sub-classes only.
 
         Args:
 
@@ -160,8 +160,9 @@ class Resource(Base):
 
     @classmethod
     def find(cls, session, resource_id):
-        """Retrieve a single resource. This should only be called from
-        sub-classes.
+        """Retrieve a single resource.
+
+        This should only be called from sub-classes.
 
         Args:
 
@@ -195,7 +196,6 @@ class Resource(Base):
           Resource: An instance of a resource.
 
         """
-
         resource_type = cls._resource_type()
         url = session._build_url(resource_type)
         attributes = session._build_attributes(resource_type, None, kwargs)
@@ -203,8 +203,12 @@ class Resource(Base):
         return cls(json, session)
 
     @classmethod
-    def to_many(cls, dest_class):
-        to_many(dest_class)(cls)
+    def singleton(cls, session):
+        url = session._build_url(cls._resource_type())
+        json = cls._json(session.get(url), 200)
+        result = cls(json, session)
+        setattr(result, '_singleton', True)
+        return result
 
     @classmethod
     def _resource_type(cls):
@@ -235,12 +239,11 @@ class Resource(Base):
 
     @property
     def short_id(self):
-        """Get the short version of the UUID for the resource.
-        """
+        """Get the short version of the UUID for the resource."""
         return self.id.split('-')[0]
 
     def update(self, **kwargs):
-        """Updates attributes of this resource.
+        """Update attributes of this resource.
 
         Not all attributes can be updated. If the server rejects
         attribute updates an error will be thrown.

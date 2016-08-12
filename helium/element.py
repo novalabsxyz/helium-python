@@ -1,6 +1,7 @@
 """The element resource."""
 
-from . import Resource, RelationType, to_many
+from __future__ import unicode_literals
+from . import Resource, to_many
 from . import Sensor
 
 

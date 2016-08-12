@@ -1,5 +1,6 @@
 """The public interface to the helium-python library."""
 
+from __future__ import unicode_literals
 from .exceptions import (
     Error, ClientError, ServerError, NotFoundError,
 )

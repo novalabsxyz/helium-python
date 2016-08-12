@@ -1,5 +1,6 @@
 """The label resource."""
 
+from __future__ import unicode_literals
 from . import Resource, RelationType, to_many
 from . import Sensor
 
