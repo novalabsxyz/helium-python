@@ -122,8 +122,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
               resources: A list of :class:`{to_class}` to set
             """
-            target = [entry.id for entry in resources]
-            return _update_relatonship(self, target)
+            return _update_relatonship(self, resources)
 
         methods = [(dest_method_name, fetch_relationship)]
         if writable:

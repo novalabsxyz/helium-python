@@ -12,9 +12,10 @@ class TestHeliumLabels(HeliumMockTestCase):
     @contextmanager
     def temp_label(self, **kwargs):
         label = None
-        name = str(uuid.uuid4())
         try:
-            label = helium.Label.create(self.client, name=name, **kwargs)
+            label = helium.Label.create(self.client,
+                                        name="test_label",
+                                        **kwargs)
             yield label
         finally:
             if label is not None:
@@ -40,4 +41,4 @@ class TestHeliumLabels(HeliumMockTestCase):
             self.assertFalse(sensor in updated_sensors)
             # add a sensor
             updated_sensors = label.add_sensors([sensor])
-            self.asserTrue(sensor in updated_sensors)
+            self.assertTrue(sensor in updated_sensors)
