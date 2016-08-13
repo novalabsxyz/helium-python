@@ -10,6 +10,12 @@ Resource
 
 .. autoclass:: Resource
 
+.. autoclass:: RelationType
+
+.. autofunction:: to_many
+
+.. autofunction:: to_one
+
 Organization
 ------------
 

@@ -5,11 +5,59 @@ import inflection
 
 
 class RelationType(object):
-    INCLUDE = 0
-    DIRECT = 1
+    """Defines the way a relationship is fetched.
+
+    The Helium API does not require an include directive to also mean
+    a full URL relationship. This means that for some relationships
+    you use the URL where for others you use an ``include`` paramater
+    to get the related objects.
+
+    For example::
+
+        https://api.helium.com/v1/label/<id>/sensor
+        https://api.helium.com/v1/label/<id>?include=sensor
+
+    The constants in this class define how the relationship functions
+    should be looked up.
+    """
+
+    INCLUDE = b"include"
+    """Use the include parameter relationship approach"""
+
+    DIRECT = b"direct"
+    """Use the direct relationship approach"""
 
 
 def to_one(dest_class):
+    """Create a one to one relation to a given target :class:`Resource`.
+
+    Args:
+
+        dest_class(Resource): The *target* class for the relationship
+
+    Returns:
+
+        A builder function which, given a source class creates a
+        one-to-one relationship with the target
+
+    A one to one relationship means that you can get the associated
+    target object from the object on which the ``to_one`` was declared.
+
+    .. code-block:: python
+
+        @to_one(Organization)
+        def User(Resource):
+            pass
+
+    Declares that a User is associated with *one* Organization. The
+    decorator automatically adds a method to fetch the associated
+    organization:
+
+    .. code-block:: python
+
+        org = user.organization()
+
+    """
     def method_builder(cls):
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type
@@ -38,6 +86,57 @@ def to_one(dest_class):
 def to_many(dest_class, type=RelationType.DIRECT,
             reverse=None, reverse_type=RelationType.DIRECT,
             writable=False):
+    """Create a one to many relation to a given target :class:`Resource`.
+
+    Args:
+
+        dest_class(Resource): The *target* class for the relationship
+
+    Keyword Args:
+
+        type(RelationType): The relationship approach to use.
+        writable(bool): Whether the relationship is mutable.
+        reverse(to_may or to_one): An *optional* reverse relationship.
+        reverse_type(RelationType): The reverse relationship approach.
+
+
+    Returns:
+
+        A builder function which, given a source class creates a
+        one-to-many relationship with the previously supplied target.
+
+    A to-many relationship means that the there are many *dest_class*
+    resources associated with the given source class. The returned
+    method builder will automatically create methods for fetching the
+    associated objects. If the *reverse* function is supplied the
+    builder will create the correponding reverse relationship methods
+    on the target class.
+
+    .. code-block:: python
+
+        @to_many(Sensor, writable=True)
+        class Label:
+            pass
+
+        # find a label, then fetch sensors
+        sensor = label.sensors()
+
+    Since the example above also declares that the relationship is
+    *writable* you can also add, remove and update all target
+    resources from the source object:
+
+    .. code-block:: python
+
+        # fetch a couple of sensors then add them to the label
+        label.add_sensors([sensor1, sensor2])
+
+        # remove a sensor from the label
+        label.remove_sensors([sensor1])
+
+        # remove all sensors from the label
+        label.update_sensors([])
+
+    """
     def method_builder(cls):
         src_resource_type = cls._resource_type()
         dest_resource_type = dest_class._resource_type()
@@ -52,7 +151,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
         Returns:
 
-          iterable({to_class}): An iterator over all the :class:`{to_class}` of :class:`{from_class}`
+              iterable({to_class}): The {to_name} of :class:`{from_class}`
         """
 
         def fetch_relationship_include(self):
