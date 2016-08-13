@@ -2,18 +2,42 @@
 
 from __future__ import unicode_literals
 from .util import HeliumMockTestCase
+from contextlib import contextmanager
+import uuid
 import helium
 
 
 class TestHeliumLabels(HeliumMockTestCase):
 
-    def setUp(self):
-        super(TestHeliumLabels, self).setUp()
-        labels = helium.Label.all(self.client)
-        self.first_label = labels[0]
-        self.assertIsNotNone(self.first_label.id)
+    @contextmanager
+    def temp_label(self, **kwargs):
+        label = None
+        name = str(uuid.uuid4())
+        try:
+            label = helium.Label.create(self.client, name=name, **kwargs)
+            yield label
+        finally:
+            if label is not None:
+                self.assertTrue(label.delete())
+
+    def test_create_delete(self):
+        with self.temp_label(sensors=[]) as label:
+            self.assertIsNotNone(label)
+            self.assertIsNotNone(label.id)
 
     def test_sensors(self):
-        sensors = self.first_label.sensors()
-        self.assertIsNotNone(sensors)
-        self.assertTrue(len(sensors) > 0)
+        with self.temp_label() as label:
+            self.assertTrue(len(label.sensors()) == 0)
+            # Fetch some sensors
+            sensors = helium.Sensor.all(self.client)
+            self.assertTrue(len(sensors) > 0)
+            # update all sensors for the label
+            updated_sensors = label.update_sensors(sensors)
+            self.assertTrue(len(updated_sensors) > 0)
+            # remove a sensor
+            sensor = sensors[0]
+            updated_sensors = label.remove_sensors([sensor])
+            self.assertFalse(sensor in updated_sensors)
+            # add a sensor
+            updated_sensors = label.add_sensors([sensor])
+            self.asserTrue(sensor in updated_sensors)

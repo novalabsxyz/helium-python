@@ -15,6 +15,17 @@ Organization
 
 .. autoclass:: Organization
 
+User
+---------------
+
+.. autoclass:: User
+
+
+Metadata
+---------------
+
+.. autoclass:: Metadata
+
 Sensor
 ----------
 

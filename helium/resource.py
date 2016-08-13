@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from .exceptions import error_for
-import inflection
 
 
 class Base(object):
@@ -41,84 +40,6 @@ class Base(object):
         if cls._boolean(response, status_code) and response.content:
             ret = response.json().get(extract)
         return ret
-
-
-class RelationType(object):
-    INCLUDE = 0
-    DIRECT = 1
-
-
-def to_one(dest_class):
-    def method_builder(cls):
-        dest_resource_type = dest_class._resource_type()
-        dest_method_name = dest_resource_type
-
-        method_doc = """Fetch the {2} associated with this :class:`{0}`.
-
-        Returns:
-
-          {1}: The :class:`{1}` of :class:`{0}`
-        """.format(cls.__name__, dest_class.__name__, dest_method_name)
-
-        def method(self):
-            session = self.session
-            id = None if hasattr(self, '_singleton') else self.id
-            url = session._build_url(cls._resource_type(), id,
-                                     dest_resource_type)
-            json = dest_class._json(session.get(url), 200)
-            return dest_class(json, session)
-
-        method.__doc__ = method_doc
-        setattr(cls, dest_method_name, method)
-        return cls
-    return method_builder
-
-
-def to_many(dest_class, type=RelationType.DIRECT,
-            reverse=None, reverse_type=RelationType.DIRECT):
-    def method_builder(cls):
-        dest_resource_type = dest_class._resource_type()
-        dest_method_name = inflection.pluralize(dest_resource_type)
-
-        method_doc = """Fetch the {2} associated with this :class:`{0}`.
-
-        Returns:
-
-          iterable({1}): An iterator over all the :class:`{1}` of :class:`{0}`
-        """.format(cls.__name__, dest_class.__name__, dest_method_name)
-
-        def include_method(self):
-            session = self.session
-            id = None if hasattr(self, '_singleton') else self.id
-            url = session._build_url(cls._resource_type(), id)
-            params = {
-                'include': dest_resource_type
-            }
-            json = dest_class._json(session.get(url, params=params), 200,
-                                    extract="included")
-            return [dest_class(entry, session) for entry in json]
-
-        def direct_method(self):
-            session = self.session
-            id = None if hasattr(self, '_singleton') else self.id
-            url = session._build_url(cls._resource_type(), id,
-                                     dest_class._resource_type())
-            json = dest_class._json(session.get(url), 200)
-            return [dest_class(entry, session) for entry in json]
-
-        if type == RelationType.DIRECT:
-            method = direct_method
-        elif type == RelationType.INCLUDE:
-            method = include_method
-        else:
-            raise ValueError("Invalid RelationType: {}".format(type))
-
-        method.__doc__ = method_doc
-        setattr(cls, dest_method_name, method)
-        if reverse is not None:
-            reverse(cls, type=reverse_type)(dest_class)
-        return cls
-    return method_builder
 
 
 class Resource(Base):
@@ -275,5 +196,6 @@ class Resource(Base):
           other errors occur
 
         """
-        url = self.session._build_url(self._resource_type(), self.id)
-        return self._boolean(self.session.delete(url), 204)
+        session = self.session
+        url = session._build_url(self._resource_type(), self.id)
+        return self._boolean(session.delete(url), 204)

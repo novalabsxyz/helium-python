@@ -5,6 +5,14 @@ from . import Resource, RelationType, to_many
 from . import Sensor
 
 
-@to_many(Sensor, reverse=to_many, reverse_type=RelationType.INCLUDE)
+@to_many(Sensor, writable=True,
+         reverse=to_many,
+         reverse_type=RelationType.INCLUDE)
 class Label(Resource):
-    pass
+    @classmethod
+    def create(cls, session, **kwargs):
+        sensors = kwargs.pop('sensors', None)
+        label = super(Label, cls).create(session, **kwargs)
+        if sensors is not None:
+            label.update_sensors(sensors)
+        return label

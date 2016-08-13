@@ -55,6 +55,11 @@ class Session(requests.Session):
             result['data']['id'] = id
         return result
 
+    def _build_relationship(self, type, ids):
+        return {
+            "data": [{"id": id, "type": type} for id in ids]
+        }
+
 
 class Client(Session):
     """Construct a client to the Helium API.

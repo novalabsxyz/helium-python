@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from .exceptions import (
     Error, ClientError, ServerError, NotFoundError,
 )
-from .resource import Resource, to_many, to_one, RelationType
+from .resource import Resource
+from .relations import RelationType, to_many, to_one
 from .user import User
 from .sensor import Sensor
 from .metadata import Metadata
