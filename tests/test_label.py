@@ -8,7 +8,7 @@ import helium
 class TestHeliumLabels(HeliumMockTestCase):
 
     def test_sensors(self):
-        label = helium.Label.create(self.client, name="test-label")
+        label = helium.Label.create(self.client, name="test-label", sensors=[])
         self.assertIsNotNone(label.id)
 
         self.assertTrue(len(label.sensors()) == 0)

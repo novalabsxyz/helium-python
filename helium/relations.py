@@ -177,6 +177,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         elif type == RelationType.INCLUDE:
             fetch_relationship = fetch_relationship_include
         else:
+            # pragma: no cover
             raise ValueError("Invalid RelationType: {}".format(type))
         fetch_relationship.__doc__ = fetch_method_doc
 
@@ -198,7 +199,11 @@ def to_many(dest_class, type=RelationType.DIRECT,
               resources: A list of :class:`{to_class}` to add
             """
             existing = fetch_relationship(self)
-            target = set.union(set(existing), set(resources))
+            # Retain order of existing resources while trimming
+            # duplicates and adding new ones.
+            existing_set = frozenset(existing)
+            resources = [r for r in resources if r not in existing_set]
+            target = existing + resources
             return _update_relatonship(self, target)
 
         def remove_many(self, resources):
@@ -209,7 +214,10 @@ def to_many(dest_class, type=RelationType.DIRECT,
               resources: A list of :class:`{to_class}` to remove
             """
             existing = fetch_relationship(self)
-            target = set.difference(set(existing), set(resources))
+            # Retain order existing resources while removing given
+            # ones
+            resource_set = frozenset(resources)
+            target = [entry for entry in existing if entry not in resource_set]
             return _update_relatonship(self, target)
 
         def update_method(self, resources):
