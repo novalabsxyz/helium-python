@@ -7,17 +7,10 @@ import helium
 
 class TestHeliumLabels(HeliumMockTestCase):
 
-    def setUp(self):
-        super(TestHeliumLabels, self).setUp()
-        self.label = helium.Label.create(self.client, name="test-label")
-        self.assertIsNotNone(self.label.id)
-
-    def tearDown(self):
-        if self.label is not None:
-            self.assertTrue(self.label.delete())
-
     def test_sensors(self):
-        label = self.label
+        label = helium.Label.create(self.client, name="test-label")
+        self.assertIsNotNone(label.id)
+
         self.assertTrue(len(label.sensors()) == 0)
         # Fetch some sensors
         sensors = helium.Sensor.all(self.client)
@@ -32,3 +25,5 @@ class TestHeliumLabels(HeliumMockTestCase):
         # add a sensor
         updated_sensors = label.add_sensors([sensor])
         self.assertTrue(sensor in updated_sensors)
+
+        self.assertTrue(label.delete())
