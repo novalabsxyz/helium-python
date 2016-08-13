@@ -176,9 +176,9 @@ def to_many(dest_class, type=RelationType.DIRECT,
             fetch_relationship = fetch_relationship_direct
         elif type == RelationType.INCLUDE:
             fetch_relationship = fetch_relationship_include
-        else:
-            # pragma: no cover
+        else:  # pragma: no cover
             raise ValueError("Invalid RelationType: {}".format(type))
+
         fetch_relationship.__doc__ = fetch_method_doc
 
         def _update_relatonship(self, objs):
