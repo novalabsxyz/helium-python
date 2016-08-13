@@ -11,17 +11,25 @@ class TestHeliumClient(HeliumMockTestCase):
         assert resource.id == resource_id
 
     def test_all_sensors(self):
-        resources = self.client.all_sensors()
+        resources = self.client.sensors()
         self._assert_all_resources(resources)
 
     def test_find_sensor(self):
-        sensors = self.client.all_sensors()
-        self._assert_find_resource(sensors, self.client.find_sensor)
+        sensors = self.client.sensors()
+        self._assert_find_resource(sensors, self.client.sensor)
 
     def test_all_labels(self):
-        resources = self.client.all_labels()
+        resources = self.client.labels()
         self._assert_all_resources(resources)
 
     def test_find_label(self):
-        labels = self.client.all_labels()
-        self._assert_find_resource(labels, self.client.find_label)
+        labels = self.client.labels()
+        self._assert_find_resource(labels, self.client.label)
+
+    def test_organization(self):
+        org = self.client.authorized_organization()
+        self.assertIsNotNone(org)
+
+    def test_user(self):
+        user = self.client.authorized_user()
+        self.assertIsNotNone(user)

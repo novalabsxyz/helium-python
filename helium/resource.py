@@ -1,4 +1,4 @@
-"""Base Resource behavior"""
+"""Base Resource behavior."""
 
 from __future__ import unicode_literals
 from future.utils import iteritems
@@ -6,8 +6,7 @@ from .exceptions import error_for
 
 
 class Base(object):
-    """The base class for all things that relate to a Helium session.
-    """
+    """The base class for all things that relate to a Helium session."""
 
     def __init__(self, json, session):
         super(Base, self).__init__()
@@ -36,10 +35,10 @@ class Base(object):
         return False
 
     @classmethod
-    def _json(cls, response, status_code):
+    def _json(cls, response, status_code, extract='data'):
         ret = None
         if cls._boolean(response, status_code) and response.content:
-            ret = response.json().get('data')
+            ret = response.json().get(extract)
         return ret
 
 
@@ -51,7 +50,7 @@ class Resource(Base):
 
     A resource will at least have ``id``, ``created`` and ``updated``
     attributes. Any other JSONAPI ``attributes`` in the given json are
-    promoted to object attributed
+    promoted to object attributes
 
     Args:
 
@@ -62,8 +61,9 @@ class Resource(Base):
 
     @classmethod
     def all(cls, session):
-        """Get all resources of the given resource class. This should be
-        called on sub-classes only.
+        """Get all resources of the given resource class.
+
+        This should be called on sub-classes only.
 
         Args:
 
@@ -81,8 +81,9 @@ class Resource(Base):
 
     @classmethod
     def find(cls, session, resource_id):
-        """Retrieve a single resource. This should only be called from
-        sub-classes.
+        """Retrieve a single resource.
+
+        This should only be called from sub-classes.
 
         Args:
 
@@ -116,12 +117,19 @@ class Resource(Base):
           Resource: An instance of a resource.
 
         """
-
         resource_type = cls._resource_type()
         url = session._build_url(resource_type)
         attributes = session._build_attributes(resource_type, None, kwargs)
         json = cls._json(session.post(url, json=attributes), 201)
         return cls(json, session)
+
+    @classmethod
+    def singleton(cls, session):
+        url = session._build_url(cls._resource_type())
+        json = cls._json(session.get(url), 200)
+        result = cls(json, session)
+        setattr(result, '_singleton', True)
+        return result
 
     @classmethod
     def _resource_type(cls):
@@ -152,12 +160,11 @@ class Resource(Base):
 
     @property
     def short_id(self):
-        """Get the short version of the UUID for the resource.
-        """
+        """Get the short version of the UUID for the resource."""
         return self.id.split('-')[0]
 
     def update(self, **kwargs):
-        """Updates attributes of this resource.
+        """Update attributes of this resource.
 
         Not all attributes can be updated. If the server rejects
         attribute updates an error will be thrown.
@@ -189,13 +196,6 @@ class Resource(Base):
           other errors occur
 
         """
-        url = self.session._build_url(self._resource_type(), self.id)
-        return self._boolean(self.session.delete(url), 204)
-
-
-class Sensor(Resource):
-    pass
-
-
-class Label(Resource):
-    pass
+        session = self.session
+        url = session._build_url(self._resource_type(), self.id)
+        return self._boolean(session.delete(url), 204)
