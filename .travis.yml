@@ -10,7 +10,7 @@ install:
 
 env:
   global:
-  - TRAVIS="True"
+    - TRAVIS="True"
 
 script:
   - tox
