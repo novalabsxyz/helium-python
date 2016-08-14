@@ -10,3 +10,4 @@ venv*/
 .env
 .coverage
 .python-version
+.tox
