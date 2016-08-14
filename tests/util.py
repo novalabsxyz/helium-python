@@ -10,7 +10,7 @@ import helium
 
 Betamax.register_serializer(pretty_json.PrettyJSONSerializer)
 Betamax.register_request_matcher(json_body.JSONBodyMatcher)
-if os.environ.get('TRAVIS'):
+if not os.environ.get('TRAVIS'):
     API_TOKEN = 'X' * 10
 else:
     API_TOKEN = os.environ.get('HELIUM_TEST_API_KEY')
