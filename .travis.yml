@@ -5,15 +5,15 @@ python:
   - "3.5"
 
 install:
-  - pip install -r requirements.dev.txt
+  - pip install tox-travis
   - pip install coveralls
 
 env:
   global:
-  - TRAVIS="True"
+    - TRAVIS="True"
 
 script:
-  - nosetests --with-coverage --cover-package=helium
+  - tox
 
 after_success:
   coveralls
