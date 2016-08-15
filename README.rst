@@ -83,7 +83,7 @@ expected to adhere to the Contributor Covenant code of conduct
 License
 ----------
 
-The gem is available as open source under the terms of the MIT License
+The package is available as open source under the terms of the MIT License
 <http://opensource.org/licenses/MIT>.
 
 .. |build-status| image:: https://travis-ci.org/helium/helium-python.svg?branch=master
