@@ -10,7 +10,7 @@ class Base(object):
 
     def __init__(self, json, session):
         super(Base, self).__init__()
-        self.session = session
+        self._session = session
         self._json_data = json
         self._update_attributes(json)
 
@@ -179,7 +179,7 @@ class Resource(Base):
         """
         resource_type = self._resource_type()
         klass = self.__class__
-        session = self.session
+        session = self._session
         url = session._build_url(resource_type, self.id)
         attributes = session._build_attributes(resource_type, self.id, kwargs)
         json = klass._json(session.patch(url, json=attributes), 200)
@@ -194,6 +194,6 @@ class Resource(Base):
           other errors occur
 
         """
-        session = self.session
+        session = self._session
         url = session._build_url(self._resource_type(), self.id)
         return self._boolean(session.delete(url), 204)
