@@ -70,7 +70,7 @@ def to_one(dest_class):
         """.format(cls.__name__, dest_class.__name__, dest_method_name)
 
         def method(self):
-            session = self.session
+            session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(cls._resource_type(), id,
                                      dest_resource_type)
@@ -155,7 +155,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         """
 
         def fetch_relationship_include(self):
-            session = self.session
+            session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id)
             params = {
@@ -166,7 +166,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
             return [dest_class(entry, session) for entry in json]
 
         def fetch_relationship_direct(self):
-            session = self.session
+            session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id, dest_resource_type)
             json = dest_class._json(session.get(url), 200)
@@ -182,7 +182,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         fetch_relationship.__doc__ = fetch_method_doc
 
         def _update_relatonship(self, objs):
-            session = self.session
+            session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id,
                                      'relationships', dest_resource_type)
