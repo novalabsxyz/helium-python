@@ -1,7 +1,7 @@
 {
   "http_interactions": [
     {
-      "recorded_at": "2016-08-12T19:15:00",
+      "recorded_at": "2016-08-15T23:22:04",
       "request": {
         "body": {
           "encoding": "utf-8",
@@ -28,11 +28,11 @@
         "headers": {
           "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
           "Access-Control-Allow-Origin": "*",
-          "Airship-Quip": "blame me if inappropriate",
+          "Airship-Quip": "WARNING: ulimit -n is 1024",
           "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18",
           "Content-Encoding": "gzip",
           "Content-Type": "application/json",
-          "Date": "Fri, 12 Aug 2016 19:15:00 GMT",
+          "Date": "Mon, 15 Aug 2016 23:22:04 GMT",
           "Server": "Warp/3.2.7",
           "Transfer-Encoding": "chunked"
         },
@@ -44,7 +44,7 @@
       }
     },
     {
-      "recorded_at": "2016-08-12T19:15:01",
+      "recorded_at": "2016-08-15T23:22:04",
       "request": {
         "body": {
           "encoding": "utf-8",
@@ -60,22 +60,22 @@
           "User-Agent": "helium-python/0.1.0"
         },
         "method": "GET",
-        "uri": "https://api.helium.com/v1/organization/user"
+        "uri": "https://api.helium.com/v1/organization/metadata"
       },
       "response": {
         "body": {
-          "base64_string": "H4sIAAAAAAAEA3WPwWrDMAyGX6XoXAdbdhNHpw162H0+dezgJYIF6rgkdmGEvvvi7dCNtkdJv36+b4HeJw/0toBPaRo+cuIZaIHRBwYCF8Pm1Y+JpwiXLQz9uksxPH3yccih6mKALQQuFQtw8MPxXqCb2CcuvyjVTkglUDlVk25Jq0q3jTT2sBbl00rzJ4dCoUNJBgmxqhtjdngoHOnrVOjyzNM6PmB/+WHc8/m562Ie02bP4WrR81n438N81blj8zD4z8oIJQW2DhVpSwXzVscKWTtlqWSwUrbWjbnVeb98A+gxylCVAQAA",
+          "base64_string": "H4sIAAAAAAAEA4VVTW/bMAz9L7ouaZwU2QqflnYFii0dgjY7bENhKDITE5ElQx/psiL/fZQb2U69ZRcCpB+fSOmRfmE5d5ylL4w7Z3DlHdjgOSzht1aQiUKjCLGf7Nvyhg3Y7eOS7E1t72u7IPs0YJUBa705Sam4FVxaSqgskl1xQ3Zb8ZCwoiPB7LtH7LR0AV2ilPjqENBBWYHh7g25ACnQB/iaFwZUAegCb+FLzNGdEFO+AFV/9gpdRsWugXLq1l5YqR1qFRpvP7CUOeNhtKYGgA7ZocWVBJaG6IB1LqYDezoMWK616VHpCtRISP0fqg4sUMVWenSxn3NlRUwg6lxhj6tze+fo/n7dxH18xx5vfMx/X1xEdJ+bCKOSeoxBOOdKPCO3cAdHTfdoZyUYFHz0CdQOgkA7b/sq+oj4Cs/Zd222hImhm4JSN7oTaWgiZFFoUPirA5lrm83UBiRNVks1U3Sw4ZugtgUXuEYxutNKSy99gFnko89gvOUSyhggwCb7QiYGHnDP8yJ6j6g2vNImcNYES73d19V66wyXRDnLQXLMa0QTvDZoV1ydBu80DbALTA3uHuRKe/MGuADj6hIa3OM+V7Cn1FtvSOSjWWlp+HMe+oghV4AK93H0r8FIVK0/p4poSJvvc63yrn+vrdDP7fcFpx5a90GXwMIsSNwUrieCOC1n9RW3yCHIqd1KtCpOhqiZCBYVTi9mXCa4KCB7NkiLj7YNmyTj98NkOhwny0mSTpP08sO7ZJwmCVWtZQ7WZV7RWtVyB3lWczRZV8PxdDm5TCfjdHJ1Mb2cTn5QVqtxFtYylYk5peSwG3IhtFfOfixAoi8vRFCB21e00VgJjtc/gsPhD96vzTUSBgAA",
           "encoding": null,
           "string": ""
         },
         "headers": {
           "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
           "Access-Control-Allow-Origin": "*",
-          "Airship-Quip": "$300,000 worth of cows",
+          "Airship-Quip": "never breaks eye contact",
           "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18",
           "Content-Encoding": "gzip",
           "Content-Type": "application/json",
-          "Date": "Fri, 12 Aug 2016 19:15:00 GMT",
+          "Date": "Mon, 15 Aug 2016 23:22:04 GMT",
           "Server": "Warp/3.2.7",
           "Transfer-Encoding": "chunked"
         },
@@ -83,7 +83,7 @@
           "code": 200,
           "message": "OK"
         },
-        "url": "https://api.helium.com/v1/organization/user"
+        "url": "https://api.helium.com/v1/organization/metadata"
       }
     }
   ],

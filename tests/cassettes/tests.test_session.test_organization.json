@@ -1,7 +1,7 @@
 {
   "http_interactions": [
     {
-      "recorded_at": "2016-08-12T18:42:50",
+      "recorded_at": "2016-08-15T23:22:08",
       "request": {
         "body": {
           "encoding": "utf-8",
@@ -17,11 +17,11 @@
           "User-Agent": "helium-python/0.1.0"
         },
         "method": "GET",
-        "uri": "https://api.helium.com/v1/user"
+        "uri": "https://api.helium.com/v1/organization"
       },
       "response": {
         "body": {
-          "base64_string": "H4sIAAAAAAAEA32OvQqDMBRGX6Xc2UgSf5pmsuDQB3ByS+OFBoyK3ghFfPeaSteOH9/hcDboDBnQGxii2T0D4RLXYDyChgf2Lvga17u1YxjoUqMfYU/Adcfb4crMeSzV64umdoQEPJ5O9Mb1/0A7oyGMLslFzgRn8tZIoTOlC9kepjAdfT+gYFwxXjZC6cjIVKgyu+ZtDKL3FIPDgjPs+weYEGLT1wAAAA==",
+          "base64_string": "H4sIAAAAAAAEA4WQywrCMBBF/2XWraSKUrsS/IW6UVyM7WADTVLSiaAl/25S62OjrobAmXPnZoAaGaEYAJmtPDmmPr40KoICarqkWFXGae43DbXSqVllIAGWim5GR2ZXbsEnYKlFlkb3jexGhevJRtUj4DCArAPNRr1FKpquXbSMtE8m6nvuJ30MsYoYnxWecwz6p3gteh80v1ciG6tUlpAp1piLbJmKdZqJci6KpSiyfJbli3y92odOrgun/OVC7FTe2DNqeRv/D7y/A4bNOM6VAQAA",
           "encoding": null,
           "string": ""
         },
@@ -32,7 +32,7 @@
           "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18",
           "Content-Encoding": "gzip",
           "Content-Type": "application/json",
-          "Date": "Fri, 12 Aug 2016 18:42:49 GMT",
+          "Date": "Mon, 15 Aug 2016 23:22:07 GMT",
           "Server": "Warp/3.2.7",
           "Transfer-Encoding": "chunked"
         },
@@ -40,7 +40,7 @@
           "code": 200,
           "message": "OK"
         },
-        "url": "https://api.helium.com/v1/user"
+        "url": "https://api.helium.com/v1/organization"
       }
     }
   ],

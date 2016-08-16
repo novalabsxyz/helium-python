@@ -1,20 +1,26 @@
 """Tests for Organization."""
 
 from __future__ import unicode_literals
-from .util import HeliumMockTestCase
+
+import pytest
 import helium
 
 
-class TestHeliumOrganization(HeliumMockTestCase):
-    def setUp(self):
-        super(TestHeliumOrganization, self).setUp()
-        self.organization = helium.Organization.singleton(self.client)
-        self.assertIsNotNone(self.organization)
+@pytest.fixture
+def authorized_organization(client):
+    return client.authorized_organization()
 
-    def test_users(self):
-        users = self.organization.users()
-        self.assertIsNotNone(users)
-        self.assertTrue(len(users) > 0)
 
-    def test_metadata(self):
-        self.assertIsNotNone(self.organization.metadata())
+def test_organization(authorized_organization):
+    assert authorized_organization is not None
+
+
+def test_users(authorized_organization):
+    users = authorized_organization.users()
+    assert users is not None
+    assert len(users) > 0
+
+
+def test_metadata(authorized_organization):
+    metadata = authorized_organization.metadata()
+    assert metadata is not None

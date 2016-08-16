@@ -30,9 +30,7 @@ class Base(object):
             status_code = response.status_code
             if status_code == true_code:
                 return True
-            if status_code >= 400:
-                raise error_for(response)
-        return False
+            raise error_for(response)
 
     @classmethod
     def _json(cls, response, status_code, extract='data'):

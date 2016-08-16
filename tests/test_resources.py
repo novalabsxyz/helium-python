@@ -1,69 +1,55 @@
 """Test for the resources module."""
 
 from __future__ import unicode_literals
-from .util import HeliumMockTestCase
+
+import pytest
 import helium
 
 
-class TestHeliumResources(HeliumMockTestCase):
-    def setUp(self):
-        super(TestHeliumResources, self).setUp()
-        sensors = helium.Sensor.all(self.client)
-        self.first_sensor = sensors[0]
-        self.assertIsNotNone(self.first_sensor.id)
+def test_notfound_resource(client):
+    with pytest.raises(helium.NotFoundError):
+        helium.Sensor.find(client,
+                           "A44D968E-50B4-4A4E-A6A5-C5283863C59D")
 
-    def delete_resource(self, resource):
-        self.assertTrue(resource.delete(),
-                        "Failed to delete {} {}".format(resource.__class__,
-                                                        resource.short_id))
 
-    def test_resource(self):
-        sensor = helium.Sensor.find(self.client, self.first_sensor.id)
-        self.assertIsNotNone(sensor)
+def test_invalid_id(client):
+    with pytest.raises(helium.ClientError) as raised:
+        helium.Sensor.find(client, 'xx')
 
-        # equality
-        self.assertEqual(self.first_sensor, sensor)
-        self.assertNotEqual(self.first_sensor,
-                            helium.Sensor({id: None}, None))
-        self.assertNotEqual(self.first_sensor, object())
+    raised = raised.value
+    assert raised.message is not None
+    assert raised.code == 400
+    assert str(raised).startswith('400')
 
-        # hash
-        self.assertIsNotNone(hash(self.first_sensor))
 
-        # __getattr__ lookup
-        self.assertIsNotNone(sensor.meta)
-        with self.assertRaises(AttributeError):
-            sensor.no_such_attribute
+def test_create(tmp_sensor):
+    assert tmp_sensor is not None
+    assert tmp_sensor.id is not None
+    assert tmp_sensor.name == 'test'
 
-        # short id
-        self.assertIsNotNone(self.first_sensor.short_id)
 
-    def test_404_resource(self):
-        with self.assertRaises(helium.NotFoundError):
-            helium.Sensor.find(self.client,
-                               "A44D968E-50B4-4A4E-A6A5-C5283863C59D")
+def test_update_name(tmp_sensor):
+    updated_sensor = tmp_sensor.update(name='bar')
+    assert updated_sensor.name == 'bar'
+    assert updated_sensor.id == tmp_sensor.id
 
-    def test_exception_resource(self):
-        with self.assertRaises(helium.ClientError) as raised:
-            helium.Sensor.find(self.client, 'xx')
-        self.assertIsNotNone(raised.exception.message)
-        self.assertEqual(raised.exception.code, 400)
-        self.assertTrue(str(raised.exception).startswith('400'))
 
-    def test_create_delete_resource(self):
-        sensor = helium.Sensor.create(self.session, name="test")
-        self.assertIsNotNone(sensor)
-        self.assertIsNotNone(sensor.id)
-        self.assertEqual(sensor.name, "test")
+def test_resource(client, tmp_sensor):
+    sensor = helium.Sensor.find(client, tmp_sensor.id)
+    assert sensor is not None
+    assert sensor.id == tmp_sensor.id
 
-        self.delete_resource(sensor)
+    # equality
+    assert tmp_sensor == sensor
+    assert tmp_sensor != helium.Sensor({id: None}, None)
 
-    def test_update_resource(self):
-        sensor = helium.Sensor.create(self.session, name='test')
-        self.assertIsNotNone(sensor)
+    # hash
+    assert hash(sensor) is not None
 
-        updated_sensor = sensor.update(name='bar')
-        self.assertEqual(updated_sensor.name, 'bar')
-        self.assertEqual(updated_sensor.id, sensor.id)
+    # __getattr__ lookup
+    assert sensor.meta is not None
+    with pytest.raises(AttributeError):
+        sensor.no_such_attribute
 
-        self.delete_resource(sensor)
+    # short id
+    assert sensor.short_id is not None
