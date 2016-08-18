@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import pytest
-import helium
 
 
 @pytest.fixture
@@ -24,3 +23,8 @@ def test_users(authorized_organization):
 def test_metadata(authorized_organization):
     metadata = authorized_organization.metadata()
     assert metadata is not None
+
+
+def test_timeseries(authorized_organization):
+    timeseries = authorized_organization.timeseries()
+    assert timeseries is not None

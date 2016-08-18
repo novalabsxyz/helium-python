@@ -2,7 +2,8 @@
 
 from __future__ import unicode_literals
 from future.utils import iteritems
-from .exceptions import error_for
+from . import response_boolean, response_json
+from . import build_resource_attributes
 
 
 class Base(object):
@@ -17,27 +18,15 @@ class Base(object):
     def _update_attributes(self, json):
         pass
 
+    def _promote_json_attribute(self, attribute, value):
+        setattr(self, attribute, value)
+        return value
+
     def __getattr__(self, attribute):
         if attribute not in self._json_data:
             raise AttributeError(attribute)
         value = self._json_data.get(attribute, None)
-        setattr(self, attribute, value)
-        return value
-
-    @classmethod
-    def _boolean(cls, response, true_code):
-        if response is not None:
-            status_code = response.status_code
-            if status_code == true_code:
-                return True
-            raise error_for(response)
-
-    @classmethod
-    def _json(cls, response, status_code, extract='data'):
-        ret = None
-        if cls._boolean(response, status_code) and response.content:
-            ret = response.json().get(extract)
-        return ret
+        return self._promote_json_attribute(attribute, value)
 
 
 class Resource(Base):
@@ -74,7 +63,7 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type())
-        json = cls._json(session.get(url), 200)
+        json = response_json(session.get(url), 200)
         return [cls(entry, session) for entry in json]
 
     @classmethod
@@ -95,7 +84,7 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
-        json = cls._json(session.get(url), 200)
+        json = response_json(session.get(url), 200)
         return cls(json, session)
 
     @classmethod
@@ -117,14 +106,14 @@ class Resource(Base):
         """
         resource_type = cls._resource_type()
         url = session._build_url(resource_type)
-        attributes = session._build_attributes(resource_type, None, kwargs)
-        json = cls._json(session.post(url, json=attributes), 201)
+        attributes = build_resource_attributes(resource_type, None, kwargs)
+        json = response_json(session.post(url, json=attributes), 201)
         return cls(json, session)
 
     @classmethod
     def singleton(cls, session):
         url = session._build_url(cls._resource_type())
-        json = cls._json(session.get(url), 200)
+        json = response_json(session.get(url), 200)
         result = cls(json, session)
         setattr(result, '_singleton', True)
         return result
@@ -136,12 +125,8 @@ class Resource(Base):
     def _update_attributes(self, json):
         super(Resource, self)._update_attributes(json)
         self.id = json.get('id', None)
-        meta = json.get('meta', None)
-        if meta is not None:
-            self.created = meta.get('created')
-            self.updated = meta.get('updated')
         for (k, v) in iteritems(json.pop('attributes', {})):
-            setattr(self, k, v)
+            self._promote_json_attribute(k, v)
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and
@@ -181,8 +166,8 @@ class Resource(Base):
         klass = self.__class__
         session = self._session
         url = session._build_url(resource_type, self.id)
-        attributes = session._build_attributes(resource_type, self.id, kwargs)
-        json = klass._json(session.patch(url, json=attributes), 200)
+        attributes = build_resource_attributes(resource_type, self.id, kwargs)
+        json = response_json(session.patch(url, json=attributes), 200)
         return klass(json, session)
 
     def delete(self):
@@ -196,4 +181,4 @@ class Resource(Base):
         """
         session = self._session
         url = session._build_url(self._resource_type(), self.id)
-        return self._boolean(session.delete(url), 204)
+        return response_boolean(session.delete(url), 204)

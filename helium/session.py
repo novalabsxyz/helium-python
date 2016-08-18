@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 import requests
 from .__about__ import __version__
-from . import Label, Sensor, Organization, User
 
 
 class Session(requests.Session):
@@ -43,90 +42,3 @@ class Session(requests.Session):
         parts = [kwargs.get('base_url', self.base_url)]
         parts.extend([part for part in args if part is not None])
         return '/'.join(parts)
-
-    def _build_attributes(self, type, id, attributes):
-        result = {
-            "data": {
-                "attributes": attributes,
-                "type": type
-            }
-        }
-        if id is not None:
-            result['data']['id'] = id
-        return result
-
-    def _build_relationship(self, type, ids):
-        return {
-            "data": [{"id": id, "type": type} for id in ids]
-        }
-
-
-class Client(Session):
-    """Construct a client to the Helium API.
-
-    The Client offers up methods to retrieve the "roots" of Helium
-    resources such as sensors and label.
-
-    Once resources are retrieved they are attached to the client that
-    constructed them and handle further requests independently.
-
-    """
-
-    def sensors(self):
-        """Iterate over all sensors.
-
-        Returns:
-
-           iterable(Sensor): An iterator over sensor for the authorized API key
-        """
-        return Sensor.all(self)
-
-    def sensor(self, sensor_id):
-        """Find a single sensor.
-
-        Args:
-           sensor_id(str): The UUID of the sensor to look up
-        Returns:
-           Sensor: A sensor resource
-        """
-        return Sensor.find(self, sensor_id)
-
-    def labels(self):
-        """Iterate over all labels.
-
-        Returns:
-
-           iterable(Label): An iterable over labels for the authorized API key
-        """
-        return Label.all(self)
-
-    def label(self, label_id):
-        """Find a single label.
-
-        Args:
-
-           label_id(str): The UUID of the label to look up
-
-        Returns:
-
-           Label: A label resource
-        """
-        return Label.find(self, label_id)
-
-    def authorized_organization(self):
-        """Get the authorized organization.
-
-        Returns:
-
-          Organization: The organization for the authorized API key
-        """
-        return Organization.singleton(self)
-
-    def authorized_user(self):
-        """Get the authorized user.
-
-        Returns:
-
-          User: The user for the authorized API key
-        """
-        return User.singleton(self)
