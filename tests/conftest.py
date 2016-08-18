@@ -83,3 +83,15 @@ def temp_label(client):
     label = helium.Label.create(client, name='temp-label', sensors=[])
     yield label
     label.delete()
+
+
+@pytest.fixture
+def elements(client):
+    """Returns the all known elements for the active helium.Client."""
+    return helium.Element.all(client)
+
+
+@pytest.fixture
+def first_element(elements):
+    """Return the first of the known elements for the active helium.Client"""
+    return elements[0]

@@ -12,10 +12,10 @@ from .util import (
 from .resource import Base, Resource
 from .relations import RelationType, to_many, to_one
 from .session import Session
+from .metadata import Metadata
 from .user import User
 from .timeseries import Timeseries, timeseries
 from .sensor import Sensor
-from .metadata import Metadata
 from .label import Label
 from .element import Element
 from .organization import Organization
