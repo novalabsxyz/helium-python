@@ -47,3 +47,9 @@ Label
 ----------
 
 .. autoclass:: Label
+
+
+Timeseries
+---------------
+
+.. autoclass:: Timeseries
