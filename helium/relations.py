@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 import inflection
+from . import response_boolean, response_json
+from . import build_resource_relationship
 
 
 class RelationType(object):
@@ -74,7 +76,7 @@ def to_one(dest_class):
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(cls._resource_type(), id,
                                      dest_resource_type)
-            json = dest_class._json(session.get(url), 200)
+            json = response_json(session.get(url), 200)
             return dest_class(json, session)
 
         method.__doc__ = method_doc
@@ -161,15 +163,15 @@ def to_many(dest_class, type=RelationType.DIRECT,
             params = {
                 'include': dest_resource_type
             }
-            json = dest_class._json(session.get(url, params=params), 200,
-                                    extract="included")
+            json = response_json(session.get(url, params=params), 200,
+                                 extract="included")
             return [dest_class(entry, session) for entry in json]
 
         def fetch_relationship_direct(self):
             session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id, dest_resource_type)
-            json = dest_class._json(session.get(url), 200)
+            json = response_json(session.get(url), 200)
             return [dest_class(entry, session) for entry in json]
 
         if type == RelationType.DIRECT:
@@ -187,8 +189,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
             url = session._build_url(src_resource_type, id,
                                      'relationships', dest_resource_type)
             ids = [obj.id for obj in objs]
-            json = session._build_relationship(dest_resource_type, ids)
-            dest_class._boolean(session.patch(url, json=json), 200)
+            json = build_resource_relationship(dest_resource_type, ids)
+            response_boolean(session.patch(url, json=json), 200)
             return objs
 
         def add_many(self, resources):
