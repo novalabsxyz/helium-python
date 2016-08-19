@@ -14,3 +14,7 @@ def timeseries(first_element):
 def test_metadata(first_element):
     metadata = first_element.metadata()
     assert metadata is not None
+
+
+def test_meta(first_element):
+    assert first_element.meta is not None

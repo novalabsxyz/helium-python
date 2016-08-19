@@ -75,7 +75,7 @@ def tmp_sensor(client):
 
 
 @pytest.yield_fixture
-def temp_label(client):
+def tmp_label(client):
     """Yield a temporary label called 'temp-label'.
 
     The label is deleted after the test completes.
@@ -95,3 +95,13 @@ def elements(client):
 def first_element(elements):
     """Return the first of the known elements for the active helium.Client"""
     return elements[0]
+
+
+@pytest.fixture
+def authorized_user(client):
+    return client.authorized_user()
+
+
+@pytest.fixture
+def authorized_organization(client):
+    return client.authorized_organization()

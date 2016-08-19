@@ -1,12 +1,12 @@
 """The element resource."""
 
 from __future__ import unicode_literals
-from . import Resource, Sensor, Metadata
-from . import to_one, to_many, timeseries
+from . import Resource, Sensor
+from . import to_many, timeseries, metadata
 
 
-@to_one(Metadata)
 @to_many(Sensor)
 @timeseries()
+@metadata()
 class Element(Resource):
     pass

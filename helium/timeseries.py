@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from . import Resource, response_json
-from . import from_iso_date, to_iso_date
+from . import to_iso_date
 from . import build_resource_attributes
 from collections import Iterable
 
@@ -19,15 +19,10 @@ class DataPoint(Resource):
 
     :value: The actual reading value, this can be any json value
 
-    :timestamp: A UTC :class:`datetime` representing the time the
+    :timestamp: An ISO8601 timestamp representing the time the
         reading was taken
 
     """
-
-    def _promote_json_attribute(self, attribute, value):
-        if attribute == 'timestamp':
-            value = from_iso_date(value)
-        return super(DataPoint, self)._promote_json_attribute(attribute, value)
 
 
 class Timeseries(Iterable):
@@ -107,8 +102,7 @@ class Timeseries(Iterable):
         self._params = params
 
     def __iter__(self):
-        """Construct an iterator for this timeseries"""
-
+        """Construct an iterator for this timeseries."""
         session = self._session
         datapoint_class = self._datapoint_class
         direction = self._direction

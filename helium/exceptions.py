@@ -30,7 +30,8 @@ class Error(Exception):
                                     self.msg or self.code)
 
     def __str__(self):
-        return '{0} {1}'.format(self.code, self.msg)
+        return '{0} {1} ({r.method} {r.url})'.format(self.code, self.msg,
+                                                     r=self.response.request)
 
     @property
     def message(self):
