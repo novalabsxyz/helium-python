@@ -45,7 +45,8 @@ Clone this repository and run::
 
   tox
 
-This will install the required packages and run the tests for the library.
+This will install the required packages and run the tests for the
+library.
 
 We also use `flake8` to ensure we catch Python version differences and
 common pitfalls quicker. Please run::
@@ -74,17 +75,26 @@ automatically build and push releases to PyPi
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at
-<https://github.com/helium/helium-python>. This project is intended to
-be a safe, welcoming space for collaboration, and contributors are
-expected to adhere to the Contributor Covenant code of conduct
-<http://contributor-covenant.org/>.
+We value contributions from the community and will do everything we
+can go get them reviewed in a timely fashion. If you have code to send
+our way or a bug to report:
 
-License
-----------
+* Contributing Code: If you have new code or a bug fix, fork this
+  repo, create a logically-named branch, and submit a PR against this
+  repo. Include a write up of the PR with details on what it does.
 
-The package is available as open source under the terms of the MIT License
-<http://opensource.org/licenses/MIT>.
+* Reporting Bugs: Open an issue against this repo with as much detail
+  as you can. At the very least you'll include steps to reproduce the
+  problem.
+
+This project is intended to be a safe, welcoming space for
+collaboration, and contributors are expected to adhere to the
+Contributor Covenant Code of Conduct at
+<http://contributor-covenant.org>.
+
+Above all, thank you for taking the time to be a part of the Helium
+community.
+
 
 .. |build-status| image:: https://travis-ci.org/helium/helium-python.svg?branch=master
    :target: https://travis-ci.org/helium/helium-python
