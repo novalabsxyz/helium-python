@@ -85,7 +85,8 @@ def from_iso_date(str):
 def to_iso_date(timestamp):
     """Convert a UTC timestamp to an ISO8601 string.
 
-    datetime instances can be constructed in alternate timezones.
+    datetime instances can be constructed in alternate timezones. This
+    function assumes that the given timestamp is in the UTC timezone.
 
     Args:
 
@@ -93,14 +94,9 @@ def to_iso_date(timestamp):
 
     Returns:
 
-        An ISO8601 formatted string representing the timestamp. An
-            :class:`AttributeError` is thrown if the timestamp is not
-            in the UTC timezone.
+        An ISO8601 formatted string representing the timestamp.
 
     """
-    if timestamp.tzinfo is not None:
-        raise ValueError("Expected UTC timestamp but got {}".
-                         format(timestamp.tzname()))
     return timestamp.isoformat() + 'Z'
 
 

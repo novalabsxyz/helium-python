@@ -12,7 +12,7 @@ from .util import (
 from .resource import Base, Resource, ResourceMeta
 from .relations import RelationType, to_many, to_one
 from .session import Session
-from .metadata import Metadata
+from .metadata import Metadata, metadata
 from .user import User
 from .timeseries import Timeseries, timeseries
 from .sensor import Sensor
@@ -40,7 +40,7 @@ __all__ = (
     User,
     Timeseries, timeseries,
     Sensor,
-    Metadata,
+    Metadata, metadata,
     Element,
     Label,
     Client,

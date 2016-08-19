@@ -30,12 +30,17 @@ class RelationType(object):
     """Use the direct relationship approach"""
 
 
-def to_one(dest_class):
+def to_one(dest_class, **kwargs):
     """Create a one to one relation to a given target :class:`Resource`.
 
     Args:
 
         dest_class(Resource): The *target* class for the relationship
+
+    Keyword Args:
+
+        **kwargs: Any keyword arguments are ignored for this
+              relationship
 
     Returns:
 

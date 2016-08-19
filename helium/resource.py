@@ -28,13 +28,27 @@ class Base(object):
         self._update_attributes(json)
 
     def _update_attributes(self, json):
+        """Update attributes on creation."""
         pass
 
     def _promote_json_attribute(self, attribute, value):
+        """Promote a given attribute.
+
+        This base implementation just sets the attribute on this
+        resources. Subclasses override this in order to do conversion
+        for certain attributes, like timestamps.
+
+        """
         setattr(self, attribute, value)
         return value
 
     def __getattr__(self, attribute):
+        """Get a given missing attribute.
+
+        If the attribute is present in the underlying JSON we get it
+        and promote it into the attributes of this resource.
+
+        """
         if attribute not in self._json_data:
             raise AttributeError(attribute)
         value = self._json_data.get(attribute, None)
@@ -42,13 +56,26 @@ class Base(object):
 
 
 class ResourceMeta(Base):
+    """Meta information for a resource.
+
+    Every :class:`Resource` object in the Helium API has an associated
+    meta object that represents system information for the given
+    resource.
+
+    Most of this information is specific to the given resource, but
+    all meta instances have at least a ``created`` and ``updated``
+    attribute which are timestamps of when the resource was created
+    and last updated, respectively.
+
+    """
+
     def _promote_json_attribute(self, attribute, value):
         if attribute == 'created':
             value = from_iso_date(value)
         elif attribute == 'updated':
             value = from_iso_date(value)
-        return super(ResourceMeta, self)._promote_json_attribute(attribute, value)
-
+        return super(ResourceMeta, self)._promote_json_attribute(attribute,
+                                                                 value)
 
 
 class Resource(Base):
@@ -137,6 +164,19 @@ class Resource(Base):
 
     @classmethod
     def singleton(cls, session):
+        """Get the a singleton API resource.
+
+        Some Helium API resources are singletons. The authorized user
+        and organization for a given API key are examples of this.
+
+        .. code-block:: python
+
+            authorized_user = User.singleton(session)
+
+        will retrieve the authorized user for the given
+        :class:`Session`
+
+        """
         url = session._build_url(cls._resource_type())
         json = response_json(session.get(url), 200)
         result = cls(json, session)
@@ -160,16 +200,26 @@ class Resource(Base):
         self._promote_json_attribute('meta', json.pop('meta', {}))
 
     def __eq__(self, other):
+        """Check equality with another object."""
         return (isinstance(other, self.__class__) and
                 self.id is not None and self.id == other.id)
 
     def __ne__(self, other):
+        """Well this would be the opposite of __eq__."""
         return not self.__eq__(other)
 
     def __hash__(self):
+        """The hash of a resource.
+
+        A resource is always considered unique based on it's uuid
+        based ``id``. Since uuids hash particularly well they form a
+        nice hash.
+
+        """
         return hash(self.id)
 
     def __repr__(self):
+        """The string representation of the resource."""
         return '<{s.__class__.__name__} {{ id: {s.id} }}>'.format(s=self)
 
     def update(self, **kwargs):

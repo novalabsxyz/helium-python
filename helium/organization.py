@@ -1,14 +1,13 @@
 """The organization resource."""
 
 from __future__ import unicode_literals
-from . import Resource, to_many, to_one
-from . import User, Metadata
-from . import timeseries
+from . import Resource, User
+from . import to_many, to_one, timeseries, metadata
 
 
-@to_many(User)
-@to_one(Metadata)
+@to_many(User, reverse=to_one)
 @timeseries()
+@metadata()
 class Organization(Resource):
     """The top level owner of resources.
 
@@ -19,4 +18,5 @@ class Organization(Resource):
     resources in an organization.
 
     """
+
     pass

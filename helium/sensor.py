@@ -1,11 +1,11 @@
 """The sensor resource."""
 
 from __future__ import unicode_literals
-from . import Resource, Metadata
-from . import to_one, timeseries
+from . import Resource
+from . import timeseries, metadata
 
 
-@to_one(Metadata)
 @timeseries()
+@metadata()
 class Sensor(Resource):
     pass

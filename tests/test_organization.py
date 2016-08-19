@@ -1,6 +1,8 @@
 """Tests for Organization."""
 
 from __future__ import unicode_literals
+import pytest
+import helium
 
 
 def test_organization(authorized_organization):
@@ -20,6 +22,11 @@ def test_users(authorized_organization):
     users = authorized_organization.users()
     assert users is not None
     assert len(users) > 0
+
+    # Reverse relationship, not quite deployed yet
+    with pytest.raises(helium.NotFoundError):
+        org = users[0].organization()
+        assert org == authorized_organization
 
 
 def test_metadata(authorized_organization):
