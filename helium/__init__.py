@@ -9,7 +9,7 @@ from .util import (
     response_json, response_boolean,
     build_resource_attributes, build_resource_relationship,
 )
-from .resource import Base, Resource
+from .resource import Base, Resource, ResourceMeta
 from .relations import RelationType, to_many, to_one
 from .session import Session
 from .metadata import Metadata
@@ -33,7 +33,8 @@ __all__ = (
     ServerError,
     ClientError,
     NotFoundError,
-    Base, Resource, RelationType, to_one, to_many,
+    Base, Resource, ResourceMeta,
+    RelationType, to_one, to_many,
     Session,
     Organization,
     User,

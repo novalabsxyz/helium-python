@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from . import response_boolean, response_json
-from . import build_resource_attributes
+from . import build_resource_attributes, from_iso_date
 
 
 class Base(object):
@@ -39,6 +39,16 @@ class Base(object):
             raise AttributeError(attribute)
         value = self._json_data.get(attribute, None)
         return self._promote_json_attribute(attribute, value)
+
+
+class ResourceMeta(Base):
+    def _promote_json_attribute(self, attribute, value):
+        if attribute == 'created':
+            value = from_iso_date(value)
+        elif attribute == 'updated':
+            value = from_iso_date(value)
+        return super(ResourceMeta, self)._promote_json_attribute(attribute, value)
+
 
 
 class Resource(Base):
@@ -137,11 +147,17 @@ class Resource(Base):
     def _resource_type(cls):
         return cls.__name__.lower()
 
+    def _promote_json_attribute(self, attribute, value):
+        if attribute == 'meta':
+            value = ResourceMeta(value)
+        return super(Resource, self)._promote_json_attribute(attribute, value)
+
     def _update_attributes(self, json):
         super(Resource, self)._update_attributes(json)
         self.id = json.get('id', None)
         for (k, v) in iteritems(json.pop('attributes', {})):
             self._promote_json_attribute(k, v)
+        self._promote_json_attribute('meta', json.pop('meta', {}))
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and
@@ -155,11 +171,6 @@ class Resource(Base):
 
     def __repr__(self):
         return '<{s.__class__.__name__} {{ id: {s.id} }}>'.format(s=self)
-
-    @property
-    def short_id(self):
-        """Get the short version of the UUID for the resource."""
-        return self.id.split('-')[0]
 
     def update(self, **kwargs):
         """Update attributes of this resource.
@@ -178,12 +189,12 @@ class Resource(Base):
 
         """
         resource_type = self._resource_type()
-        klass = self.__class__
         session = self._session
-        url = session._build_url(resource_type, self.id)
+        id = None if hasattr(self, '_singleton') else self.id
+        url = session._build_url(resource_type, id)
         attributes = build_resource_attributes(resource_type, self.id, kwargs)
         json = response_json(session.patch(url, json=attributes), 200)
-        return klass(json, session)
+        return self.__class__(json, session)
 
     def delete(self):
         """Delete the resource.

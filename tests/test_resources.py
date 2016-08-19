@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import pytest
 import helium
+from datetime import datetime
 
 
 def test_notfound_resource(client):
@@ -28,28 +29,33 @@ def test_create(tmp_sensor):
     assert tmp_sensor.name == 'test'
 
 
-def test_update_name(tmp_sensor):
+def test_find(client, tmp_sensor):
+    sensor = helium.Sensor.find(client, tmp_sensor.id)
+    assert sensor is not None
+    assert sensor.id == tmp_sensor.id
+    assert tmp_sensor == sensor
+
+
+def test_update(tmp_sensor):
     updated_sensor = tmp_sensor.update(name='bar')
     assert updated_sensor.name == 'bar'
     assert updated_sensor.id == tmp_sensor.id
 
 
-def test_resource(client, tmp_sensor):
-    sensor = helium.Sensor.find(client, tmp_sensor.id)
-    assert sensor is not None
-    assert sensor.id == tmp_sensor.id
+def test_meta(tmp_sensor):
+    meta = tmp_sensor.meta
+    assert meta is not None
+    assert isinstance(meta.created, datetime)
+    assert isinstance(meta.updated, datetime)
 
+
+def test_basic(client, tmp_sensor):
     # equality
-    assert tmp_sensor == sensor
     assert tmp_sensor != helium.Sensor({id: None}, None)
 
     # hash
-    assert hash(sensor) is not None
+    assert hash(tmp_sensor) is not None
 
     # __getattr__ lookup
-    assert sensor.meta is not None
     with pytest.raises(AttributeError):
-        sensor.no_such_attribute
-
-    # short id
-    assert sensor.short_id is not None
+        tmp_sensor.no_such_attribute

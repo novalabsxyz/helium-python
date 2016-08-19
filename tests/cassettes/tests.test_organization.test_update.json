@@ -1,0 +1,136 @@
+{
+  "http_interactions": [
+    {
+      "recorded_at": "2016-08-19T18:07:12",
+      "request": {
+        "body": {
+          "encoding": "utf-8",
+          "string": ""
+        },
+        "headers": {
+          "Accept": "application/json",
+          "Accept-Charset": "utf-8",
+          "Accept-Encoding": "gzip, deflate",
+          "Authorization": "<AUTH_TOKEN>",
+          "Connection": "keep-alive",
+          "Content-Type": "application/json",
+          "User-Agent": "helium-python/0.1.0"
+        },
+        "method": "GET",
+        "uri": "https://api.helium.com/v1/organization"
+      },
+      "response": {
+        "body": {
+          "base64_string": "H4sIAAAAAAAEA4WQQU7DMBBF7zLrOLJLWhyvKnGFsCliYZIRtVTbkTNBopHvjic0wAZYWSO9ed9/FhgsWTALWKLkXmbCiadgPYKBAd+E7fs4B5qOZ7y42dd9hArIebzGwMxj9wC5goQXSy6G6ezGVTFPmFj1GfC0gBsKTdF/izyb3ke2rHSubtTvuT/p5xLrkexWYXvXoP8UX4s5F83fK8xylT6hJeQaO6n2QrZCyW4nzV4apWul73R7OJVO81i+snEHIbVQbafuTcNorZVu2ubER7uVj+nVBndd7wc5fwBaoHnHlQEAAA==",
+          "encoding": null,
+          "string": ""
+        },
+        "headers": {
+          "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+          "Access-Control-Allow-Origin": "*",
+          "Airship-Quip": "shut it down",
+          "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18",
+          "Content-Encoding": "gzip",
+          "Content-Type": "application/json",
+          "Date": "Fri, 19 Aug 2016 18:07:11 GMT",
+          "Server": "Warp/3.2.7",
+          "Transfer-Encoding": "chunked"
+        },
+        "status": {
+          "code": 200,
+          "message": "OK"
+        },
+        "url": "https://api.helium.com/v1/organization"
+      }
+    },
+    {
+      "recorded_at": "2016-08-19T18:07:13",
+      "request": {
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"data\": {\"type\": \"organization\", \"id\": \"dev-accounts@helium.co\", \"attributes\": {\"name\": \"bar\"}}}"
+        },
+        "headers": {
+          "Accept": "application/json",
+          "Accept-Charset": "utf-8",
+          "Accept-Encoding": "gzip, deflate",
+          "Authorization": "<AUTH_TOKEN>",
+          "Connection": "keep-alive",
+          "Content-Length": "97",
+          "Content-Type": "application/json",
+          "User-Agent": "helium-python/0.1.0"
+        },
+        "method": "PATCH",
+        "uri": "https://api.helium.com/v1/organization"
+      },
+      "response": {
+        "body": {
+          "base64_string": "H4sIAAAAAAAEA12QwW7DIAyG38XnEEGXdoRTpb1Cdmm1A03QilQgImZSG/Huw2myTTtZ2J///8czDBo1qBk0YrSXhGail9fOgIKLjlABWmcewVPjvXuDXEE0N402+Olqx4VPk4m091Q7z2CHQmNwx6u52eTqPjhSuo+kstC5WqnBfDHd9yF5nH7x//RHsXUG9ZZ3q4vRmvOp/kPlXHb+zGlAIftoNBoKuONiz3jLBO92XO25ErIW8kW2h1PxT2Mx2bgD45KJthOvqiG0lkI2bXOic6zfCvFTe/tYLgM5fwNwQqs6XAEAAA==",
+          "encoding": null,
+          "string": ""
+        },
+        "headers": {
+          "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+          "Access-Control-Allow-Origin": "*",
+          "Airship-Quip": "firm pat on the back",
+          "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18",
+          "Content-Encoding": "gzip",
+          "Content-Type": "application/json",
+          "Date": "Fri, 19 Aug 2016 18:07:12 GMT",
+          "Server": "Warp/3.2.7",
+          "Transfer-Encoding": "chunked"
+        },
+        "status": {
+          "code": 200,
+          "message": "OK"
+        },
+        "url": "https://api.helium.com/v1/organization"
+      }
+    },
+    {
+      "recorded_at": "2016-08-19T18:07:13",
+      "request": {
+        "body": {
+          "encoding": "utf-8",
+          "string": "{\"data\": {\"type\": \"organization\", \"id\": \"dev-accounts@helium.co\", \"attributes\": {\"name\": \"dev-accounts@helium.co\"}}}"
+        },
+        "headers": {
+          "Accept": "application/json",
+          "Accept-Charset": "utf-8",
+          "Accept-Encoding": "gzip, deflate",
+          "Authorization": "<AUTH_TOKEN>",
+          "Connection": "keep-alive",
+          "Content-Length": "116",
+          "Content-Type": "application/json",
+          "User-Agent": "helium-python/0.1.0"
+        },
+        "method": "PATCH",
+        "uri": "https://api.helium.com/v1/organization"
+      },
+      "response": {
+        "body": {
+          "base64_string": "H4sIAAAAAAAEA4WQQW7DIBBF7zJrY4FbJ5hVpF7B3aTqgtqjBimAhYdIicXdC27cdtN2hUZ68z5/Fhg1aVALaKJg3iLhXCanLYKCES9MD4OPjubDCc8m2nrwUAEZizfvCvPcP0GqIOBZk/FuPplpVcQZQ1F9BrwsYMZMk7ffIltM16lYVjpVd+r33J/0a461SHqrsL1r0H+Kr8WUsubvlcKWKkNATVhqNFy0jHdM8L7hquVKyFrIB9ntjrlTnPJXNm7HuGSi64VUfK9EU3etEI/7YznavbwP79qZ23o/SOkDpVPM/5UBAAA=",
+          "encoding": null,
+          "string": ""
+        },
+        "headers": {
+          "Access-Control-Allow-Headers": "Origin, Content-Type, Accept, Authorization",
+          "Access-Control-Allow-Origin": "*",
+          "Airship-Quip": "never breaks eye contact",
+          "Airship-Trace": "b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18",
+          "Content-Encoding": "gzip",
+          "Content-Type": "application/json",
+          "Date": "Fri, 19 Aug 2016 18:07:12 GMT",
+          "Server": "Warp/3.2.7",
+          "Transfer-Encoding": "chunked"
+        },
+        "status": {
+          "code": 200,
+          "message": "OK"
+        },
+        "url": "https://api.helium.com/v1/organization"
+      }
+    }
+  ],
+  "recorded_with": "betamax/0.7.2"
+}
