@@ -7,11 +7,23 @@ from . import build_resource_attributes
 
 
 class Base(object):
-    """The base class for all things that relate to a Helium session."""
+    """A base class to deal with json based attributes.
 
-    def __init__(self, json, session):
+    The base class stores a given json object and dynamically promotes
+    requested object attributes from the cached jason data if they
+    exist.
+
+    Sub-classes can override methods to promote attribtues on
+    construction or lazily, when they're requested
+
+    Arguments:
+
+        json(dict): A json dictionary to base attributes on
+
+    """
+
+    def __init__(self, json):
         super(Base, self).__init__()
-        self._session = session
         self._json_data = json
         self._update_attributes(json)
 
@@ -35,9 +47,8 @@ class Resource(Base):
     The Helium API uses JSONAPI extensively. The :class:`Resource`
     object provides a number of useful JSONAPI abstractions.
 
-    A resource will at least have ``id``, ``created`` and ``updated``
-    attributes. Any other JSONAPI ``attributes`` in the given json are
-    promoted to object attributes
+    A resource will at least have an ``id`` attribute, which is
+    promoted from the underlying json data on creation.
 
     Args:
 
@@ -45,6 +56,10 @@ class Resource(Base):
       session(Session): The session use for this resource
 
     """
+
+    def __init__(self, json, session):
+        self._session = session
+        super(Resource, self).__init__(json)
 
     @classmethod
     def all(cls, session):

@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 from itertools import islice
+from helium import from_iso_date
 from datetime import datetime
 
 
@@ -45,8 +46,8 @@ def test_post(tmp_sensor):
     assert dp.id is not None
     assert dp.value == 22
     assert dp.port == 'test'
-    assert isinstance(dp.timestamp, datetime)
+    assert dp.timestamp is not None
 
     timestamp = datetime(2016, 8, 25)
     dp = timeseries.post('test2', 24, timestamp=timestamp)
-    assert dp.timestamp == timestamp
+    assert from_iso_date(dp.timestamp) == timestamp
