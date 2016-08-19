@@ -12,4 +12,5 @@ class User(Resource):
     resources in the :class:`Organization` that the user belongs to.
 
     """
+
     pass

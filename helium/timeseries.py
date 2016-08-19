@@ -102,8 +102,7 @@ class Timeseries(Iterable):
         self._params = params
 
     def __iter__(self):
-        """Construct an iterator for this timeseries"""
-
+        """Construct an iterator for this timeseries."""
         session = self._session
         datapoint_class = self._datapoint_class
         direction = self._direction
