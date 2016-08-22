@@ -10,15 +10,13 @@ import helium
 
 Betamax.register_serializer(pretty_json.PrettyJSONSerializer)
 Betamax.register_request_matcher(json_body.JSONBodyMatcher)
-if os.environ.get('TRAVIS'):
-    API_TOKEN = 'X' * 10
-else:
-    API_TOKEN = os.environ.get('HELIUM_TEST_API_KEY')
-    assert API_TOKEN, 'Please set HELIUM_TEST_API_KEY to a valid API key'
+API_TOKEN = os.environ.get('HELIUM_API_KEY', 'X' * 10)
+RECORD_MODE = os.environ.get('HELIUM_RECORD_MODE', 'none')
+
 
 with Betamax.configure() as config:
     config.cassette_library_dir = 'tests/cassettes'
-    record_mode = 'none' if os.environ.get('TRAVIS') else 'once'
+    record_mode = RECORD_MODE
     cassette_options = config.default_cassette_options
     cassette_options['record_mode'] = record_mode
     cassette_options['serialize_with'] = 'prettyjson'
