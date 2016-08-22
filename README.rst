@@ -46,9 +46,30 @@ Clone this repository and run::
   tox
 
 This will install the required packages and run the tests for the
-library.
+library. Installing ``tox`` removes the need to install or use
+``virtualenv`` since tox manages virtual environments already.
 
-We also use `flake8` to ensure we catch Python version differences and
+By default the tests will replay back previously recorded API
+interactions. To affect how tests interact with the Helium API you will have to
+
+* Set a ``HELIUM_API_KEY`` environment variable to a valid Helium API
+  key. For example in ``bash``::
+
+      export HELIUM_API_KEY=<my api key>
+
+* Set ``HELIUM_RECORD_MODE`` to one of:
+
+  ``none``
+      (default) Only play back recorded API interactions.
+
+  ``once``
+      Only record interactions for which no recording exist. If you
+      get an error message from betamax complaining about a recording
+      not matching an interaction that means that your test has new
+      API interactions with it. Remove the cassette referred to in the
+      error message and run the test again to re-generate it .
+
+We use `flake8` to ensure we catch Python version differences and
 common pitfalls quicker. Please run::
 
   tox -e lint
