@@ -1,17 +1,31 @@
 #!/usr/bin/env python
+import re
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-version = '0.1'
+
+__version__ = ''
+with open('helium/__about__.py', 'r') as fd:
+    reg = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
+    for line in fd:
+        m = reg.match(line)
+        if m:
+            __version__ = m.group(1)
+            break
+
+if not __version__:
+    raise RuntimeError('Cannot find version information')
+
+version = __version__
 authors = 'Marc Nijdam'
 emails = ''
 packages = ['helium']
 requires = [
     "future>=0.15",
-    "requests==2.10.0",
+    "requests>=2.11.1",
     "uritemplate>=0.6",
     "inflection>=0.3",
 ]
