@@ -25,7 +25,7 @@ emails = ''
 packages = ['helium']
 requires = [
     "future>=0.15",
-    "requests>=2.9",
+    "requests<2.11",
     "uritemplate>=0.6",
     "inflection>=0.3",
 ]
