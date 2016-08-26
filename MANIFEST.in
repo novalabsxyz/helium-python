@@ -1,3 +1,4 @@
 include version.txt
+include helium/_version.py
 include tox.ini
 include LICENSE.txt
