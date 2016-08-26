@@ -5,6 +5,7 @@ build
 dist
 *.egg-info/
 *.egg
+*.eggs
 venv/
 venv*/
 .env
