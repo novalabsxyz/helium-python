@@ -12,3 +12,5 @@ venv*/
 .python-version
 .tox
 .cache
+/version.txt
+helium/_version.py

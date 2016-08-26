@@ -1,27 +1,7 @@
-#!/usr/bin/env python
-import re
+from setuptools import setup
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-
-__version__ = ''
-with open('helium/__about__.py', 'r') as fd:
-    reg = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
-    for line in fd:
-        m = reg.match(line)
-        if m:
-            __version__ = m.group(1)
-            break
-
-if not __version__:
-    raise RuntimeError('Cannot find version information')
-
-version = __version__
-authors = 'Marc Nijdam'
-emails = ''
+author = 'Marc Nijdam'
+author_email = ''
 packages = ['helium']
 requires = [
     "future>=0.15",
@@ -29,16 +9,17 @@ requires = [
     "uritemplate>=0.6",
     "inflection>=0.3",
 ]
-
+setup_requires = ['vcversioner']
 setup(
     name='helium-python',
-    version=version,
     description='Wrapper for the Helium API',
     long_description="Python toolkit for working with the Helium API",
-    author=authors,
-    author_email=emails,
+    author=author,
+    author_email=author_email,
     url='https://github.com/helium/helium-python',
     packages=packages,
+    setup_requires=setup_requires,
     install_requires=requires,
     license='BSD',
+    vcversioner={"version_module_paths" : ["helium/_version.py"]},
 )
