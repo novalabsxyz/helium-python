@@ -26,8 +26,8 @@ notifications:
     on_success: never
 
 deploy:
-    skip_cleanup: true
   - provider: pypi
+    skip_cleanup: true
     user: madninja
     password:
       secure: s3Z605m1tc39EMFjyYmclQir45oN0VXqtD9PNPLLVkH/JeBLk3Vdz0VwErcIdTwVQUKZ/XWksMtTUAZgiN0zUBc9lE72TQGwExNE77qE5cr00ZC0UOhFVc2oCqZtyTPA4Kz+p7yOeuEHrnUEg4Zx2k+DecYpjH8NEnxMGmAtO9GhoEqJTAA+psQ+FUFPtgiwPTqdsptkPF/MMf/PXGUC214X2DXLqw1XcaZMZfZZEHXp8Ez0caSXtOJTev1oMlo3JKKPfe+aDN61Fdg+TJeSYMPsJ8u39pHSsN/LjK+8uD/6zzmO/oxjkez58q+Q4QJ+M3EopMIY5Xu+P4REeBAG81G/XEY/OjFj/BJyUOd8A/j5uVNuVu3ZGBtCHhMiu6gob/o7RgxV0jykOwz8Gi52vjH7OpvT1Mp20Vcxio7r8xkFED4JykPccX2LrUfXADnNpbOTbM5IHRSeNa11dkm2RqaM1O2pJI6SA0Yd8FmpE1N8lWGcWWSpASld+W/jkbSY4GYk3BYxxLVXf3AY/2Navr6UFmFZYJcoPl8IZBjeiHHch34axXdClsCMAHffDMSss0o7+eickZuGxHhD9pRH7J1raOzbNTXYMjfJRarLD24hOCIF9Kdnk9j1XWdJiRGtwSGtEmIh1jTyWVrrGQljGwTpvCOY/6TlrEHdRUihOA8=
@@ -36,6 +36,7 @@ deploy:
         distributions: sdist bdist_wheel
         repo: helium/helium-python
   - provider: releases
+    skip_cleanup: true
     api_key:
       secure: Vuca0gmltiikoXfPnJct6PITZatDgObHpUyc5LTR6JaDJsAk23FbzywNcIYne5GM2A9mpazEZ1hAmF+5CQ4NBTKJp637+kqJn3UyITVpmeTy9LDKlDHVxg5OO4deMbvoEhht8WIOccYrT+FVpJ5nEu+lB2nZv1XejnN1ZgADoP+Q2mPsW+q1w58mwrbsJ4IzIYBgH9lRhTGjjesKXdrxCxl0ObRqbtMXGkbMFbJBJtvMS0f+6XJdRNVh+dq2/Cc3zymbJd2U5rt7loK6naoNeVGSEVyGpB9dv09xTV0XPjdcNm78MmXgps2523EpBmjuyqOd6hcllTsNtxSSVpAQ0za5My+6FNi+m+DbAS0KGdfvzU53sMgTdCyk0hUzGgvyIF+HfcKgjxGNrllNExfXQHUvR2HKCpOXuvLBgVeFLiI+E+5mm+qRY27s8d63XPVpBlZHgWaxML9ZUUC9wEfKwVvM6ewje+st5uj2/1CxItRygpFlOSh3XRzxrXO3TrtktZlloKD5Wbd4/sqVe5neGyQkdi8jVUrBEOam9ykvpIiWLvlp2FVcI5dc57e4YhxrYpwbbd6438J8jImcSlwGEYlyqllcRElu/G5tN4jLVRKGcRXSESNPN4OVAsNhZo5e1SUZ0gXYqXlHGun8wLzwTfXCnyFlbyfpXqMLSfUX814=
       file-glob: true
