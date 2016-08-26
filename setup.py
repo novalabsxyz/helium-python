@@ -20,7 +20,7 @@ setup(
     packages=packages,
     setup_requires=setup_requires,
     install_requires=requires,
-    zip_safe=True,
+    include_package_data=True,
     license='BSD',
     vcversioner={"version_module_paths" : ["helium/_version.py"]},
 )
