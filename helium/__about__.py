@@ -1,7 +1,7 @@
 """The module that holds metadata about this library."""
 
 from __future__ import unicode_literals
-from _version import __version__, __revision__
+from ._version import __version__, __revision__
 
 __package_name__ = 'helium-python'
 __title__ = 'helium'
