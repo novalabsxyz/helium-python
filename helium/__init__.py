@@ -52,6 +52,6 @@ __all__ = (
     '__license__',
     '__copyright__',
     '__version__',
-    '__version_info__',
+    '__revision__',
     '__url__',
 )
