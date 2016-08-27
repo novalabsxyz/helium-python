@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 author = 'Marc Nijdam'
 author_email = ''
