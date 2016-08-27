@@ -9,11 +9,14 @@ requires = [
     "uritemplate>=0.6",
     "inflection>=0.3",
 ]
-setup_requires = ['vcversioner']
+setup_requires = [
+    'vcversioner',
+    'setuptools-markdown',
+]
 setup(
     name='helium-python',
     description='Wrapper for the Helium API',
-    long_description="Python toolkit for working with the Helium API",
+    long_description_markdown_filename='README.md',
     author=author,
     author_email=author_email,
     url='https://github.com/helium/helium-python',
