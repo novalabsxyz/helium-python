@@ -8,10 +8,6 @@ install:
   - pip install tox-travis
   - pip install coveralls
 
-addons:
-  apt_packages:
-    - pandoc
-
 env:
   global:
     - TRAVIS="True"

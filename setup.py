@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 author = 'Marc Nijdam'
 author_email = ''
@@ -11,12 +11,14 @@ requires = [
 ]
 setup_requires = [
     'vcversioner',
-    'setuptools-markdown',
 ]
+with open('README.md', 'r') as infile:
+    long_description = infile.read()
+
 setup(
     name='helium-python',
     description='Wrapper for the Helium API',
-    long_description_markdown_filename='README.md',
+    long_description=long_description,
     author=author,
     author_email=author_email,
     url='https://github.com/helium/helium-python',
