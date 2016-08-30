@@ -1,11 +1,13 @@
 """The organization resource."""
 
 from __future__ import unicode_literals
-from . import Resource, User
-from . import to_many, to_one, timeseries, metadata
+from . import Resource, Sensor, User, Element
+from . import to_many, timeseries, metadata
 
 
-@to_many(User, reverse=to_one)
+@to_many(User)
+@to_many(Element)
+@to_many(Sensor)
 @timeseries()
 @metadata()
 class Organization(Resource):

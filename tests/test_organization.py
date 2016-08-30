@@ -23,10 +23,23 @@ def test_users(authorized_organization):
     assert users is not None
     assert len(users) > 0
 
-    # Reverse relationship, not quite deployed yet
-    with pytest.raises(helium.NotFoundError):
-        org = users[0].organization()
-        assert org == authorized_organization
+
+def test_elements(authorized_organization):
+    elements = authorized_organization.elements()
+    assert elements is not None
+    assert len(elements) > 0
+
+
+def test_sensors(authorized_organization):
+    sensors = authorized_organization.users()
+    assert sensors is not None
+    assert len(sensors) > 0
+
+
+def test_labels(authorized_organization):
+    labels = authorized_organization.users()
+    assert labels is not None
+    assert len(labels) > 0
 
 
 def test_metadata(authorized_organization):
