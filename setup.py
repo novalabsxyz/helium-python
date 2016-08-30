@@ -1,7 +1,7 @@
 from setuptools import setup
 
-author = 'Marc Nijdam'
-author_email = ''
+author = 'Helium'
+author_email = 'hello@helium.com'
 packages = ['helium']
 requires = [
     "future>=0.15",
@@ -27,5 +27,7 @@ setup(
     install_requires=requires,
     include_package_data=True,
     license='BSD',
-    vcversioner={"version_module_paths" : ["helium/_version.py"]},
+    vcversioner={
+        "version_module_paths": ["helium/_version.py"]
+    },
 )
