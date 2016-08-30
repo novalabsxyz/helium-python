@@ -11,11 +11,13 @@ import helium
 Betamax.register_serializer(pretty_json.PrettyJSONSerializer)
 Betamax.register_request_matcher(json_body.JSONBodyMatcher)
 API_TOKEN = os.environ.get('HELIUM_API_KEY', 'X' * 10)
+API_URL = os.environ.get('HELIUM_API_URL', 'https://api.helium.com/v1')
 RECORD_MODE = os.environ.get('HELIUM_RECORD_MODE', 'none')
+RECORD_FOLDER = os.environ.get('HELIUM_RECORD_FOLDER', 'tests/cassettes')
 
 
 with Betamax.configure() as config:
-    config.cassette_library_dir = 'tests/cassettes'
+    config.cassette_library_dir = RECORD_FOLDER
     record_mode = RECORD_MODE
     cassette_options = config.default_cassette_options
     cassette_options['record_mode'] = record_mode
@@ -37,7 +39,7 @@ def helium_recorder(request):
 
     cassette_name += request.function.__name__
 
-    session = helium.Client()
+    session = helium.Client(base_url=API_URL)
     session.token_auth(API_TOKEN)
     recorder = Betamax(session)
 
