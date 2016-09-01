@@ -49,9 +49,11 @@ class Base(object):
         and promote it into the attributes of this resource.
 
         """
-        if attribute not in self._json_data:
-            raise AttributeError(attribute)
         value = self._json_data.get(attribute, None)
+        if value is None:
+            value = self._json_data.get(attribute.replace('_', '-'), None)
+            if value is None:
+                raise AttributeError(attribute)
         return self._promote_json_attribute(attribute, value)
 
 
