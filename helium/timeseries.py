@@ -84,7 +84,12 @@ class Timeseries(Iterable):
                  datapoint_class=DataPoint,
                  datapoint_id=None,
                  page_size=None,
-                 direction='prev'):
+                 direction='prev',
+                 start=None,
+                 end=None,
+                 agg_size=None,
+                 agg_type=None,
+                 port=None):
         self._session = session
         self._datapoint_class = datapoint_class
         self._base_url = session._build_url(resource_type,

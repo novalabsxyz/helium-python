@@ -14,7 +14,7 @@ from .relations import RelationType, to_many, to_one
 from .session import Session
 from .metadata import Metadata, metadata
 from .user import User
-from .timeseries import Timeseries, timeseries
+from .timeseries import Timeseries, DataPoint, timeseries
 from .sensor import Sensor
 from .label import Label
 from .element import Element
@@ -38,7 +38,7 @@ __all__ = (
     Session,
     Organization,
     User,
-    Timeseries, timeseries,
+    Timeseries, DataPoint, timeseries,
     Sensor,
     Metadata, metadata,
     Element,
