@@ -1,6 +1,7 @@
 """Test for Labels."""
 
 from __future__ import unicode_literals
+import pytest
 
 
 def test_sensors(tmp_label, sensors, first_sensor):
@@ -36,3 +37,11 @@ def test_metadata(tmp_label):
 
 def test_meta(tmp_label):
     assert tmp_label.meta is not None
+
+
+def test_include(first_sensor):
+    # Currently the reverse relationship from label to sensor is an
+    # INCLUDE kind This test covers the use_included part of that kind
+    # of fetch relationship
+    with pytest.raises(AttributeError):
+        first_sensor.labels(use_included=True)

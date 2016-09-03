@@ -54,3 +54,18 @@ def test_timeseries(authorized_organization):
 
 def test_meta(authorized_organization):
     assert authorized_organization.meta is not None
+
+
+def test_include(client, authorized_organization):
+    include = [helium.Element, helium.User]
+    org = helium.Organization.singleton(client, include=include)
+    assert org is not None
+
+    elements = org.elements(use_included=True)
+    assert len(elements) > 0
+
+    users = org.users(use_included=True)
+    assert len(users) > 0
+
+    with pytest.raises(AttributeError):
+        authorized_organization.sensors(use_included=True)

@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 import inflection
+from builtins import filter as _filter
 from . import response_boolean, response_json
 from . import build_resource_relationship
 
@@ -161,7 +162,21 @@ def to_many(dest_class, type=RelationType.DIRECT,
               iterable({to_class}): The {to_name} of :class:`{from_class}`
         """
 
-        def fetch_relationship_include(self):
+        def _fetch_relationship_included(self):
+            session = self._session
+            included = self._included
+            if included is None:
+                raise AttributeError("No included resources")
+
+            def _resource_filter(resource):
+                return resource.get('type', None) == dest_resource_type
+
+            included = _filter(_resource_filter, included)
+            return [dest_class(entry, session) for entry in included]
+
+        def fetch_relationship_include(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
             session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id)
@@ -172,7 +187,9 @@ def to_many(dest_class, type=RelationType.DIRECT,
                                  extract="included")
             return [dest_class(entry, session) for entry in json]
 
-        def fetch_relationship_direct(self):
+        def fetch_relationship_direct(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
             session = self._session
             id = None if hasattr(self, '_singleton') else self.id
             url = session._build_url(src_resource_type, id, dest_resource_type)

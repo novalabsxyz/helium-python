@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from . import response_boolean, response_json
-from . import build_resource_attributes, from_iso_date
+from . import build_resource_attributes, build_resource_include
+from . import from_iso_date
 
 
 class Base(object):
@@ -96,19 +97,39 @@ class Resource(Base):
 
     """
 
-    def __init__(self, json, session):
+    def __init__(self, json, session, included=None):
         self._session = session
+        self._included = included
         super(Resource, self).__init__(json)
 
     @classmethod
-    def all(cls, session):
+    def all(cls, session, include=None):
         """Get all resources of the given resource class.
 
         This should be called on sub-classes only.
 
+        The include argument allows relationship fetches to be
+        optimized by including the target resources in the request of
+        the containing resource. For example::
+
+        .. code-block:: python
+
+            org = Organization.singleton(include=[Sensor])
+            org.sensors(use_included=True)
+
+        Will fetch the sensors for the authorized organization as part
+        of retrieving the organization. The ``use_included`` forces
+        the use of included resources and avoids making a separate
+        request to get the sensors for the organization.
+
         Args:
 
-          session(Session): The session to look up the resources in
+            session(Session): The session to look up the resources in
+
+        Keyword Args:
+
+            incldue: A list of resource classes to include in the
+                request.
 
         Returns:
 
@@ -117,11 +138,15 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type())
-        json = response_json(session.get(url), 200)
-        return [cls(entry, session) for entry in json]
+        params = build_resource_include(include, None)
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        included = json.get('included', None)
+        data = json.get('data')
+        return [cls(entry, session, included=included) for entry in data]
 
     @classmethod
-    def find(cls, session, resource_id):
+    def find(cls, session, resource_id, include=None):
         """Retrieve a single resource.
 
         This should only be called from sub-classes.
@@ -131,6 +156,10 @@ class Resource(Base):
           session(Session): The session to find the resource in
           resource_id: The ``id`` for the resource to look up
 
+        Keyword Args:
+
+            include: Resource classes to include
+
         Returns:
 
           Resource: An instance of a resource, or throws a
@@ -138,8 +167,12 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
-        json = response_json(session.get(url), 200)
-        return cls(json, session)
+        params = build_resource_include(include, None)
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        included = json.get('included', None)
+        data = json.get('data')
+        return cls(data, session, included=included)
 
     @classmethod
     def create(cls, session, **kwargs):
@@ -165,7 +198,7 @@ class Resource(Base):
         return cls(json, session)
 
     @classmethod
-    def singleton(cls, session):
+    def singleton(cls, session, include=None):
         """Get the a singleton API resource.
 
         Some Helium API resources are singletons. The authorized user
@@ -178,10 +211,18 @@ class Resource(Base):
         will retrieve the authorized user for the given
         :class:`Session`
 
+        Keyword Args:
+
+            include: Resource classes to include
+
         """
+        params = build_resource_include(include, None)
         url = session._build_url(cls._resource_type())
-        json = response_json(session.get(url), 200)
-        result = cls(json, session)
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        included = json.get('included', None)
+        data = json.get('data')
+        result = cls(data, session, included=included)
         setattr(result, '_singleton', True)
         return result
 
