@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from . import response_boolean, response_json
-from . import build_resource_attributes, build_resource_include
+from . import build_request_attributes, build_request_include
 from . import from_iso_date
 
 
@@ -103,6 +103,21 @@ class Resource(Base):
         super(Resource, self).__init__(json)
 
     @classmethod
+    def _mk_one(cls, session, json, singleton=False):
+        included = json.get('included', None)
+        data = json.get('data')
+        result = cls(data, session, included=included)
+        if singleton:
+            setattr(result, '_singleton', True)
+        return result
+
+    @classmethod
+    def _mk_many(cls, session, json):
+        included = json.get('included', None)
+        data = json.get('data')
+        return [cls(entry, session, included=included) for entry in data]
+
+    @classmethod
     def all(cls, session, include=None):
         """Get all resources of the given resource class.
 
@@ -138,12 +153,10 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type())
-        params = build_resource_include(include, None)
+        params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        included = json.get('included', None)
-        data = json.get('data')
-        return [cls(entry, session, included=included) for entry in data]
+        return cls._mk_many(session, json)
 
     @classmethod
     def find(cls, session, resource_id, include=None):
@@ -167,12 +180,10 @@ class Resource(Base):
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
-        params = build_resource_include(include, None)
+        params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        included = json.get('included', None)
-        data = json.get('data')
-        return cls(data, session, included=included)
+        return cls._mk_one(session, json)
 
     @classmethod
     def create(cls, session, **kwargs):
@@ -193,9 +204,10 @@ class Resource(Base):
         """
         resource_type = cls._resource_type()
         url = session._build_url(resource_type)
-        attributes = build_resource_attributes(resource_type, None, kwargs)
-        json = response_json(session.post(url, json=attributes), 201)
-        return cls(json, session)
+        attributes = build_request_attributes(resource_type, None, kwargs)
+        json = response_json(session.post(url, json=attributes), 201,
+                             extract=None)
+        return cls._mk_one(session, json)
 
     @classmethod
     def singleton(cls, session, include=None):
@@ -216,15 +228,11 @@ class Resource(Base):
             include: Resource classes to include
 
         """
-        params = build_resource_include(include, None)
+        params = build_request_include(include, None)
         url = session._build_url(cls._resource_type())
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        included = json.get('included', None)
-        data = json.get('data')
-        result = cls(data, session, included=included)
-        setattr(result, '_singleton', True)
-        return result
+        return cls._mk_one(session, json, singleton=True)
 
     @classmethod
     def _resource_type(cls):
@@ -265,6 +273,10 @@ class Resource(Base):
         """The string representation of the resource."""
         return '<{s.__class__.__name__} {{ id: {s.id} }}>'.format(s=self)
 
+    def is_singleton(self):
+        """Whether this instance is a singleton."""
+        return hasattr(self, '_singleton')
+
     def update(self, **kwargs):
         """Update attributes of this resource.
 
@@ -283,11 +295,13 @@ class Resource(Base):
         """
         resource_type = self._resource_type()
         session = self._session
-        id = None if hasattr(self, '_singleton') else self.id
+        singleton = self.is_singleton()
+        id = None if singleton else self.id
         url = session._build_url(resource_type, id)
-        attributes = build_resource_attributes(resource_type, self.id, kwargs)
-        json = response_json(session.patch(url, json=attributes), 200)
-        return self.__class__(json, session)
+        attributes = build_request_attributes(resource_type, self.id, kwargs)
+        json = response_json(session.patch(url, json=attributes), 200,
+                             extract=None)
+        return self._mk_one(session, json, singleton=singleton)
 
     def delete(self):
         """Delete the resource.

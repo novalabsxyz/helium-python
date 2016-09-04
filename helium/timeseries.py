@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from . import Resource, response_json
 from . import to_iso_date
-from . import build_resource_attributes
+from . import build_request_attributes
 from collections import Iterable
 
 
@@ -168,7 +168,7 @@ class Timeseries(Iterable):
         }
         if timestamp is not None:
             attributes['timestamp'] = to_iso_date(timestamp)
-        attributes = build_resource_attributes('data-point', None, attributes)
+        attributes = build_request_attributes('data-point', None, attributes)
         data = session.post(self._base_url, json=attributes)
         return datapoint_class(response_json(data, 201), session)
 
@@ -195,7 +195,7 @@ def timeseries():
         """.format(cls.__name__)
 
         def method(self, **kwargs):
-            resource_id = None if hasattr(self, '_singleton') else self.id
+            resource_id = None if self.is_singleton() else self.id
             return Timeseries(self._session, cls._resource_type(), resource_id,
                               **kwargs)
 

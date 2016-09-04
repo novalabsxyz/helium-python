@@ -7,12 +7,14 @@ import helium
 
 def test_organization(authorized_organization):
     assert authorized_organization is not None
+    assert authorized_organization.is_singleton()
 
 
 def test_update(authorized_organization):
     current_name = authorized_organization.name
     updated_org = authorized_organization.update(name="bar")
     assert updated_org.name == "bar"
+    assert updated_org.is_singleton()
 
     updated_org = authorized_organization.update(name=current_name)
     assert updated_org.name == current_name

@@ -100,7 +100,7 @@ def to_iso_date(timestamp):
     return timestamp.isoformat() + 'Z'
 
 
-def build_resource_attributes(type, id, attributes):
+def build_request_attributes(type, id, attributes):
     """Build a resource attributes object.
 
     A resource attributes JSON object is used for any of the
@@ -130,7 +130,7 @@ def build_resource_attributes(type, id, attributes):
     return result
 
 
-def build_resource_relationship(type, ids):
+def build_request_relationship(type, ids):
     """Build a relationship list.
 
     A relationship list is used to update relationships between two
@@ -153,7 +153,7 @@ def build_resource_relationship(type, ids):
     }
 
 
-def build_resource_include(include, params):
+def build_request_include(include, params):
     """Augment request parameters with includes.
 
     When one or all resources are requested an additional set of
