@@ -90,10 +90,24 @@ class Resource(Base):
     A resource will at least have an ``id`` attribute, which is
     promoted from the underlying json data on creation.
 
+    A resource can be requested to include relation resources in its
+    response using the include request parameter. The ``include``
+    argument allows relationship lookups to validate whether the
+    relationship was originally requested. You normally don't need to
+    specify this since the Resource retrieval methods like ``all`` and
+    ``find`` take care of this behavior.
+
     Args:
 
       json(dict): The json to construct the resource from.
+
       session(Session): The session use for this resource
+
+    Keyword Args:
+
+        include([Resource class]): Resource classes that are included
+
+        included([json]): A list of all included json resources
 
     """
 
@@ -150,8 +164,8 @@ class Resource(Base):
 
         Returns:
 
-          iterable(Resource): An iterator over all the resources of
-        this type
+            iterable(Resource): An iterator over all the resources of
+                this type
 
         """
         url = session._build_url(cls._resource_type())
@@ -168,8 +182,9 @@ class Resource(Base):
 
         Args:
 
-          session(Session): The session to find the resource in
-          resource_id: The ``id`` for the resource to look up
+            session(Session): The session to find the resource in
+
+            resource_id: The ``id`` for the resource to look up
 
         Keyword Args:
 
@@ -177,8 +192,8 @@ class Resource(Base):
 
         Returns:
 
-          Resource: An instance of a resource, or throws a
-          :class:`NotFoundError` if the resource can not be found.
+            Resource: An instance of a resource, or throws a
+              :class:`NotFoundError` if the resource can not be found.
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
