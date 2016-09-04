@@ -70,4 +70,5 @@ def test_include(client, authorized_organization):
     assert len(users) > 0
 
     with pytest.raises(AttributeError):
-        authorized_organization.sensors(use_included=True)
+        # request a relationship that was not included
+        org.sensors(use_included=True)

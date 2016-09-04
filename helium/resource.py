@@ -97,25 +97,27 @@ class Resource(Base):
 
     """
 
-    def __init__(self, json, session, included=None):
+    def __init__(self, json, session, include=None, included=None):
         self._session = session
         self._included = included
+        self._include = include
         super(Resource, self).__init__(json)
 
     @classmethod
-    def _mk_one(cls, session, json, singleton=False):
-        included = json.get('included', None)
+    def _mk_one(cls, session, json, singleton=False, include=None):
+        included = json.get('included') if include else None
         data = json.get('data')
-        result = cls(data, session, included=included)
+        result = cls(data, session, include=include, included=included)
         if singleton:
             setattr(result, '_singleton', True)
         return result
 
     @classmethod
-    def _mk_many(cls, session, json):
-        included = json.get('included', None)
+    def _mk_many(cls, session, json, include=None):
+        included = json.get('included') if include else None
         data = json.get('data')
-        return [cls(entry, session, included=included) for entry in data]
+        return [cls(entry, session, include=include, included=included)
+                for entry in data]
 
     @classmethod
     def all(cls, session, include=None):
@@ -156,7 +158,7 @@ class Resource(Base):
         params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        return cls._mk_many(session, json)
+        return cls._mk_many(session, json, include=include)
 
     @classmethod
     def find(cls, session, resource_id, include=None):
@@ -183,7 +185,7 @@ class Resource(Base):
         params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        return cls._mk_one(session, json)
+        return cls._mk_one(session, json, include=include)
 
     @classmethod
     def create(cls, session, **kwargs):
@@ -232,7 +234,7 @@ class Resource(Base):
         url = session._build_url(cls._resource_type())
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
-        return cls._mk_one(session, json, singleton=True)
+        return cls._mk_one(session, json, singleton=True, include=include)
 
     @classmethod
     def _resource_type(cls):

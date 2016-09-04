@@ -164,9 +164,13 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
         def _fetch_relationship_included(self):
             session = self._session
+            include = self._include
+            if include is None or dest_class not in include:
+                # You requested an included relationship that was
+                # not originally included
+                error = "{} was not included".format(dest_class.__name__)
+                raise AttributeError(error)
             included = self._included
-            if included is None:
-                raise AttributeError("No included resources")
 
             def _resource_filter(resource):
                 return resource.get('type', None) == dest_resource_type
