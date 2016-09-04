@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals
 import inflection
+from builtins import filter as _filter
 from . import response_boolean, response_json
-from . import build_resource_relationship
+from . import build_request_relationship, build_request_include
 
 
 class RelationType(object):
@@ -78,11 +79,11 @@ def to_one(dest_class, **kwargs):
 
         def method(self):
             session = self._session
-            id = None if hasattr(self, '_singleton') else self.id
+            id = None if self.is_singleton() else self.id
             url = session._build_url(cls._resource_type(), id,
                                      dest_resource_type)
-            json = response_json(session.get(url), 200)
-            return dest_class(json, session)
+            json = response_json(session.get(url), 200, extract=None)
+            return dest_class._mk_many(session, json)
 
         method.__doc__ = method_doc
         setattr(cls, dest_method_name, method)
@@ -161,23 +162,41 @@ def to_many(dest_class, type=RelationType.DIRECT,
               iterable({to_class}): The {to_name} of :class:`{from_class}`
         """
 
-        def fetch_relationship_include(self):
+        def _fetch_relationship_included(self):
             session = self._session
-            id = None if hasattr(self, '_singleton') else self.id
+            include = self._include
+            if include is None or dest_class not in include:
+                # You requested an included relationship that was
+                # not originally included
+                error = "{} was not included".format(dest_class.__name__)
+                raise AttributeError(error)
+            included = self._included
+
+            def _resource_filter(resource):
+                return resource.get('type', None) == dest_resource_type
+
+            included = _filter(_resource_filter, included)
+            return [dest_class(entry, session) for entry in included]
+
+        def fetch_relationship_include(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
+            session = self._session
+            id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_type, id)
-            params = {
-                'include': dest_resource_type
-            }
+            params = build_request_include([dest_class], None)
             json = response_json(session.get(url, params=params), 200,
-                                 extract="included")
+                                 extract='included')
             return [dest_class(entry, session) for entry in json]
 
-        def fetch_relationship_direct(self):
+        def fetch_relationship_direct(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
             session = self._session
-            id = None if hasattr(self, '_singleton') else self.id
+            id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_type, id, dest_resource_type)
-            json = response_json(session.get(url), 200)
-            return [dest_class(entry, session) for entry in json]
+            json = response_json(session.get(url), 200, extract=None)
+            return dest_class._mk_many(session, json)
 
         if type == RelationType.DIRECT:
             fetch_relationship = fetch_relationship_direct
@@ -190,11 +209,11 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
         def _update_relatonship(self, objs):
             session = self._session
-            id = None if hasattr(self, '_singleton') else self.id
+            id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_type, id,
                                      'relationships', dest_resource_type)
             ids = [obj.id for obj in objs]
-            json = build_resource_relationship(dest_resource_type, ids)
+            json = build_request_relationship(dest_resource_type, ids)
             response_boolean(session.patch(url, json=json), 200)
             return objs
 

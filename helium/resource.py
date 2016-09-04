@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from . import response_boolean, response_json
-from . import build_resource_attributes, from_iso_date
+from . import build_request_attributes, build_request_include
+from . import from_iso_date
 
 
 class Base(object):
@@ -89,57 +90,117 @@ class Resource(Base):
     A resource will at least have an ``id`` attribute, which is
     promoted from the underlying json data on creation.
 
+    A resource can be requested to include relation resources in its
+    response using the include request parameter. The ``include``
+    argument allows relationship lookups to validate whether the
+    relationship was originally requested. You normally don't need to
+    specify this since the Resource retrieval methods like ``all`` and
+    ``find`` take care of this behavior.
+
     Args:
 
       json(dict): The json to construct the resource from.
+
       session(Session): The session use for this resource
+
+    Keyword Args:
+
+        include([Resource class]): Resource classes that are included
+
+        included([json]): A list of all included json resources
 
     """
 
-    def __init__(self, json, session):
+    def __init__(self, json, session, include=None, included=None):
         self._session = session
+        self._included = included
+        self._include = include
         super(Resource, self).__init__(json)
 
     @classmethod
-    def all(cls, session):
+    def _mk_one(cls, session, json, singleton=False, include=None):
+        included = json.get('included') if include else None
+        data = json.get('data')
+        result = cls(data, session, include=include, included=included)
+        if singleton:
+            setattr(result, '_singleton', True)
+        return result
+
+    @classmethod
+    def _mk_many(cls, session, json, include=None):
+        included = json.get('included') if include else None
+        data = json.get('data')
+        return [cls(entry, session, include=include, included=included)
+                for entry in data]
+
+    @classmethod
+    def all(cls, session, include=None):
         """Get all resources of the given resource class.
 
         This should be called on sub-classes only.
 
+        The include argument allows relationship fetches to be
+        optimized by including the target resources in the request of
+        the containing resource. For example::
+
+        .. code-block:: python
+
+            org = Organization.singleton(include=[Sensor])
+            org.sensors(use_included=True)
+
+        Will fetch the sensors for the authorized organization as part
+        of retrieving the organization. The ``use_included`` forces
+        the use of included resources and avoids making a separate
+        request to get the sensors for the organization.
+
         Args:
 
-          session(Session): The session to look up the resources in
+            session(Session): The session to look up the resources in
+
+        Keyword Args:
+
+            incldue: A list of resource classes to include in the
+                request.
 
         Returns:
 
-          iterable(Resource): An iterator over all the resources of
-        this type
+            iterable(Resource): An iterator over all the resources of
+                this type
 
         """
         url = session._build_url(cls._resource_type())
-        json = response_json(session.get(url), 200)
-        return [cls(entry, session) for entry in json]
+        params = build_request_include(include, None)
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        return cls._mk_many(session, json, include=include)
 
     @classmethod
-    def find(cls, session, resource_id):
+    def find(cls, session, resource_id, include=None):
         """Retrieve a single resource.
 
         This should only be called from sub-classes.
 
         Args:
 
-          session(Session): The session to find the resource in
-          resource_id: The ``id`` for the resource to look up
+            session(Session): The session to find the resource in
+
+            resource_id: The ``id`` for the resource to look up
+
+        Keyword Args:
+
+            include: Resource classes to include
 
         Returns:
 
-          Resource: An instance of a resource, or throws a
-          :class:`NotFoundError` if the resource can not be found.
+            Resource: An instance of a resource, or throws a
+              :class:`NotFoundError` if the resource can not be found.
 
         """
         url = session._build_url(cls._resource_type(), resource_id)
-        json = response_json(session.get(url), 200)
-        return cls(json, session)
+        params = build_request_include(include, None)
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        return cls._mk_one(session, json, include=include)
 
     @classmethod
     def create(cls, session, **kwargs):
@@ -160,12 +221,13 @@ class Resource(Base):
         """
         resource_type = cls._resource_type()
         url = session._build_url(resource_type)
-        attributes = build_resource_attributes(resource_type, None, kwargs)
-        json = response_json(session.post(url, json=attributes), 201)
-        return cls(json, session)
+        attributes = build_request_attributes(resource_type, None, kwargs)
+        json = response_json(session.post(url, json=attributes), 201,
+                             extract=None)
+        return cls._mk_one(session, json)
 
     @classmethod
-    def singleton(cls, session):
+    def singleton(cls, session, include=None):
         """Get the a singleton API resource.
 
         Some Helium API resources are singletons. The authorized user
@@ -178,12 +240,16 @@ class Resource(Base):
         will retrieve the authorized user for the given
         :class:`Session`
 
+        Keyword Args:
+
+            include: Resource classes to include
+
         """
+        params = build_request_include(include, None)
         url = session._build_url(cls._resource_type())
-        json = response_json(session.get(url), 200)
-        result = cls(json, session)
-        setattr(result, '_singleton', True)
-        return result
+        json = response_json(session.get(url, params=params), 200,
+                             extract=None)
+        return cls._mk_one(session, json, singleton=True, include=include)
 
     @classmethod
     def _resource_type(cls):
@@ -224,6 +290,10 @@ class Resource(Base):
         """The string representation of the resource."""
         return '<{s.__class__.__name__} {{ id: {s.id} }}>'.format(s=self)
 
+    def is_singleton(self):
+        """Whether this instance is a singleton."""
+        return hasattr(self, '_singleton')
+
     def update(self, **kwargs):
         """Update attributes of this resource.
 
@@ -242,11 +312,13 @@ class Resource(Base):
         """
         resource_type = self._resource_type()
         session = self._session
-        id = None if hasattr(self, '_singleton') else self.id
+        singleton = self.is_singleton()
+        id = None if singleton else self.id
         url = session._build_url(resource_type, id)
-        attributes = build_resource_attributes(resource_type, self.id, kwargs)
-        json = response_json(session.patch(url, json=attributes), 200)
-        return self.__class__(json, session)
+        attributes = build_request_attributes(resource_type, self.id, kwargs)
+        json = response_json(session.patch(url, json=attributes), 200,
+                             extract=None)
+        return self._mk_one(session, json, singleton=singleton)
 
     def delete(self):
         """Delete the resource.

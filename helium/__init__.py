@@ -7,7 +7,8 @@ from .exceptions import (
 from .util import (
     from_iso_date, to_iso_date,
     response_json, response_boolean,
-    build_resource_attributes, build_resource_relationship,
+    build_request_attributes, build_request_relationship,
+    build_request_include,
 )
 from .resource import Base, Resource, ResourceMeta
 from .relations import RelationType, to_many, to_one
@@ -28,7 +29,8 @@ from .__about__ import (
 
 __all__ = (
     from_iso_date, to_iso_date, response_json, response_boolean,
-    build_resource_attributes, build_resource_relationship,
+    build_request_attributes, build_request_relationship,
+    build_request_include,
     Error,
     ServerError,
     ClientError,

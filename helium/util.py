@@ -100,7 +100,7 @@ def to_iso_date(timestamp):
     return timestamp.isoformat() + 'Z'
 
 
-def build_resource_attributes(type, id, attributes):
+def build_request_attributes(type, id, attributes):
     """Build a resource attributes object.
 
     A resource attributes JSON object is used for any of the
@@ -130,7 +130,7 @@ def build_resource_attributes(type, id, attributes):
     return result
 
 
-def build_resource_relationship(type, ids):
+def build_request_relationship(type, ids):
     """Build a relationship list.
 
     A relationship list is used to update relationships between two
@@ -151,3 +151,29 @@ def build_resource_relationship(type, ids):
     return {
         "data": [{"id": id, "type": type} for id in ids]
     }
+
+
+def build_request_include(include, params):
+    """Augment request parameters with includes.
+
+    When one or all resources are requested an additional set of
+    resources can be requested as part of the request. This function
+    extends the given parameters for a request with a list of resource
+    types passed in as a list of :class:`Resource` subclasses.
+
+    Args:
+
+        include([Resource class]): A list of resource classes to include
+
+        params(dict): The (optional) dictionary of request parameters to extend
+
+    Returns:
+
+        An updated or new dictionary of parameters extended with an
+        include query parameter.
+
+    """
+    params = params or {}
+    if include is not None:
+        params['include'] = ','.join([cls._resource_type() for cls in include])
+    return params
