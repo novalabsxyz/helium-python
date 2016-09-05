@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 from future.utils import iteritems
+from builtins import filter as _filter
 from . import response_boolean, response_json
 from . import build_request_attributes, build_request_include
 from . import from_iso_date
@@ -113,8 +114,8 @@ class Resource(Base):
 
     def __init__(self, json, session, include=None, included=None):
         self._session = session
-        self._included = included
         self._include = include
+        self._included = included
         super(Resource, self).__init__(json)
 
     @classmethod
@@ -262,10 +263,34 @@ class Resource(Base):
 
     def _update_attributes(self, json):
         super(Resource, self)._update_attributes(json)
+        # promote id
         self.id = json.get('id', None)
+        # promote all top level attributes
         for (k, v) in iteritems(json.pop('attributes', {})):
             self._promote_json_attribute(k, v)
-        self._promote_json_attribute('meta', json.pop('meta', {}))
+        # process includes if specified
+        if self._include is not None:
+            # Look up relationships and the types we were told are included
+            relationships = json.pop('relationships', {})
+            included_types = [cls._resource_type() for cls in self._include]
+
+            def _filter_included(resource_type):
+                # Get the relationship list and store the ids
+                related = relationships.get(resource_type, {}).get('data', [])
+                related = frozenset([r.get('id') for r in related])
+
+                def _resource_filter(resource):
+                    if resource.get('type') != resource_type:
+                        return False
+                    return resource.get('id') in related
+                # Filter all included objects for the resource type
+                # and whether they're related to this resource
+                return _filter(_resource_filter, self._included)
+
+            # Construct a dictionary of filtered included resources
+            # and replace the initial stash
+            self._included = {type: _filter_included(type)
+                              for type in included_types}
 
     def __eq__(self, other):
         """Check equality with another object."""

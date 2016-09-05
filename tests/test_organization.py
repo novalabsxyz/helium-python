@@ -63,11 +63,13 @@ def test_include(client, authorized_organization):
     org = helium.Organization.singleton(client, include=include)
     assert org is not None
 
-    elements = org.elements(use_included=True)
-    assert len(elements) > 0
+    included_elements = org.elements(use_included=True)
+    assert len(included_elements) > 0
 
-    users = org.users(use_included=True)
-    assert len(users) > 0
+    included_users = org.users(use_included=True)
+    assert len(included_users) > 0
+    users = org.users()
+    assert set(included_users) == set(users)
 
     with pytest.raises(AttributeError):
         # request a relationship that was not included

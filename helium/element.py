@@ -2,10 +2,10 @@
 
 from __future__ import unicode_literals
 from . import Resource, Sensor
-from . import to_many, timeseries, metadata
+from . import RelationType, to_many, timeseries, metadata
 
 
-@to_many(Sensor)
+@to_many(Sensor, type=RelationType.INCLUDE)
 @timeseries()
 @metadata()
 class Element(Resource):
