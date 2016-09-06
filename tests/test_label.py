@@ -8,20 +8,24 @@ def test_sensors(tmp_label, sensors, first_sensor):
     current_sensors = tmp_label.sensors()
     assert len(current_sensors) == 0
     # Update all sensors
-    updated_sensors = tmp_label.update_sensors(sensors)
-    assert len(updated_sensors) > 0
+    assert tmp_label.update_sensors(sensors)
+
     # Remove a sensor
-    updated_sensors = tmp_label.remove_sensors([first_sensor])
-    assert first_sensor not in updated_sensors
+    assert tmp_label.remove_sensors([first_sensor])
+    assert first_sensor not in tmp_label.sensors()
+    assert not tmp_label.remove_sensors([first_sensor])
+
     # Add a sensor
-    updated_sensors = tmp_label.add_sensors([first_sensor])
-    assert first_sensor in updated_sensors
+    assert tmp_label.add_sensors([first_sensor])
+    assert first_sensor in tmp_label.sensors()
+    assert not tmp_label.add_sensors([first_sensor])
+
     # Ensure sensor is in label
     assert tmp_label in first_sensor.labels()
 
     # And check final result reflects the complete set
     current_sensors = tmp_label.sensors()
-    assert set(updated_sensors) == set(current_sensors)
+    assert set(sensors) == set(current_sensors)
 
 
 def test_update(tmp_label):

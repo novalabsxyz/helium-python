@@ -202,15 +202,14 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
         fetch_relationship.__doc__ = fetch_method_doc
 
-        def _update_relatonship(self, objs):
+        def _build_relatonship(self, objs):
             session = self._session
             id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_type, id,
                                      'relationships', dest_resource_type)
-            ids = [obj.id for obj in objs]
-            json = build_request_relationship(dest_resource_type, ids)
-            response_boolean(session.patch(url, json=json), 200)
-            return objs
+            json = build_request_relationship(dest_resource_type,
+                                              [obj.id for obj in objs])
+            return (session, url, json)
 
         def add_many(self, resources):
             """Add {to_name} to this :class:`{from_class}`.
@@ -218,14 +217,14 @@ def to_many(dest_class, type=RelationType.DIRECT,
             Args:
 
               resources: A list of :class:`{to_class}` to add
+
+            Returns:
+
+                True if the relationship was mutated, False otherwise
             """
-            existing = fetch_relationship(self)
-            # Retain order of existing resources while trimming
-            # duplicates and adding new ones.
-            existing_set = frozenset(existing)
-            resources = [r for r in resources if r not in existing_set]
-            target = existing + resources
-            return _update_relatonship(self, target)
+            session, url, json = _build_relatonship(self, resources)
+            return response_boolean(session.post(url, json=json), 200,
+                                    false_code=204)
 
         def remove_many(self, resources):
             """Remove {to_name} from this :class:`{from_class}`.
@@ -233,13 +232,14 @@ def to_many(dest_class, type=RelationType.DIRECT,
             Args:
 
               resources: A list of :class:`{to_class}` to remove
+
+            Returns:
+
+                True if the relationship was mutated, False otherwise
             """
-            existing = fetch_relationship(self)
-            # Retain order existing resources while removing given
-            # ones
-            resource_set = frozenset(resources)
-            target = [entry for entry in existing if entry not in resource_set]
-            return _update_relatonship(self, target)
+            session, url, json = _build_relatonship(self, resources)
+            return response_boolean(session.delete(url, json=json), 200,
+                                    false_code=204)
 
         def update_method(self, resources):
             """Set the {to_name} for this :class:`{from_class}`.
@@ -249,8 +249,13 @@ def to_many(dest_class, type=RelationType.DIRECT,
             Args:
 
               resources: A list of :class:`{to_class}` to set
+
+            Returns:
+
+                True if successful
             """
-            return _update_relatonship(self, resources)
+            session, url, json = _build_relatonship(self, resources)
+            return response_boolean(session.patch(url, json=json), 200)
 
         methods = [(dest_method_name, fetch_relationship)]
         if writable:

@@ -6,17 +6,27 @@ from .exceptions import error_for
 from datetime import datetime
 
 
-def response_boolean(response, true_code):
+def response_boolean(response, true_code, false_code=None):
     """Validate a response code.
 
     Checks whether the given response has a ``status_code`` that is
     considered good (``true_code``) and raise an appropriate error if
     not.
 
+    The optional ``false_code`` allows for a non-successful status
+    code to return False instead of throwing an error. This is used,
+    for example in relationship mutation to indicate that the
+    relationship was not modified.
+
     Args:
 
         response(Response): A :class:`requests.Response` to validate
+
         true_code(int): The http status code to consider as a success
+
+    Keyword Args:
+
+        false_code(int): The http status code to consider a failure
 
     Returns:
 
@@ -29,6 +39,8 @@ def response_boolean(response, true_code):
         status_code = response.status_code
         if status_code == true_code:
             return True
+        if false_code is not None and status_code == false_code:
+            return False
         raise error_for(response)
 
 
