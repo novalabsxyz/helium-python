@@ -28,3 +28,17 @@ def test_include(client):
         sensors = element.sensors()
         included_sensors = element.sensors(use_included=True)
         assert set(sensors) == set(included_sensors)
+
+
+def test_sensor(client):
+    elements = Element.all(client, include=[Sensor])
+
+    def _has_sensors(elem):
+        return len(elem.sensors(use_included=True)) > 0
+
+    elements = filter(_has_sensors, elements)
+    assert len(elements) > 0
+
+    for element in elements:
+        for sensor in element.sensors(use_included=True):
+            assert sensor.element() == element
