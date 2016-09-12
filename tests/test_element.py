@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from helium import Element, Sensor
+from builtins import filter
 
 
 def test_elements(elements, first_element):
@@ -36,9 +37,11 @@ def test_sensor(client):
     def _has_sensors(elem):
         return len(elem.sensors(use_included=True)) > 0
 
-    elements = filter(_has_sensors, elements)
-    assert len(elements) > 0
+    elements = list(filter(_has_sensors, elements))
+    assert len(elements) > 0, "No elements with attached sensors found"
 
-    for element in elements:
-        for sensor in element.sensors(use_included=True):
-            assert sensor.element() == element
+    for elem in elements:
+        sensors = elem.sensors(use_included=True)
+        assert len(sensors) > 0
+        for sensor in sensors:
+            assert sensor.element() == elem

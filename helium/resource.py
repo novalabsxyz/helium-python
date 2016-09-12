@@ -285,7 +285,7 @@ class Resource(Base):
                     return resource.get('id') in related
                 # Filter all included objects for the resource type
                 # and whether they're related to this resource
-                return _filter(_resource_filter, self._included)
+                return list(_filter(_resource_filter, self._included))
 
             # Construct a dictionary of filtered included resources
             # and replace the initial stash

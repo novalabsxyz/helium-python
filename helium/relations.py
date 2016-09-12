@@ -83,11 +83,12 @@ def to_one(dest_class, **kwargs):
             url = session._build_url(cls._resource_type(), id,
                                      dest_resource_type)
             json = response_json(session.get(url), 200, extract=None)
-            return dest_class._mk_many(session, json)
+            return dest_class._mk_one(session, json)
 
         method.__doc__ = method_doc
         setattr(cls, dest_method_name, method)
         return cls
+
     return method_builder
 
 
