@@ -80,7 +80,7 @@ class Timeseries(Iterable):
 
     """
 
-    def __init__(self, session, resource_type, resource_id,
+    def __init__(self, session, resource_class, resource_id,
                  datapoint_class=DataPoint,
                  datapoint_id=None,
                  page_size=None,
@@ -92,10 +92,11 @@ class Timeseries(Iterable):
                  port=None):
         self._session = session
         self._datapoint_class = datapoint_class
-        self._base_url = session._build_url(resource_type,
+
+        self._resource_type = resource_class._resource_type()
+        self._base_url = session._build_url(self._resource_type,
                                             resource_id,
                                             'timeseries')
-        self._resource_type = resource_type
         self._resource_id = resource_id
         self._direction = direction
 
@@ -196,8 +197,7 @@ def timeseries():
 
         def method(self, **kwargs):
             resource_id = None if self.is_singleton() else self.id
-            return Timeseries(self._session, cls._resource_type(), resource_id,
-                              **kwargs)
+            return Timeseries(self._session, cls, resource_id, **kwargs)
 
         method.__doc__ = method_doc
         setattr(cls, 'timeseries', method)
