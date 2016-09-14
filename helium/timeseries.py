@@ -65,7 +65,7 @@ class Timeseries(Iterable):
     Args:
 
         session(Session): The session to use for timeseries requests
-        resource_type(string): The type of the resource to fetch timeseries for
+        resource_class(Resource): The Resource subclass class to fetch timeseries for
         resource_id(uuid): Id of the resource (if applicable) to fetch
             timeseries for
 
@@ -93,8 +93,8 @@ class Timeseries(Iterable):
         self._session = session
         self._datapoint_class = datapoint_class
 
-        self._resource_type = resource_class._resource_type()
-        self._base_url = session._build_url(self._resource_type,
+        self._resource_class = resource_class
+        self._base_url = session._build_url(resource_class._resource_type(),
                                             resource_id,
                                             'timeseries')
         self._resource_id = resource_id
