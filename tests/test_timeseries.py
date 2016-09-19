@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from itertools import islice
 from helium import from_iso_date
 from datetime import datetime
+from contextlib import closing
 
 
 def _feed_timeseries(timeseries, count):
@@ -51,3 +52,15 @@ def test_post(tmp_sensor):
     timestamp = datetime(2016, 8, 25)
     dp = timeseries.post('test2', 24, timestamp=timestamp)
     assert from_iso_date(dp.timestamp) == timestamp
+
+
+def test_live(tmp_sensor):
+    assert tmp_sensor is not None
+
+    # We're faking the cassette for a live session pretty hard
+    # here. The cassette was manually edited to reflect the
+    # event/text-stream data in a single request to work around
+    # betamax's problems with dealing with live sockets.
+    with closing(tmp_sensor.timeseries().live()) as live:
+        live_points = list(islice(live, 10))
+        assert len(live_points) == 2

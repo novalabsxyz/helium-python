@@ -12,6 +12,7 @@ from .util import (
 )
 from .resource import Base, Resource, ResourceMeta
 from .relations import RelationType, to_many, to_one
+from .live_session import LiveSession
 from .session import Session
 from .metadata import Metadata, metadata
 from .user import User
@@ -37,7 +38,7 @@ __all__ = (
     NotFoundError,
     Base, Resource, ResourceMeta,
     RelationType, to_one, to_many,
-    Session,
+    Session, LiveSession,
     Organization,
     User,
     Timeseries, DataPoint, timeseries,

@@ -2,9 +2,10 @@
 
 from __future__ import unicode_literals
 
-from . import Resource, response_json
+from . import Resource, response_json, response_boolean
 from . import to_iso_date
 from . import build_request_attributes
+from . import LiveSession
 from collections import Iterable
 
 
@@ -65,16 +66,22 @@ class Timeseries(Iterable):
     Args:
 
         session(Session): The session to use for timeseries requests
-        resource_class(Resource): The Resource subclass class to fetch timeseries for
+
+        resource_class(Resource): The Resource subclass class to fetch
+            timeseries for
+
         resource_id(uuid): Id of the resource (if applicable) to fetch
             timeseries for
 
     Keyword Args:
 
         datapoint_class(Resource): The class to use to construct datapoints
+
         datapoint_id(uuid): The datapoint id to start the timeseries
+
         page_size(int): The size of pages to fetch (defaults to server
             preference)
+
         direction("prev" or "next"): Whether to go backward ("prev") or
             forward ("next") in time
 
@@ -172,6 +179,44 @@ class Timeseries(Iterable):
         attributes = build_request_attributes('data-point', None, attributes)
         data = session.post(self._base_url, json=attributes)
         return datapoint_class(response_json(data, 201), session)
+
+    def live(self):
+        """Get a live stream of timeseries readings.
+
+        This returns an Iterable over a live stream of readings. Note
+        that the result will need to be closed since the system can
+        not tell when you'll be done with it.
+
+        You can either call ``close`` on the endpoint when you're done
+        with it or use the handy ``contextlib.closing`` function:
+
+
+        .. code-block:: python
+
+            from contextlib import closing
+
+            # Fetch a sensor
+            timeseries = sensor.timeseries()
+
+            # ensure live endpoint closed
+            with closing(timeseries.live()) as live:
+                # Wait for 10 readings
+                first10 = list(islice(live, 10))
+
+        Returns:
+
+
+
+        """
+        session = self._session
+        datapoint_class = self._datapoint_class
+        url = "{}/live".format(self._base_url)
+        headers = {
+            'Accept': 'text/event-stream'
+        }
+        response = session.get(url, stream=True, headers=headers)
+        response_boolean(response, 200)
+        return LiveSession(response, session, datapoint_class)
 
 
 def timeseries():
