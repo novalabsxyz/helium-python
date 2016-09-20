@@ -2,6 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/helium/helium-python.svg?branch=master)](https://travis-ci.org/helium/helium-python)
+[![Build status](https://ci.appveyor.com/api/projects/status/qrfieklw1yph7lkg?svg=true)](https://ci.appveyor.com/project/madninja/helium-python)
 [![Coverage Status](https://coveralls.io/repos/github/helium/helium-python/badge.svg?branch=master)](https://coveralls.io/github/helium/helium-python?branch=master)
 [![Code Climate](https://codeclimate.com/github/helium/helium-python/badges/gpa.svg)](https://codeclimate.com/github/helium/helium-python)
 [![Docs](https://readthedocs.org/projects/helium-python/badge/?version=latest)](http://helium-python.readthedocs.org/)
