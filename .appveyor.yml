@@ -1,0 +1,20 @@
+environment:
+
+  matrix:
+
+    # For Python versions available on Appveyor, see
+    # http://www.appveyor.com/docs/installed-software#python
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python35-x64"
+
+install:
+  - "%PYTHON%\\python.exe -m pip install --disable-pip-version-check --upgrade pip"
+  - "%PYTHON%\\python.exe -m pip install wheel"
+  - "%PYTHON%\\python.exe -m pip install tox"
+
+build: off
+
+test_script:
+  - "%PYTHON%\\Scripts\\tox -e py"
