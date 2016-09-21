@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from itertools import islice
 from helium import from_iso_date
-from datetime import datetime
+from datetime import datetime, timedelta
 from contextlib import closing
 
 
@@ -39,6 +39,37 @@ def test_iteration(tmp_sensor):
     for pp, dp in _paired_datapoints(posted, timeseries):
         # Ensure that the data points arrive in ascending time order
         _assert_point(pp, dp)
+
+
+def test_port(tmp_sensor):
+    timeseries = tmp_sensor.timeseries()
+    dp_foo = timeseries.post('foo', 22)
+    timeseries.post('bar', 22)
+
+    timeseries = tmp_sensor.timeseries(port='foo')
+
+    foos = list(islice(timeseries, 10))
+    assert len(foos) == 1
+    assert foos[0] == dp_foo
+
+
+def test_start_end(tmp_sensor):
+    timeseries = tmp_sensor.timeseries()
+    start_date = datetime(2016, 9, 1)
+
+    def _timestamp(day_offset):
+        return start_date + timedelta(days=day_offset)
+
+    points = [timeseries.post('test', 22, timestamp=_timestamp(day))
+              for day in range(5)]
+
+    timeseries = tmp_sensor.timeseries(start='2016-09-01', end='2016-09-02')
+    filter_points = list(timeseries)
+    assert filter_points == points[0:1]
+
+    timeseries = tmp_sensor.timeseries(start='2016-09-02', end='2016-09-06')
+    filter_points = list(timeseries)
+    assert filter_points == list(reversed(points[1:5]))
 
 
 def test_post(tmp_sensor):

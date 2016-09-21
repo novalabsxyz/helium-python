@@ -62,6 +62,14 @@ class Timeseries(Iterable):
     Note that each call to ``sensor.timeseries()`` will return a new
     timeseries object which you can iterate over.
 
+    You can filter timeseries data by specifying ``port``, ``start``
+    or ``end`` dates. Note that start and end dates support a relaxed
+    form of ISO8601:
+
+    .. code-block:: pytnon
+
+        timeseries = sensor.timeseries(start='2016-09-01',
+                                       end='2016-04-07T19:12:06Z')
 
     Args:
 
@@ -81,6 +89,12 @@ class Timeseries(Iterable):
 
         page_size(int): The size of pages to fetch (defaults to server
             preference)
+
+        port(string): The port name to filter readings on
+
+        start(string): Start date for timeseries (inclusive)
+
+        end(string): End date for timeseries (exclusive)
 
         direction("prev" or "next"): Whether to go backward ("prev") or
             forward ("next") in time
@@ -112,6 +126,12 @@ class Timeseries(Iterable):
             params['page[id]'] = datapoint_id
         if page_size is not None:
             params['page[size]'] = page_size
+        if port is not None:
+            params['filter[port]'] = port
+        if start is not None:
+            params['filter[start]'] = start
+        if end is not None:
+            params['filter[end]'] = end
         self._params = params
 
     def __iter__(self):
