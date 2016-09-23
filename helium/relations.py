@@ -68,7 +68,7 @@ def to_one(dest_class, **kwargs):
     """
     def method_builder(cls):
         dest_resource_type = dest_class._resource_type()
-        dest_method_name = dest_resource_type
+        dest_method_name = dest_resource_type.replace('-', '_')
 
         method_doc = """Fetch the {2} associated with this :class:`{0}`.
 
@@ -150,6 +150,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         src_resource_type = cls._resource_type()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = inflection.pluralize(dest_resource_type)
+        dest_method_name.replace('-', '_')
         doc_variables = {
             'from_class': cls.__name__,
             'to_class': dest_class.__name__,
