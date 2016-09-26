@@ -5,6 +5,7 @@ from itertools import islice
 from helium import from_iso_date
 from datetime import datetime, timedelta
 from contextlib import closing
+from helium import DataPoint
 
 
 def _feed_timeseries(timeseries, count):
@@ -95,3 +96,7 @@ def test_live(tmp_sensor):
     with closing(tmp_sensor.timeseries().live()) as live:
         live_points = list(islice(live, 10))
         assert len(live_points) == 2
+
+
+def test_datapoint():
+    assert DataPoint._resource_type() == 'timeseries'

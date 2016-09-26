@@ -276,8 +276,12 @@ class Resource(Base):
 
             def _filter_included(resource_type):
                 # Get the relationship list and store the ids
-                related = relationships.get(resource_type, {}).get('data', [])
-                related = frozenset([r.get('id') for r in related])
+                related = relationships.get(resource_type, {}).get('data', None) or []
+                if isinstance(related, dict):
+                    # to one relationship
+                    related = [related.get('id')]
+                else:
+                    related = frozenset([r.get('id') for r in related])
 
                 def _resource_filter(resource):
                     if resource.get('type') != resource_type:
@@ -294,8 +298,8 @@ class Resource(Base):
 
     def __eq__(self, other):
         """Check equality with another object."""
-        return (isinstance(other, self.__class__) and
-                self.id is not None and self.id == other.id)
+        return all([isinstance(other, self.__class__),
+                    self.id == other.id])
 
     def __ne__(self, other):
         """Well this would be the opposite of __eq__."""

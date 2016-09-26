@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 import inflection
-from builtins import filter as _filter
 from . import response_boolean, response_json
 from . import build_request_relationship, build_request_include
 
@@ -31,7 +30,8 @@ class RelationType(object):
     """Use the direct relationship approach"""
 
 
-def to_one(dest_class, **kwargs):
+def to_one(dest_class, type=RelationType.DIRECT,
+           reverse=None, reverse_type=RelationType.DIRECT):
     """Create a one to one relation to a given target :class:`Resource`.
 
     Args:
@@ -67,6 +67,7 @@ def to_one(dest_class, **kwargs):
 
     """
     def method_builder(cls):
+        src_resource_type = cls._resource_type()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type.replace('-', '_')
 
@@ -77,16 +78,55 @@ def to_one(dest_class, **kwargs):
           {1}: The :class:`{1}` of this :class:`{0}`
         """.format(cls.__name__, dest_class.__name__, dest_method_name)
 
-        def method(self):
+        def _fetch_relationship_included(self):
+            session = self._session
+            include = self._include
+            if include is None or dest_class not in include:
+                # You requested an included relationship that was
+                # not originally included
+                error = "{} was not included".format(dest_class.__name__)
+                raise AttributeError(error)
+            included = self._included.get(dest_resource_type)
+            if len(included) > 0:
+                return dest_class(included[0], session)
+            return None
+
+        def fetch_relationship_direct(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(cls._resource_type(), id,
+            url = session._build_url(src_resource_type, id,
                                      dest_resource_type)
-            json = response_json(session.get(url), 200, extract=None)
-            return dest_class._mk_one(session, json)
+            json = response_json(session.get(url), 200)
+            return dest_class(json, session)
 
-        method.__doc__ = method_doc
-        setattr(cls, dest_method_name, method)
+        def fetch_relationship_include(self, use_included=False):
+            if use_included:
+                return _fetch_relationship_included(self)
+            session = self._session
+            id = None if self.is_singleton() else self.id
+            url = session._build_url(src_resource_type, id)
+            params = build_request_include([dest_class], None)
+            json = response_json(session.get(url, params=params), 200,
+                                 extract='included')
+            if len(json) > 0:
+                return dest_class(json[0], session)
+            return None
+
+        if type == RelationType.DIRECT:
+            fetch_relationship = fetch_relationship_direct
+        elif type == RelationType.INCLUDE:
+            fetch_relationship = fetch_relationship_include
+        else:  # pragma: no cover
+            raise ValueError("Invalid RelationType: {}".format(type))
+
+        fetch_relationship.__doc__ = method_doc
+        setattr(cls, dest_method_name, fetch_relationship)
+
+        if reverse is not None:
+            reverse(cls, type=reverse_type)(dest_class)
+
         return cls
 
     return method_builder
@@ -149,8 +189,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
     def method_builder(cls):
         src_resource_type = cls._resource_type()
         dest_resource_type = dest_class._resource_type()
-        dest_method_name = inflection.pluralize(dest_resource_type)
-        dest_method_name.replace('-', '_')
+        dest_method_name = inflection.pluralize(dest_resource_type).replace('-', '_')
         doc_variables = {
             'from_class': cls.__name__,
             'to_class': dest_class.__name__,
