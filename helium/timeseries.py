@@ -24,6 +24,9 @@ class DataPoint(Resource):
         reading was taken
 
     """
+    @classmethod
+    def _resource_type(cls):
+        return "timeseries"
 
 
 class Timeseries(Iterable):
