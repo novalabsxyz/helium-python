@@ -6,7 +6,11 @@ from . import Resource, response_json, response_boolean
 from . import to_iso_date
 from . import build_request_attributes
 from . import LiveSession
-from collections import Iterable
+from collections import Iterable, namedtuple
+
+
+AggregateValue = namedtuple('AggregateValue', ['min', 'max', 'avg'])
+AggregateValue.__new__.__defaults__ = (None,) * len(AggregateValue._fields)
 
 
 class DataPoint(Resource):
@@ -27,6 +31,11 @@ class DataPoint(Resource):
     @classmethod
     def _resource_type(cls):
         return "timeseries"
+
+    def _promote_json_attribute(self, attribute, value):
+        if attribute == 'value' and isinstance(value, dict):
+            value = AggregateValue(**value)
+        super(DataPoint, self)._promote_json_attribute(attribute, value)
 
 
 class Timeseries(Iterable):
@@ -74,6 +83,26 @@ class Timeseries(Iterable):
         timeseries = sensor.timeseries(start='2016-09-01',
                                        end='2016-04-07T19:12:06Z')
 
+
+    You can aggregate numeric timeseries data by specifying
+    ``agg_type`` and ``agg_size``. For example, to aggregate minimum,
+    maximum and average temperature readings in 6 hour buckets:
+
+    .. code-block:: python
+
+        timeseries = sensor.timeseries(agg_type='min,max,avg',
+                                       agg_size='6h',
+                                       port='t')
+
+    The resulting data points will have an aggregate value that will
+    contain the requested aggregates as attributes:
+
+    .. code-block:: python
+
+        first = list(islice(timeseries, 1))[0]
+        print(first.value.min)
+
+
     Args:
 
         session(Session): The session to use for timeseries requests
@@ -98,6 +127,10 @@ class Timeseries(Iterable):
         start(string): Start date for timeseries (inclusive)
 
         end(string): End date for timeseries (exclusive)
+
+        agg_size(string): The size of the aggregation bucket
+
+        agg_type(string): The list of aggregations to perform
 
         direction("prev" or "next"): Whether to go backward ("prev") or
             forward ("next") in time
@@ -135,6 +168,10 @@ class Timeseries(Iterable):
             params['filter[start]'] = start
         if end is not None:
             params['filter[end]'] = end
+        if agg_type is not None:
+            params['agg[type]'] = agg_type
+        if agg_size is not None:
+            params['agg[size]'] = agg_size
         self._params = params
 
     def __iter__(self):

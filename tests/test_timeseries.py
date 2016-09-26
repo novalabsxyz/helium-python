@@ -73,6 +73,36 @@ def test_start_end(tmp_sensor):
     assert filter_points == list(reversed(points[1:5]))
 
 
+def test_aggrgation(first_sensor):
+    timeseries = first_sensor.timeseries(agg_type="min,max,avg",
+                                         agg_size="12h",
+                                         port="t")
+    filter_points = list(islice(timeseries, 10))
+
+    assert len(filter_points) > 0
+
+    def _assert_point(point):
+        assert point.id is not None
+        assert point.port == 'agg(t)'
+        assert point.value.min is not None
+        assert point.value.max is not None
+        assert point.value.avg is not None
+
+    for p in filter_points:
+        _assert_point(p)
+
+    timeseries = first_sensor.timeseries(agg_type="min",
+                                         agg_size="6h",
+                                         port="t")
+    filter_points = list(islice(timeseries, 1))
+    assert len(filter_points) > 0
+    point = filter_points[0]
+
+    assert point.value.min is not None
+    assert point.value.max is None
+    assert point.value.avg is None
+
+
 def test_post(tmp_sensor):
     timeseries = tmp_sensor.timeseries()
     dp = timeseries.post('test', 22)
