@@ -15,10 +15,11 @@ class LiveSession(Iterable):
     """
     _FIELD_SEPARATOR = ':'
 
-    def __init__(self, response, session, resource_class):
+    def __init__(self, response, session, resource_class, **resource_args):
         self._response = response
         self._session = session
         self._resource_class = resource_class
+        self._resource_args = resource_args
 
     def _read(self, response):
         data = ""
@@ -30,6 +31,7 @@ class LiveSession(Iterable):
 
     def __iter__(self):
         resource_class = self._resource_class
+        resource_args = self._resource_args
         session = self._session
         response = self._response
 
@@ -52,7 +54,7 @@ class LiveSession(Iterable):
                 continue
 
             event_data = load_json(event_data).get('data')
-            yield resource_class(event_data, session)
+            yield resource_class(event_data, session, **resource_args)
 
     def close(self):
         """Close the live session."""

@@ -28,12 +28,16 @@ class DataPoint(Resource):
         reading was taken
 
     """
+    def __init__(self, json, session, is_aggregate=False):
+        self._is_aggregate = is_aggregate
+        super(DataPoint, self).__init__(json, session)
+
     @classmethod
     def _resource_type(cls):
         return "timeseries"
 
     def _promote_json_attribute(self, attribute, value):
-        if attribute == 'value' and isinstance(value, dict):
+        if attribute == 'value' and self._is_aggregate:
             value = AggregateValue(**value)
         super(DataPoint, self)._promote_json_attribute(attribute, value)
 
@@ -156,6 +160,7 @@ class Timeseries(Iterable):
                                             'timeseries')
         self._resource_id = resource_id
         self._direction = direction
+        self._is_aggregate = False
 
         params = {}
         if datapoint_id is not None:
@@ -169,8 +174,10 @@ class Timeseries(Iterable):
         if end is not None:
             params['filter[end]'] = end
         if agg_type is not None:
+            self._is_aggregate = True
             params['agg[type]'] = agg_type
         if agg_size is not None:
+            self._is_aggregate = True
             params['agg[size]'] = agg_size
         self._params = params
 
@@ -180,6 +187,7 @@ class Timeseries(Iterable):
         datapoint_class = self._datapoint_class
         direction = self._direction
         params = self._params
+        is_aggregate = self._is_aggregate
 
         def _get_json(url):
             json = response_json(session.get(url, params=params), 200,
@@ -194,7 +202,8 @@ class Timeseries(Iterable):
         finished = False
         while not finished:
             for entry in data:
-                datapoint = datapoint_class(entry, session)
+                datapoint = datapoint_class(entry, session,
+                                            is_aggregate=is_aggregate)
                 yield datapoint
 
             if url is None:
@@ -270,13 +279,15 @@ class Timeseries(Iterable):
         """
         session = self._session
         datapoint_class = self._datapoint_class
+        is_aggregate = self._is_aggregate
         url = "{}/live".format(self._base_url)
         headers = {
             'Accept': 'text/event-stream'
         }
         response = session.get(url, stream=True, headers=headers)
         response_boolean(response, 200)
-        return LiveSession(response, session, datapoint_class)
+        return LiveSession(response, session, datapoint_class,
+                           is_aggregate=is_aggregate)
 
 
 def timeseries():
