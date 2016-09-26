@@ -9,7 +9,7 @@ from . import LiveSession
 from collections import Iterable, namedtuple
 
 
-AggregateValue = namedtuple('AggregateValue', ['min', 'max', 'avg'])
+AggregateValue = namedtuple('agg', ['min', 'max', 'avg'])
 AggregateValue.__new__.__defaults__ = (None,) * len(AggregateValue._fields)
 
 
