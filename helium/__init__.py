@@ -16,7 +16,7 @@ from .live_session import LiveSession
 from .session import Session
 from .metadata import Metadata, metadata
 from .user import User
-from .timeseries import Timeseries, DataPoint, timeseries
+from .timeseries import Timeseries, DataPoint, AggregateValue, timeseries
 from .sensor import Sensor
 from .label import Label
 from .element import Element
@@ -41,7 +41,7 @@ __all__ = (
     Session, LiveSession,
     Organization,
     User,
-    Timeseries, DataPoint, timeseries,
+    Timeseries, DataPoint, timeseries, AggregateValue,
     Sensor,
     Metadata, metadata,
     Element,
