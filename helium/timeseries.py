@@ -28,9 +28,9 @@ class DataPoint(Resource):
         reading was taken
 
     """
-    def __init__(self, json, session, is_aggregate=False):
-        self._is_aggregate = is_aggregate
-        super(DataPoint, self).__init__(json, session)
+    def __init__(self, json, session, **kwargs):
+        self._is_aggregate = kwargs.pop("is_aggregate", False)
+        super(DataPoint, self).__init__(json, session, **kwargs)
 
     @classmethod
     def _resource_type(cls):
