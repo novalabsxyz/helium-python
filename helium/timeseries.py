@@ -211,7 +211,7 @@ class Timeseries(Iterable):
             else:
                 json, data, url = _get_json(url)
 
-    def post(self, port, value, timestamp=None):
+    def create(self, port, value, timestamp=None):
         """Post a new reading to a timeseries.
 
         A reading is comprised of a `port`, a `value` and a timestamp.

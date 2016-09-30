@@ -9,7 +9,7 @@ from helium import DataPoint
 
 
 def _feed_timeseries(timeseries, count):
-    points = [timeseries.post('test{}'.format(v), v) for v in range(count)]
+    points = [timeseries.create('test{}'.format(v), v) for v in range(count)]
     return points
 
 
@@ -44,8 +44,8 @@ def test_iteration(tmp_sensor):
 
 def test_port(tmp_sensor):
     timeseries = tmp_sensor.timeseries()
-    dp_foo = timeseries.post('foo', 22)
-    timeseries.post('bar', 22)
+    dp_foo = timeseries.create('foo', 22)
+    timeseries.create('bar', 22)
 
     timeseries = tmp_sensor.timeseries(port='foo')
 
@@ -61,7 +61,7 @@ def test_start_end(tmp_sensor):
     def _timestamp(day_offset):
         return start_date + timedelta(days=day_offset)
 
-    points = [timeseries.post('test', 22, timestamp=_timestamp(day))
+    points = [timeseries.create('test', 22, timestamp=_timestamp(day))
               for day in range(5)]
 
     timeseries = tmp_sensor.timeseries(start='2016-09-01', end='2016-09-02')
@@ -105,14 +105,14 @@ def test_aggrgation(first_sensor):
 
 def test_post(tmp_sensor):
     timeseries = tmp_sensor.timeseries()
-    dp = timeseries.post('test', 22)
+    dp = timeseries.create('test', 22)
     assert dp.id is not None
     assert dp.value == 22
     assert dp.port == 'test'
     assert dp.timestamp is not None
 
     timestamp = datetime(2016, 8, 25)
-    dp = timeseries.post('test2', 24, timestamp=timestamp)
+    dp = timeseries.create('test2', 24, timestamp=timestamp)
     assert from_iso_date(dp.timestamp) == timestamp
 
 
