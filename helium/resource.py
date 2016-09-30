@@ -169,7 +169,7 @@ class Resource(Base):
                 this type
 
         """
-        url = session._build_url(cls._resource_type())
+        url = session._build_url(cls._resource_path())
         params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
@@ -197,7 +197,7 @@ class Resource(Base):
               :class:`NotFoundError` if the resource can not be found.
 
         """
-        url = session._build_url(cls._resource_type(), resource_id)
+        url = session._build_url(cls._resource_path(), resource_id)
         params = build_request_include(include, None)
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
@@ -221,7 +221,8 @@ class Resource(Base):
 
         """
         resource_type = cls._resource_type()
-        url = session._build_url(resource_type)
+        resource_path = cls._resource_path()
+        url = session._build_url(resource_path)
         attributes = build_request_attributes(resource_type, None, kwargs)
         json = response_json(session.post(url, json=attributes), 201,
                              extract=None)
@@ -247,7 +248,7 @@ class Resource(Base):
 
         """
         params = build_request_include(include, None)
-        url = session._build_url(cls._resource_type())
+        url = session._build_url(cls._resource_path())
         json = response_json(session.get(url, params=params), 200,
                              extract=None)
         return cls._mk_one(session, json, singleton=True, include=include)
@@ -255,6 +256,10 @@ class Resource(Base):
     @classmethod
     def _resource_type(cls):
         return cls.__name__.lower()
+
+    @classmethod
+    def _resource_path(cls):
+        return cls._resource_type()
 
     def _promote_json_attribute(self, attribute, value):
         if attribute == 'meta':
@@ -340,10 +345,11 @@ class Resource(Base):
 
         """
         resource_type = self._resource_type()
+        resource_path = self._resource_path()
         session = self._session
         singleton = self.is_singleton()
         id = None if singleton else self.id
-        url = session._build_url(resource_type, id)
+        url = session._build_url(resource_path, id)
         attributes = build_request_attributes(resource_type, self.id, kwargs)
         json = response_json(session.patch(url, json=attributes), 200,
                              extract=None)
@@ -359,5 +365,5 @@ class Resource(Base):
 
         """
         session = self._session
-        url = session._build_url(self._resource_type(), self.id)
+        url = session._build_url(self._resource_path(), self.id)
         return response_boolean(session.delete(url), 204)

@@ -67,7 +67,7 @@ def to_one(dest_class, type=RelationType.DIRECT,
 
     """
     def method_builder(cls):
-        src_resource_type = cls._resource_type()
+        src_resource_path = cls._resource_path()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type.replace('-', '_')
 
@@ -96,8 +96,7 @@ def to_one(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_type, id,
-                                     dest_resource_type)
+            url = session._build_url(src_resource_path, id, dest_resource_type)
             json = response_json(session.get(url), 200)
             return dest_class(json, session)
 
@@ -106,7 +105,7 @@ def to_one(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_type, id)
+            url = session._build_url(src_resource_path, id)
             params = build_request_include([dest_class], None)
             json = response_json(session.get(url, params=params), 200,
                                  extract='included')
@@ -188,6 +187,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
     """
     def method_builder(cls):
         src_resource_type = cls._resource_type()
+        src_resource_path = cls._resource_path()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = inflection.pluralize(dest_resource_type).replace('-', '_')
         doc_variables = {
@@ -219,7 +219,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_type, id)
+            url = session._build_url(src_resource_path, id)
             params = build_request_include([dest_class], None)
             json = response_json(session.get(url, params=params), 200,
                                  extract='included')
@@ -230,7 +230,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_type, id, dest_resource_type)
+            url = session._build_url(src_resource_path, id, dest_resource_type)
             json = response_json(session.get(url), 200, extract=None)
             return dest_class._mk_many(session, json)
 
@@ -246,7 +246,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         def _build_relatonship(self, objs):
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_type, id,
+            url = session._build_url(src_resource_path, id,
                                      'relationships', dest_resource_type)
             json = build_request_relationship(dest_resource_type,
                                               [obj.id for obj in objs])
