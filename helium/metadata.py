@@ -27,23 +27,23 @@ class Metadata(Resource):
 
     """
 
-    def __init__(self, json, session, target_resource_type):
+    def __init__(self, json, session, target_resource_path):
         super(Metadata, self).__init__(json, session)
-        self._target_resource_type = target_resource_type
+        self._target_resource_path = target_resource_path
 
     def _publish_metadata(self, publish, **kwargs):
         session = self._session
         resource_type = self.__class__._resource_type()
-        target_resource_type = self._target_resource_type
+        target_resource_path = self._target_resource_path
         target_resource_id = None if self.is_singleton() else self.id
-        url = session._build_url(target_resource_type, target_resource_id,
+        url = session._build_url(target_resource_path, target_resource_id,
                                  resource_type)
         attributes = build_request_attributes(resource_type,
                                               target_resource_id,
                                               kwargs)
         data = publish(url, json=attributes)
         return Metadata(response_json(data, 200), session,
-                        target_resource_type)
+                        target_resource_path)
 
     def update(self, **kwargs):
         """Update metadata.
@@ -102,10 +102,10 @@ def metadata():
         def method(self):
             session = self._session
             resource_id = None if self.is_singleton() else self.id
-            resource_type = cls._resource_type()
-            url = session._build_url(resource_type, resource_id, 'metadata')
+            resource_path = cls._resource_path()
+            url = session._build_url(resource_path, resource_id, 'metadata')
             data = session.get(url)
-            return Metadata(response_json(data, 200), session, resource_type)
+            return Metadata(response_json(data, 200), session, resource_path)
 
         method.__doc__ = method_doc
         setattr(cls, 'metadata', method)
