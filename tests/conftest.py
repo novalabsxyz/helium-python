@@ -34,9 +34,6 @@ def helium_recorder(request):
     if request.module is not None:
         cassette_name += request.module.__name__ + '.'
 
-    if request.cls is not None:
-        cassette_name += request.cls.__name__ + '.'
-
     cassette_name += request.function.__name__
 
     session = helium.Client(base_url=API_URL)

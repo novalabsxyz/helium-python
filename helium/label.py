@@ -1,13 +1,11 @@
 """The label resource."""
 
 from __future__ import unicode_literals
-from . import Resource, Sensor, RelationType
+from . import Resource, Sensor
 from . import to_many, metadata
 
 
-@to_many(Sensor, writable=True,
-         reverse=to_many,
-         reverse_type=RelationType.INCLUDE)
+@to_many(Sensor, writable=True, reverse=to_many)
 @metadata()
 class Label(Resource):
     @classmethod
