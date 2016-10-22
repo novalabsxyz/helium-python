@@ -2,79 +2,7 @@
 
 from __future__ import unicode_literals
 
-from .exceptions import error_for
 from datetime import datetime
-
-
-def response_boolean(response, true_code, false_code=None):
-    """Validate a response code.
-
-    Checks whether the given response has a ``status_code`` that is
-    considered good (``true_code``) and raise an appropriate error if
-    not.
-
-    The optional ``false_code`` allows for a non-successful status
-    code to return False instead of throwing an error. This is used,
-    for example in relationship mutation to indicate that the
-    relationship was not modified.
-
-    Args:
-
-        response(Response): A :class:`requests.Response` to validate
-
-        true_code(int): The http status code to consider as a success
-
-    Keyword Args:
-
-        false_code(int): The http status code to consider a failure
-
-    Returns:
-
-        ``True`` if the response's status code matches the given
-            code. Raises a :class:`HeliumError` if the response code
-            does not match.
-
-    """
-    if response is not None:
-        status_code = response.status_code
-        if status_code == true_code:
-            return True
-        if false_code is not None and status_code == false_code:
-            return False
-        raise error_for(response)
-
-
-def response_json(response, status_code, extract='data'):
-    """Validate and extract a JSON object.
-
-    Checks the given response for the given status_code using
-    :function:`respnse_boolean`. On success the response JSON is
-    extracted and the optional ``extract`` attribute from the top
-    level JSON object is returned.
-
-    Args:
-
-        response(Response): A :class:`requests.Response` to parse
-        status_code(int): The http status code to consider a success
-
-    Keywords Args:
-
-        extract(string): The optional JSON attribute to extract from the
-            response JSON
-
-    Returns:
-
-        The JSON object in the given response or the ``extract``ed
-        attribute from that response. Raises a :class:`HeliumError` if
-        the response code does not match.
-
-    """
-    ret = None
-    if response_boolean(response, status_code) and response.content:
-        ret = response.json()
-        if extract is not None:
-            ret = ret.get(extract)
-    return ret
 
 
 def from_iso_date(str):

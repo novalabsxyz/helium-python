@@ -4,15 +4,15 @@ from helium import Client
 # Session
 #
 def test_token_auth(client):
-    assert client.headers.get('Authorization') is not None
+    assert client.api_token is not None
 
-    client.token_auth('test_auth')
-    assert client.headers.get('Authorization') == 'test_auth'
+    client.api_token = 'test_auth'
+    assert client.api_token == 'test_auth'
     assert client.base_url is not None
 
     # Test api token on creation
     test_client = Client(api_token='test_auth')
-    assert test_client.headers.get('Authorization') == 'test_auth'
+    assert test_client.api_token == 'test_auth'
 
 
 # Client
