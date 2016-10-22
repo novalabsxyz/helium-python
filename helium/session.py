@@ -97,7 +97,7 @@ class Session(object):
                  base_url='https://api.helium.com/v1'):
         super(Session, self).__init__()
         if adapter is None:
-            from adapter.requests import Adapter
+            from helium.adapter.requests import Adapter
             self.adapter = Adapter()
         else:
             self.adapter = adapter
