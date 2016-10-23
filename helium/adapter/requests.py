@@ -1,4 +1,4 @@
-"""An adapter for the standard blocking requests library"""
+"""An adapter for the standard blocking requests library."""
 
 from __future__ import unicode_literals, absolute_import
 
@@ -9,19 +9,21 @@ from helium.__about__ import __version__
 
 
 class Live(Iterable):
-    """Represents a live SSE endpoint as an Iterable.
+    """Iterable over a live endpoint."""
 
-    Keyword Args:
-
-        response(Response): The response to a live endpoint request
-
-        session(Session): The session with Helium
-
-        resource_class(Resource): The class of resource to constructx
-    """
     _FIELD_SEPARATOR = ':'
 
     def __init__(self, response, session, resource_class, resource_args):
+        """Construct a live endpoint represented as an Iterable.
+
+        Keyword Args:
+
+            response(Response): The response to a live endpoint request
+
+            session(Session): The session with Helium
+
+            resource_class(Resource): The class of resource to construct
+        """
         self._response = response
         self._session = session
         self._resource_class = resource_class
@@ -36,6 +38,7 @@ class Live(Iterable):
             data = data + "\n" + line
 
     def __iter__(self):
+        """Iterate over lines looking for resources."""
         resource_class = self._resource_class
         resource_args = self._resource_args
         session = self._session
@@ -68,9 +71,10 @@ class Live(Iterable):
 
 
 class Adapter(requests.Session):
-    """Construct a basic requests session with the Helium API."""
+    """A synchronous adapter based on the `requests` library."""
 
     def __init__(self):
+        """Construct a basic requests session with the Helium API."""
         super(Adapter, self).__init__()
         self.headers.update({
             'Accept': 'application/json',
@@ -81,6 +85,7 @@ class Adapter(requests.Session):
 
     @property
     def api_token(self):
+        """The API token to use."""
         return self.headers.get('Authorization', None)
 
     @api_token.setter
@@ -89,30 +94,33 @@ class Adapter(requests.Session):
             'Authorization': api_token
         })
 
-    def get(self, url, callback, params=None, json=None, headers=None):
+    def get(self, url, callback,
+            params=None,
+            json=None,
+            headers=None):  # noqa: D102
         return callback(super(Adapter, self).get(url,
                                                  params=params,
                                                  json=json,
                                                  headers=headers))
 
-    def put(self, url, callback, params=None, json=None):
+    def put(self, url, callback, params=None, json=None):  # noqa: D102
         return callback(super(Adapter, self).put(url,
                                                  params=params,
                                                  json=json))
 
-    def post(self, url, callback, params=None, json=None):
+    def post(self, url, callback, params=None, json=None):  # noqa: D102
         return callback(super(Adapter, self).post(url,
                                                   params=params,
                                                   json=json))
 
-    def patch(self, url, callback, params=None, json=None):
+    def patch(self, url, callback, params=None, json=None):  # noqa: D102
         return callback(super(Adapter, self).patch(url,
                                                    params=params,
                                                    json=json))
 
-    def delete(self, url, callback, json=None):
+    def delete(self, url, callback, json=None):  # noqa: D102
         return callback(super(Adapter, self).delete(url, json=json))
 
-    def live(self, session, url, resource_class, resource_args):
+    def live(self, session, url, resource_class, resource_args):  # noqa: D102
         response = super(Adapter, self).get(url, stream=True)
         return Live(response, session, resource_class, resource_args)

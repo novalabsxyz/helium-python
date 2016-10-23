@@ -5,6 +5,14 @@ from .exceptions import error_for
 
 
 class CB(object):
+    """Convenience callback functions for sessions.
+
+    This class offers up convenience callback builders that make it
+    easy to use the callback session API to behave like a synchronous
+    API.
+
+    """
+
     @classmethod
     def boolean(cls, true_code, false_code=None):
         """Callback to validate a response code.
@@ -81,20 +89,30 @@ class CB(object):
 
 
 class Session(object):
-    """Construct a session with the Helium API.
+    """Manages a session with Helium Service.
 
-    This sets up the correct headers, content-types and
-    authentication, if provided
+    A session with the Helium service. A session is mostly a front for
+    an underlying adapter that implements the details of requesting
+    and handling the responses. Using the adapters allows the use of
+    different syncrhonous and asynchronous approaches. The default
+    adapter is a synchronous `requests` based adapter.
 
-    Keyword Args:
-        api_token: Your Helium API Token
-        base_url: The base URL to the Helium API
     """
 
     def __init__(self,
                  adapter=None,
                  api_token=None,
                  base_url='https://api.helium.com/v1'):
+        """Construct a session with the Helium API.
+
+        This sets up the correct headers, content-types and
+        authentication, if provided
+
+        Keyword Args:
+            adapter: The adapter to use for requests
+            api_token: Your Helium API Token
+            base_url: The base URL to the Helium API
+        """
         super(Session, self).__init__()
         if adapter is None:
             from helium.adapter.requests import Adapter
@@ -107,6 +125,7 @@ class Session(object):
 
     @property
     def api_token(self):
+        """The API token for to use for this session."""
         return self.adapter.api_token
 
     @api_token.setter
@@ -115,26 +134,144 @@ class Session(object):
 
     def get(self, url, callback, params=None, json=None,
             stream=False, headers=None):
+        """Get a URL.
+
+        Args:
+
+            callback(func): The response callback function
+
+        Keyword Args:
+
+            params(dict): Parameters for the request
+
+            json(dict): JSON body for the request
+
+            headers(dict): Additional headers for the request
+
+        Returns:
+
+            The result of the callback handling the resopnse from the
+                executed request
+
+        """
         return self.adapter.get(url, callback,
                                 params=params,
                                 json=json,
                                 headers=headers)
 
     def put(self, url, callback, params=None, json=None):
+        """Put to a URL.
+
+        Args:
+
+            url(string): URL for the request
+
+            callback(func): The response callback function
+
+        Keyword Args:
+
+            params(dict): Parameters for the request
+
+            json(dict): JSON body for the request
+
+        Returns:
+
+            The result of the callback handling the resopnse from the
+                executed request
+
+        """
         return self.adapter.put(url, callback, params=params, json=json)
 
     def post(self, url, callback, params=None, json=None):
+        """Post to a URL.
+
+        Args:
+
+            url(string): URL for the request
+
+            callback(func): The response callback function
+
+        Keyword Args:
+
+            params(dict): Parameters for the request
+
+            json(dict): JSON body for the request
+
+        Returns:
+
+            The result of the callback handling the resopnse from the
+                executed request
+
+        """
         return self.adapter.post(url, callback, params=params, json=json)
 
     def patch(self, url, callback, params=None, json=None):
+        """Patch a URL.
+
+        Args:
+
+            url(string): URL for the request
+
+            callback(func): The response callback function
+
+        Keyword Args:
+
+            params(dict): Parameters for the request
+
+            json(dict): JSON body for the request
+
+        Returns:
+
+            The result of the callback handling the resopnse from the
+                executed request
+
+        """
         return self.adapter.patch(url, callback,
                                   params=params,
                                   json=json)
 
     def delete(self, url, callback, json=None):
+        """Delete a URL.
+
+        Args:
+
+            url(string): URL for the request
+
+            callback(func): The response callback function
+
+        Keyword Args:
+
+            json(dict): JSON body for the request
+
+        Returns:
+
+            The result of the callback handling the resopnse from the
+                executed request
+
+        """
         return self.adapter.delete(url, callback, json=json)
 
     def live(self, url, resource_class, resource_args):
+        """Get a live endpoint.
+
+        Args:
+
+            url(string): URL for the request
+
+            resource_class(class): The class to use for entries coming
+                from the live endpoint.
+
+            resource_args(dict): Additional arguments to pass to the
+                `resource_class` constructor
+
+        Returns:
+
+            An iterator over the live endpoint. Depending on the
+                adapter the iterator will allow asynchronous
+                behavior. The default adapter will block while
+                iterating over the response of this method.
+
+        """
         return self.adapter.live(self, url, resource_class, resource_args)
 
     def _build_url(self, *args, **kwargs):
