@@ -1,9 +1,12 @@
 """Manage relationships between resources."""
 
 from __future__ import unicode_literals
-import inflection
-from . import response_boolean, response_json
-from . import build_request_relationship, build_request_include
+from inflection import pluralize
+from . import (
+    CB,
+    build_request_relationship,
+    build_request_include
+)
 
 
 class RelationType(object):
@@ -97,7 +100,7 @@ def to_one(dest_class, type=RelationType.DIRECT,
             session = self._session
             id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_path, id, dest_resource_type)
-            json = response_json(session.get(url), 200)
+            json = session.get(url, CB.json(200))
             return dest_class(json, session) if json else None
 
         def fetch_relationship_include(self, use_included=False):
@@ -107,8 +110,8 @@ def to_one(dest_class, type=RelationType.DIRECT,
             id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_path, id)
             params = build_request_include([dest_class], None)
-            json = response_json(session.get(url, params=params), 200,
-                                 extract='included')
+            json = session.get(url, CB.json(200, extract='included'),
+                               params=params)
             if len(json) > 0:
                 return dest_class(json[0], session)
             return None
@@ -189,7 +192,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         src_resource_type = cls._resource_type()
         src_resource_path = cls._resource_path()
         dest_resource_type = dest_class._resource_type()
-        dest_method_name = inflection.pluralize(dest_resource_type).replace('-', '_')
+        dest_method_name = pluralize(dest_resource_type).replace('-', '_')
         doc_variables = {
             'from_class': cls.__name__,
             'to_class': dest_class.__name__,
@@ -221,8 +224,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
             id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_path, id)
             params = build_request_include([dest_class], None)
-            json = response_json(session.get(url, params=params), 200,
-                                 extract='included')
+            json = session.get(url, CB.json(200, extract='included'),
+                               params=params)
             return [dest_class(entry, session) for entry in json]
 
         def fetch_relationship_direct(self, use_included=False):
@@ -231,7 +234,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
             session = self._session
             id = None if self.is_singleton() else self.id
             url = session._build_url(src_resource_path, id, dest_resource_type)
-            json = response_json(session.get(url), 200, extract=None)
+            json = session.get(url, CB.json(200, extract=None))
             return dest_class._mk_many(session, json)
 
         if type == RelationType.DIRECT:
@@ -264,8 +267,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 True if the relationship was mutated, False otherwise
             """
             session, url, json = _build_relatonship(self, resources)
-            return response_boolean(session.post(url, json=json), 200,
-                                    false_code=204)
+            return session.post(url, CB.boolean(200, false_code=204),
+                                json=json)
 
         def remove_many(self, resources):
             """Remove {to_name} from this :class:`{from_class}`.
@@ -279,8 +282,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 True if the relationship was mutated, False otherwise
             """
             session, url, json = _build_relatonship(self, resources)
-            return response_boolean(session.delete(url, json=json), 200,
-                                    false_code=204)
+            return session.delete(url, CB.boolean(200, false_code=204),
+                                  json=json)
 
         def update_method(self, resources):
             """Set the {to_name} for this :class:`{from_class}`.
@@ -296,7 +299,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 True if successful
             """
             session, url, json = _build_relatonship(self, resources)
-            return response_boolean(session.patch(url, json=json), 200)
+            return session.patch(url, CB.boolean(200), json=json)
 
         methods = [(dest_method_name, fetch_relationship)]
         if writable:

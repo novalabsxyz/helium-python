@@ -3,9 +3,12 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from builtins import filter as _filter
-from . import response_boolean, response_json
-from . import build_request_attributes, build_request_include
-from . import from_iso_date
+from . import (
+    CB,
+    build_request_attributes,
+    build_request_include,
+    from_iso_date
+)
 
 
 class Base(object):
@@ -171,8 +174,7 @@ class Resource(Base):
         """
         url = session._build_url(cls._resource_path())
         params = build_request_include(include, None)
-        json = response_json(session.get(url, params=params), 200,
-                             extract=None)
+        json = session.get(url, CB.json(200, extract=None), params=params)
         return cls._mk_many(session, json, include=include)
 
     @classmethod
@@ -199,8 +201,7 @@ class Resource(Base):
         """
         url = session._build_url(cls._resource_path(), resource_id)
         params = build_request_include(include, None)
-        json = response_json(session.get(url, params=params), 200,
-                             extract=None)
+        json = session.get(url, CB.json(200, extract=None), params=params)
         return cls._mk_one(session, json, include=include)
 
     @classmethod
@@ -224,8 +225,7 @@ class Resource(Base):
         resource_path = cls._resource_path()
         url = session._build_url(resource_path)
         attributes = build_request_attributes(resource_type, None, kwargs)
-        json = response_json(session.post(url, json=attributes), 201,
-                             extract=None)
+        json = session.post(url, CB.json(201, extract=None), json=attributes)
         return cls._mk_one(session, json)
 
     @classmethod
@@ -249,8 +249,7 @@ class Resource(Base):
         """
         params = build_request_include(include, None)
         url = session._build_url(cls._resource_path())
-        json = response_json(session.get(url, params=params), 200,
-                             extract=None)
+        json = session.get(url, CB.json(200, extract=None), params=params)
         return cls._mk_one(session, json, singleton=True, include=include)
 
     @classmethod
@@ -351,8 +350,7 @@ class Resource(Base):
         id = None if singleton else self.id
         url = session._build_url(resource_path, id)
         attributes = build_request_attributes(resource_type, self.id, kwargs)
-        json = response_json(session.patch(url, json=attributes), 200,
-                             extract=None)
+        json = session.patch(url, CB.json(200, extract=None), json=attributes)
         return self._mk_one(session, json, singleton=singleton)
 
     def delete(self):
@@ -366,4 +364,4 @@ class Resource(Base):
         """
         session = self._session
         url = session._build_url(self._resource_path(), self.id)
-        return response_boolean(session.delete(url), 204)
+        return session.delete(url, CB.boolean(204))

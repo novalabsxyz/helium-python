@@ -1,7 +1,7 @@
 """The metadata resource."""
 
 from __future__ import unicode_literals
-from . import Resource, response_json, build_request_attributes
+from . import Resource, CB, build_request_attributes
 
 
 class Metadata(Resource):
@@ -41,9 +41,8 @@ class Metadata(Resource):
         attributes = build_request_attributes(resource_type,
                                               target_resource_id,
                                               kwargs)
-        data = publish(url, json=attributes)
-        return Metadata(response_json(data, 200), session,
-                        target_resource_path)
+        json = publish(url, CB.json(200), json=attributes)
+        return Metadata(json, session, target_resource_path)
 
     def update(self, **kwargs):
         """Update metadata.
@@ -104,8 +103,8 @@ def metadata():
             resource_id = None if self.is_singleton() else self.id
             resource_path = cls._resource_path()
             url = session._build_url(resource_path, resource_id, 'metadata')
-            data = session.get(url)
-            return Metadata(response_json(data, 200), session, resource_path)
+            json = session.get(url, CB.json(200))
+            return Metadata(json, session, resource_path)
 
         method.__doc__ = method_doc
         setattr(cls, 'metadata', method)

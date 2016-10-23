@@ -2,10 +2,9 @@
 
 from __future__ import unicode_literals
 
-from . import Resource, response_json, response_boolean
+from . import Resource, CB
 from . import to_iso_date
 from . import build_request_attributes
-from . import LiveSession
 from collections import Iterable, namedtuple
 
 
@@ -82,7 +81,7 @@ class Timeseries(Iterable):
     or ``end`` dates. Note that start and end dates support a relaxed
     form of ISO8601:
 
-    .. code-block:: pytnon
+    .. code-block:: python
 
         timeseries = sensor.timeseries(start='2016-09-01',
                                        end='2016-04-07T19:12:06Z')
@@ -190,8 +189,7 @@ class Timeseries(Iterable):
         is_aggregate = self._is_aggregate
 
         def _get_json(url):
-            json = response_json(session.get(url, params=params), 200,
-                                 extract=None)
+            json = session.get(url, CB.json(200, extract=None), params=params)
             data = json.get('data')
             link = json.get('links')
             link = link.get(direction)
@@ -246,8 +244,8 @@ class Timeseries(Iterable):
         if timestamp is not None:
             attributes['timestamp'] = to_iso_date(timestamp)
         attributes = build_request_attributes('data-point', None, attributes)
-        data = session.post(self._base_url, json=attributes)
-        return datapoint_class(response_json(data, 201), session)
+        json = session.post(self._base_url, CB.json(201), json=attributes)
+        return datapoint_class(json, session)
 
     def live(self):
         """Get a live stream of timeseries readings.
@@ -278,16 +276,10 @@ class Timeseries(Iterable):
 
         """
         session = self._session
-        datapoint_class = self._datapoint_class
-        is_aggregate = self._is_aggregate
         url = "{}/live".format(self._base_url)
-        headers = {
-            'Accept': 'text/event-stream'
-        }
-        response = session.get(url, stream=True, headers=headers)
-        response_boolean(response, 200)
-        return LiveSession(response, session, datapoint_class,
-                           is_aggregate=is_aggregate)
+        return session.live(url, self._datapoint_class, {
+            'is_aggregate': self._is_aggregate
+        })
 
 
 def timeseries():

@@ -5,8 +5,8 @@ author_email = 'hello@helium.com'
 packages = ['helium']
 requires = [
     "future>=0.15",
+    "gevent>=1.1.2",
     "requests<2.11",
-    "uritemplate>=0.6",
     "inflection>=0.3",
 ]
 setup_requires = [
