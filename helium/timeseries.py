@@ -81,7 +81,7 @@ class Timeseries(Iterable):
     or ``end`` dates. Note that start and end dates support a relaxed
     form of ISO8601:
 
-    .. code-block:: pytnon
+    .. code-block:: python
 
         timeseries = sensor.timeseries(start='2016-09-01',
                                        end='2016-04-07T19:12:06Z')
