@@ -2,6 +2,16 @@
 
 from __future__ import unicode_literals
 from .exceptions import error_for
+from collections import namedtuple
+from json import loads as load_json
+
+
+class Response(namedtuple('Response', ['status', 'headers', 'body',
+                                       'request_method', 'request_url'])):
+    __slots__ = ()
+
+    def json(self):
+        return load_json(self.body)
 
 
 class CB(object):
@@ -44,7 +54,7 @@ class CB(object):
         """
         def func(response):
             if response is not None:
-                status_code = response.status_code
+                status_code = response.status
                 if status_code == true_code:
                     return True
                 if false_code is not None and status_code == false_code:
@@ -53,38 +63,29 @@ class CB(object):
         return func
 
     @classmethod
-    def json(cls, status_code, extract='data'):
+    def json(cls, status_code, process):
         """Callback to validate and extract a JSON object.
 
         The returned callback checks a given response for the given
-        status_code using :function:`respnse_boolean`. On success the
-        response JSON is extracted and the optional ``extract``
-        attribute from the top level JSON object is returned.
+        status_code using :function:`response_boolean`. On success the
+        response JSON is parsed and returned.
 
         Args:
 
             status_code(int): The http status code to consider a success
 
-        Keywords Args:
-
-            extract(string): The optional JSON attribute to extract from the
-                response JSON
-
         Returns:
 
             A function that given a response returns the JSON object
-                in the given response or the ``extract``ed attribute
-                from that response. Raises a :class:`HeliumError` if
+                in the given response. Raises a :class:`HeliumError` if
                 the response code does not match.
 
         """
         def func(response):
             ret = None
-            if cls.boolean(status_code)(response) and response.content:
-                ret = response.json()
-                if extract is not None:
-                    ret = ret.get(extract)
-            return ret
+            if cls.boolean(status_code)(response):
+                ret = response.json() or {}
+            return process(ret)
         return func
 
 
@@ -114,11 +115,10 @@ class Session(object):
             base_url: The base URL to the Helium API
         """
         super(Session, self).__init__()
-        if adapter is None:
+        self.adapter = adapter
+        if self.adapter is None:
             from helium.adapter.requests import Adapter
             self.adapter = Adapter()
-        else:
-            self.adapter = adapter
         self.base_url = base_url
         if api_token:
             self.api_token = api_token
@@ -250,6 +250,9 @@ class Session(object):
 
         """
         return self.adapter.delete(url, callback, json=json)
+
+    def datapoints(self, timeseries):
+        return self.adapter.datapoints(timeseries)
 
     def live(self, url, resource_class, resource_args):
         """Get a live endpoint.

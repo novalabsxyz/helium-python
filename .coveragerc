@@ -6,3 +6,6 @@ exclude_lines =
     def __repr__
 
 show_missing = True
+[run]
+omit =
+     tests/*

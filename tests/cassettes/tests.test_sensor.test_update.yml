@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: !!python/unicode '{"data": {"attributes": {"name": "test"}, "type": "sensor"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"bd7285f2-a729-45bf-8f4c-d759c8ece9ea","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"bd7285f2-a729-45bf-8f4c-d759c8ece9ea","meta":{"card":null,"mac":null,"created":"2016-11-05T00:44:36.988787Z","last-seen":null,"ports":[],"updated":"2016-11-05T00:44:36.988787Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [never breaks eye contact]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['420']
+      content-type: [application/json]
+      date: ['Sat, 05 Nov 2016 00:44:36 GMT']
+      location: [/v1/sensor/bd7285f2-a729-45bf-8f4c-d759c8ece9ea]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: !!python/unicode '{"data": {"attributes": {"name": "bar"}, "type": "sensor",
+      "id": "bd7285f2-a729-45bf-8f4c-d759c8ece9ea"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['105']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: PATCH
+    uri: https://api.helium.com/v1/sensor/bd7285f2-a729-45bf-8f4c-d759c8ece9ea
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"bar"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"bd7285f2-a729-45bf-8f4c-d759c8ece9ea","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"bd7285f2-a729-45bf-8f4c-d759c8ece9ea","meta":{"card":null,"mac":null,"created":"2016-11-05T00:44:36.988787Z","last-seen":null,"ports":[],"updated":"2016-11-05T00:44:37.058817Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [blame me if inappropriate]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      connection: [keep-alive]
+      content-length: ['419']
+      content-type: [application/json]
+      date: ['Sat, 05 Nov 2016 00:44:36 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/bd7285f2-a729-45bf-8f4c-d759c8ece9ea
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [firm pat on the back]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Sat, 05 Nov 2016 00:44:36 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

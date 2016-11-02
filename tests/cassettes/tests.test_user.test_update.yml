@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/user
+  response:
+    body: {string: '{"data":{"attributes":{"name":"Helium Dev Account"},"id":"dev-accounts@helium.co","meta":{"email":"dev-accounts@helium.co","created":"2014-10-29T21:38:52Z","pending_invite":false,"updated":"2016-11-04T23:37:03.282675Z"},"type":"user"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [sharkfed]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:53:11 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['235']
+    status: {code: 200, message: OK}
+- request:
+    body: '{"data": {"attributes": {"name": "bar"}, "type": "user", "id": "dev-accounts@helium.co"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['89']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: PATCH
+    uri: https://api.helium.com/v1/user
+  response:
+    body: {string: '{"data":{"attributes":{"name":"bar"},"id":"dev-accounts@helium.co","meta":{"email":"dev-accounts@helium.co","created":"2014-10-29T21:38:52Z","pending_invite":false,"updated":"2016-11-04T23:53:12.003619Z"},"type":"user"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [never breaks eye contact]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:53:11 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['220']
+    status: {code: 200, message: OK}
+- request:
+    body: '{"data": {"attributes": {"name": "Helium Dev Account"}, "type": "user",
+      "id": "dev-accounts@helium.co"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['104']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: PATCH
+    uri: https://api.helium.com/v1/user
+  response:
+    body: {string: '{"data":{"attributes":{"name":"Helium Dev Account"},"id":"dev-accounts@helium.co","meta":{"email":"dev-accounts@helium.co","created":"2014-10-29T21:38:52Z","pending_invite":false,"updated":"2016-11-04T23:53:12.065874Z"},"type":"user"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [sharkfed]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:53:11 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['235']
+    status: {code: 200, message: OK}
+version: 1

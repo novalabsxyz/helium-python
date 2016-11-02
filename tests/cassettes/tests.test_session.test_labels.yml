@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/label
+  response:
+    body: {string: '{"data":[{"attributes":{"name":"Andrew''s stuff"},"relationships":{"metadata":{"data":{"id":"415e6377-2bc1-46c6-a76c-782e5e7c652d","type":"metadata"}},"sensor":{"data":[{"id":"f928df8f-9cda-4313-9cf7-cffee5d57050","type":"sensor"},{"id":"492759da-afb0-4d66-a83c-bb001d20c280","type":"sensor"}]}},"id":"415e6377-2bc1-46c6-a76c-782e5e7c652d","meta":{"created":"2016-04-11T15:40:33.011466Z","updated":"2016-06-28T13:49:14.065837Z"},"type":"label"},{"attributes":{"name":"Bricks"},"relationships":{"metadata":{"data":{"id":"968cc881-737e-4bff-bdd6-2af45992fe86","type":"metadata"}},"sensor":{"data":[{"id":"f928df8f-9cda-4313-9cf7-cffee5d57050","type":"sensor"},{"id":"c7b11d08-8534-46e4-a14d-0a9306c899b7","type":"sensor"},{"id":"aba370be-837d-4b41-bee5-686b0069d874","type":"sensor"},{"id":"01d53511-228d-4530-8eaf-74d43c17baa8","type":"sensor"}]}},"id":"968cc881-737e-4bff-bdd6-2af45992fe86","meta":{"created":"2016-03-30T21:42:22.654635Z","updated":"2016-03-30T21:42:24.772556Z"},"type":"label"},{"attributes":{"name":"Copy
+        of New Label PR 55"},"relationships":{"metadata":{"data":{"id":"ae4c96d5-cdc9-4dff-a3ec-c08f0565ef69","type":"metadata"}},"sensor":{"data":[{"id":"b3bb7dcb-8829-4146-920a-7ae0994a1f03","type":"sensor"},{"id":"b13e543c-05a4-49c9-9e35-c091fe34283f","type":"sensor"},{"id":"1f80532a-2c17-48d5-a4ee-f8e27394a3c8","type":"sensor"},{"id":"0d0a87ff-84c3-473c-b349-4af6122c1644","type":"sensor"}]}},"id":"ae4c96d5-cdc9-4dff-a3ec-c08f0565ef69","meta":{"created":"2016-11-04T12:02:04.30877Z","updated":"2016-11-04T12:52:35.683828Z"},"type":"label"},{"attributes":{"name":"Weather
+        Label"},"relationships":{"metadata":{"data":{"id":"b5315d04-7bae-4184-8a7a-4f324dd11c8f","type":"metadata"}},"sensor":{"data":[{"id":"b3bb7dcb-8829-4146-920a-7ae0994a1f03","type":"sensor"},{"id":"b13e543c-05a4-49c9-9e35-c091fe34283f","type":"sensor"},{"id":"1f80532a-2c17-48d5-a4ee-f8e27394a3c8","type":"sensor"}]}},"id":"b5315d04-7bae-4184-8a7a-4f324dd11c8f","meta":{"created":"2016-04-20T17:12:27.433813Z","updated":"2016-06-20T15:14:07.393642Z"},"type":"label"},{"attributes":{"name":"C''mon
+        in."},"relationships":{"metadata":{"data":{"id":"bfd8e8ff-e4b7-4561-ac7e-81178b9868d5","type":"metadata"}},"sensor":{"data":[{"id":"b427abef-ef0e-4429-9128-b919faea0bd4","type":"sensor"},{"id":"66ae4160-64a2-41d9-bbe0-891b70e71b1e","type":"sensor"},{"id":"51f3564d-bfb9-4b77-b868-fa83f1de2f39","type":"sensor"},{"id":"0d0a87ff-84c3-473c-b349-4af6122c1644","type":"sensor"},{"id":"08bab58b-d095-4c7c-912c-1f8024d91d95","type":"sensor"}]}},"id":"bfd8e8ff-e4b7-4561-ac7e-81178b9868d5","meta":{"created":"2016-03-25T18:26:01.066572Z","updated":"2016-03-25T18:26:11.618124Z"},"type":"label"},{"attributes":{"name":"SF
+        Freezer"},"relationships":{"metadata":{"data":{"id":"d1e5ee93-14fd-44de-8a0e-77e49f451c5a","type":"metadata"}},"sensor":{"data":[{"id":"b427abef-ef0e-4429-9128-b919faea0bd4","type":"sensor"}]}},"id":"d1e5ee93-14fd-44de-8a0e-77e49f451c5a","meta":{"created":"2016-03-24T23:45:04.049993Z","updated":"2016-06-20T15:15:55.980414Z"},"type":"label"},{"attributes":{"name":"SF
+        Sensors"},"relationships":{"metadata":{"data":{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"metadata"}},"sensor":{"data":[{"id":"c7b11d08-8534-46e4-a14d-0a9306c899b7","type":"sensor"},{"id":"b427abef-ef0e-4429-9128-b919faea0bd4","type":"sensor"},{"id":"aba370be-837d-4b41-bee5-686b0069d874","type":"sensor"},{"id":"08bab58b-d095-4c7c-912c-1f8024d91d95","type":"sensor"}]}},"id":"d81df823-a7a9-4476-b624-888f9fc56390","meta":{"created":"2016-03-04T17:45:08.084425Z","updated":"2016-06-20T15:14:29.327186Z"},"type":"label"},{"attributes":{"name":"The
+        Isotopes"},"relationships":{"metadata":{"data":{"id":"d85ae875-1d02-4ed1-84f3-c5949bcda1d9","type":"metadata"}},"sensor":{"data":[{"id":"66ae4160-64a2-41d9-bbe0-891b70e71b1e","type":"sensor"},{"id":"51f3564d-bfb9-4b77-b868-fa83f1de2f39","type":"sensor"},{"id":"08bab58b-d095-4c7c-912c-1f8024d91d95","type":"sensor"}]}},"id":"d85ae875-1d02-4ed1-84f3-c5949bcda1d9","meta":{"created":"2016-03-04T16:14:16.090864Z","updated":"2016-03-04T16:14:16.090864Z"},"type":"label"},{"attributes":{"name":"Jared
+        Testing #435"},"relationships":{"metadata":{"data":{"id":"da7412f3-1493-4d35-9534-b49e48eb0fe7","type":"metadata"}},"sensor":{"data":[{"id":"b13e543c-05a4-49c9-9e35-c091fe34283f","type":"sensor"},{"id":"1f80532a-2c17-48d5-a4ee-f8e27394a3c8","type":"sensor"}]}},"id":"da7412f3-1493-4d35-9534-b49e48eb0fe7","meta":{"created":"2016-07-14T21:53:51.269855Z","updated":"2016-07-14T21:54:12.57611Z"},"type":"label"}]}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [firm pat on the back]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:53:08 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['4532']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/label/415e6377-2bc1-46c6-a76c-782e5e7c652d
+  response:
+    body: {string: '{"data":{"attributes":{"name":"Andrew''s stuff"},"relationships":{"metadata":{"data":{"id":"415e6377-2bc1-46c6-a76c-782e5e7c652d","type":"metadata"}},"sensor":{"data":[{"id":"492759da-afb0-4d66-a83c-bb001d20c280","type":"sensor"},{"id":"f928df8f-9cda-4313-9cf7-cffee5d57050","type":"sensor"}]}},"id":"415e6377-2bc1-46c6-a76c-782e5e7c652d","meta":{"created":"2016-04-11T15:40:33.011466Z","updated":"2016-06-28T13:49:14.065837Z"},"type":"label"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [sharkfed]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:53:07 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['443']
+    status: {code: 200, message: OK}
+version: 1

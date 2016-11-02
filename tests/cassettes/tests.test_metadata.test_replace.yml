@@ -1,0 +1,125 @@
+interactions:
+- request:
+    body: '{"data": {"attributes": {"name": "test"}, "type": "sensor"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"9188e615-6a39-433b-9f48-02286e6f1a89","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"9188e615-6a39-433b-9f48-02286e6f1a89","meta":{"card":null,"mac":null,"created":"2016-11-04T23:52:58.466728Z","last-seen":null,"ports":[],"updated":"2016-11-04T23:52:58.466728Z"},"type":"sensor"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [sharkfed]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:52:57 GMT']
+      Location: [/v1/sensor/9188e615-6a39-433b-9f48-02286e6f1a89]
+      Server: [Warp/3.2.7]
+      content-length: ['420']
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/9188e615-6a39-433b-9f48-02286e6f1a89/metadata
+  response:
+    body: {string: '{"data":{"attributes":{},"id":"9188e615-6a39-433b-9f48-02286e6f1a89","type":"metadata"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [javascript doesn't have integers]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:52:58 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['88']
+    status: {code: 200, message: OK}
+- request:
+    body: '{"data": {"attributes": {"foo": 22}, "type": "metadata", "id": "9188e615-6a39-433b-9f48-02286e6f1a89"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['103']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: PATCH
+    uri: https://api.helium.com/v1/sensor/9188e615-6a39-433b-9f48-02286e6f1a89/metadata
+  response:
+    body: {string: '{"data":{"attributes":{"foo":22},"id":"9188e615-6a39-433b-9f48-02286e6f1a89","type":"metadata"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [sharkfed]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:52:58 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['96']
+    status: {code: 200, message: OK}
+- request:
+    body: '{"data": {"attributes": {"bar": 42}, "type": "metadata", "id": "9188e615-6a39-433b-9f48-02286e6f1a89"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['103']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: PUT
+    uri: https://api.helium.com/v1/sensor/9188e615-6a39-433b-9f48-02286e6f1a89/metadata
+  response:
+    body: {string: '{"data":{"attributes":{"bar":42},"id":"9188e615-6a39-433b-9f48-02286e6f1a89","type":"metadata"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [never breaks eye contact]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o14,p11,o20,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:52:58 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['96']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/9188e615-6a39-433b-9f48-02286e6f1a89
+  response:
+    body: {string: ''}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: ['WARNING: ulimit -n is 1024']
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      Connection: [keep-alive]
+      Date: ['Fri, 04 Nov 2016 23:52:58 GMT']
+      Server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

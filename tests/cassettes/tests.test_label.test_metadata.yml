@@ -1,0 +1,100 @@
+interactions:
+- request:
+    body: '{"data": {"attributes": {"name": "temp-label"}, "type": "label"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['65']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/label
+  response:
+    body: {string: '{"data":{"attributes":{"name":"temp-label"},"relationships":{"metadata":{"data":{"id":"a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f","type":"metadata"}},"sensor":{"data":[]}},"id":"a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f","meta":{"created":"2016-11-04T23:55:17.997945Z","updated":"2016-11-04T23:55:17.997945Z"},"type":"label"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: ['$300,000 worth of cows']
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:55:17 GMT']
+      Location: [/v1/label/a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f]
+      Server: [Warp/3.2.7]
+      content-length: ['316']
+    status: {code: 201, message: Created}
+- request:
+    body: '{"data": []}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['12']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: PATCH
+    uri: https://api.helium.com/v1/label/a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f/relationships/sensor
+  response:
+    body: {string: '{"data":[]}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [firm pat on the back]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:55:18 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['11']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/label/a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f/metadata
+  response:
+    body: {string: '{"data":{"attributes":{},"id":"a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f","type":"metadata"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: ['WARNING: ulimit -n is 1024']
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Fri, 04 Nov 2016 23:55:17 GMT']
+      Server: [Warp/3.2.7]
+      content-length: ['88']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/label/a9ac1c44-29a9-4922-a5e0-b48e6e1fed7f
+  response:
+    body: {string: ''}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [RB_GC_GUARD]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      Connection: [keep-alive]
+      Date: ['Fri, 04 Nov 2016 23:55:18 GMT']
+      Server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

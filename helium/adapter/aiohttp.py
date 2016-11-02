@@ -2,21 +2,21 @@
 
 from __future__ import unicode_literals, absolute_import
 
-import requests
-from collections import Iterable, Iterator, deque, OrderedDict
-from json import loads as load_json
+import aiohttp
+
+from collections import AsyncIterable, deque
+from json import loads as load_json, dumps as dump_json
 from helium.__about__ import __version__
 from helium.session import Response, CB
-from itertools import islice
 
 
-class LiveIterator(Iterable):
+class LiveIterator(AsyncIterable):
     """Iterable over a live endpoint."""
 
     _FIELD_SEPARATOR = ':'
 
     def __init__(self, response, session, resource_class, resource_args):
-        """Construct a live endpoint represented as an Iterable.
+        """Construct a live endpoint async iterator.
 
         Keyword Args:
 
@@ -31,37 +31,27 @@ class LiveIterator(Iterable):
         self._resource_class = resource_class
         self._resource_args = resource_args
 
-    def _read(self, response):
-        for line in response.iter_lines(decode_unicode=True):
-            yield line
+    def __aiter__(self):
+        """Create an async iterator."""
+        return self
 
-    def __iter__(self):
+    async def __anext__(self):
         """Iterate over lines looking for resources."""
         resource_class = self._resource_class
         resource_args = self._resource_args
         session = self._session
         response = self._response
 
-        for chunk in self._read(response):
-            event_data = ""
-            for line in chunk.splitlines():
-                # Ignore empty lines
-                if not line.strip():
-                    continue
+        async for line in response.content:
+            line = line.decode('utf-8')
+            if len(line) == 0 and response.at_eof:
+                raise StopAsyncIteration
 
-                data = line.split(self._FIELD_SEPARATOR, 1)
-                field = data[0]
-                data = data[1]
-
-                if field == 'data':
-                    event_data += data
-
-            if not event_data:
-                # Don't report on events with no data
-                continue
-
-            event_data = load_json(event_data).get('data')
-            yield resource_class(event_data, session, **resource_args)
+            if len(line.strip()) > 0:
+                field, data = line.split(self._FIELD_SEPARATOR, 1)
+                if field.strip() == 'data':
+                    json = load_json(data).get('data')
+                    return resource_class(json, session, **resource_args)
 
     def take(self, n):
         """Return the next n datapoints.
@@ -76,23 +66,30 @@ class LiveIterator(Iterable):
         return self._session.adapter.take(self, n)
 
     def close(self):
-        """Close the live session."""
+        """Close the live iterator."""
         self._response.close()
 
-    def __enter__(self):
+    async def __aenter__(self):
         """Enter context."""
+        # Get the actual response
+        response = await self._response
+        CB.boolean(200)(Response(response.status, response.headers,
+                                 response.content, 'GET', response.url))
+        self._response = response
+        # and enter its' context
+        await self._response.__aenter__()
         return self
 
-    def __exit__(self, *args):
-        """Exit context."""
+    async def __aexit__(self, *args):
+        """Exit context and close iterator."""
         self.close()
-        return False
+        await self._response.__aexit__(*args)
 
 
-class DatapointIterator(Iterator):
+class DatapointIterator(AsyncIterable):
     """Iterator over a timeseries endpoint."""
 
-    def __init__(self, timeseries):
+    def __init__(self, timeseries, loop=None):
         """Construct an iterator.
 
         Args:
@@ -105,84 +102,78 @@ class DatapointIterator(Iterator):
         self.queue = deque()
         self.continuation_url = timeseries._base_url
 
-    def __iter__(self):
-        """Iterator for data points in a timeseries."""
-        return self  # pragma: no cover
+    def __aiter__(self):
+        """Async iterator over data points in a timeseries."""
+        return self
 
-    def __next__(self):
-        """Return the next data point."""
+    async def __anext__(self):
+        """Return the next datapoint."""
         timeseries = self.timeseries
         session = timeseries._session
         is_aggregate = timeseries._is_aggregate
-
         if len(self.queue) == 0:
             if self.continuation_url is None:
-                raise StopIteration
+                raise StopAsyncIteration
 
             def _process(json):
                 data = json.get('data')
                 links = json.get('links')
                 self.continuation_url = links.get(timeseries._direction, None)
                 self.queue.extend(data)
-            session.get(self.continuation_url, CB.json(200, _process),
-                        params=timeseries._params)
+            await session.get(self.continuation_url, CB.json(200, _process),
+                              params=timeseries._params)
 
         if len(self.queue) == 0:
-            raise StopIteration
+            raise StopAsyncIteration
 
         json = self.queue.popleft()
         return timeseries._datapoint_class(json, session,
                                            is_aggregate=is_aggregate)
 
-    def next(self):
-        """Python 2 iterator compatibility."""
-        # We remove coverage here to pacify coverage since this method
-        # used in python 2.7 but no longer in python 3.5
-        return self.__next__()  #pragma: no cover
 
+class Adapter(aiohttp.client.ClientSession):
+    """A asynchronous adapter based on the `aiohttp` library."""
 
-class Adapter(requests.Session):
-    """A synchronous adapter based on the `requests` library."""
-
-    def __init__(self):
+    def __init__(self, loop=None):
         """Construct a basic requests session with the Helium API."""
-        super(Adapter, self).__init__()
-        self.headers.update({
+        super(Adapter, self).__init__(headers={
             'Accept': 'application/json',
             'Accept-Charset': 'utf-8',
             'Content-Type': "application/json",
             'User-Agent': 'helium-python/{0}'.format(__version__)
-        })
+        }, loop=loop)
 
     @property
     def api_token(self):
         """The API token to use."""
-        return self.headers.get('Authorization', None)
+        print(self._default_headers)
+        return self._default_headers.get('Authorization', None)
 
     @api_token.setter
     def api_token(self, api_token):
-        self.headers.update({
+        self._default_headers.update({
             'Authorization': api_token
         })
 
-    def _http(self, callback, method, url,
-              params=None, json=None, headers=None):
-        ordered_params = OrderedDict(sorted(params.items())) if params else None
-        response = super(Adapter, self).request(method, url,
-                                                params=params,
-                                                json=json,
-                                                headers=headers)
-        body = response.text
-        request = response.request
-        return callback(Response(response.status_code, response.headers, body,
-                                 request.method, request.url))
+    async def _http(self, callback, method, url,
+                    params=None, json=None, headers=None):
+        data = dump_json(json) if json else None
+        async with self.request(method, url,
+                                params=params,
+                                headers=headers,
+                                data=data) as response:
+            body = await response.text(encoding='utf-8')
+            return callback(Response(response.status, response.headers, body,
+                                     method, url))
 
     def get(self, url, callback,
-            params=None, json=None, headers=None):  # noqa: D102
+            params=None,
+            json=None,
+            headers=None):  # noqa: D102
         return self._http(callback, 'GET', url,
                           params=params,
-                          headers=headers,
-                          json=json)
+                          json=json,
+                          headers=headers)
 
     def put(self, url, callback, params=None, json=None):  # noqa: D102
         return self._http(callback, 'PUT', url,
@@ -203,18 +194,26 @@ class Adapter(requests.Session):
         return self._http(callback, 'DELETE', url,
                           json=json)
 
-    def datapoints(self, timeseries):   # noqa: D102
-        return DatapointIterator(timeseries)
-
-    def take(self, iter, n):   # noqa: D102
-        return list(islice(iter, n))
-
-    def live(self, session, url, resource_class, resource_args):  # noqa: D102
+    def live(self, session, url,
+             resource_class, resource_args):  # noqa: D102
         headers = {
             'Accept': 'text/event-stream',
         }
-        response = super(Adapter, self).get(url, stream=True, headers=headers)
-        # Validate the response code
-        CB.boolean(200)(Response(response.status_code, response.headers, None,
-                                 response.request.method, url))
+        response = super(Adapter, self).get(url,
+                                            read_until_eof=False,
+                                            headers=headers)
         return LiveIterator(response, session, resource_class, resource_args)
+
+    def datapoints(self, timeseries):  # noqa: D102
+        return DatapointIterator(timeseries)
+
+    async def take(self, aiter, n):  # noqa: D102
+        result = []
+        if n == 0:
+            return result
+        async for entry in aiter:
+            result.append(entry)
+            n -= 1
+            if n == 0:
+                break
+        return result

@@ -1,33 +1,29 @@
 from __future__ import unicode_literals
 
 import os
+import sys
 import pytest
-from betamax import Betamax
-from betamax_serializers import pretty_json
-from betamax_matchers import json_body
+# from betamax import Betamax
+# from betamax_serializers import pretty_json
+# from betamax_matchers import json_body
+
+from vcr import VCR
 
 import helium
 
-Betamax.register_serializer(pretty_json.PrettyJSONSerializer)
-Betamax.register_request_matcher(json_body.JSONBodyMatcher)
+collect_ignore = []
+if sys.version_info < (3, 5):
+    collect_ignore.append(os.path.join(os.path.dirname(__file__),
+                                       'test_aiohttp.py'))
+
 API_TOKEN = os.environ.get('HELIUM_API_KEY', 'X' * 10)
 API_URL = os.environ.get('HELIUM_API_URL', 'https://api.helium.com/v1')
-RECORD_MODE = os.environ.get('HELIUM_RECORD_MODE', 'none')
 RECORD_FOLDER = os.environ.get('HELIUM_RECORD_FOLDER', 'tests/cassettes')
 
 
-with Betamax.configure() as config:
-    config.cassette_library_dir = RECORD_FOLDER
-    record_mode = RECORD_MODE
-    cassette_options = config.default_cassette_options
-    cassette_options['record_mode'] = record_mode
-    cassette_options['serialize_with'] = 'prettyjson'
-    cassette_options['match_requests_on'].append('json-body')
-    config.define_cassette_placeholder('<AUTH_TOKEN>', API_TOKEN)
-
 
 @pytest.fixture
-def helium_recorder(request):
+def recorder(request):
     """Generate and start a recorder using a helium.Client."""
     cassette_name = ''
 
@@ -36,22 +32,24 @@ def helium_recorder(request):
 
     cassette_name += request.function.__name__
 
-    client = helium.Client(base_url=API_URL)
-    client.api_token = API_TOKEN
-    recorder = Betamax(client.adapter)
-    setattr(recorder, 'client', client)
-
-    recorder.use_cassette(cassette_name)
-    recorder.start()
-    request.addfinalizer(recorder.stop)
-    return recorder
+    recorder = VCR(
+        cassette_library_dir=RECORD_FOLDER,
+        decode_compressed_response=True,
+        path_transformer=VCR.ensure_suffix('.yml'),
+        filter_headers=['Authorization'],
+        match_on=['uri', 'method'],
+    )
+    cassette = recorder.use_cassette(path=cassette_name)
+    with cassette:
+        yield recorder
 
 
 @pytest.fixture
-def client(helium_recorder):
+def client(recorder):
     """Return the helium.Client object used by the current recorder."""
-    return helium_recorder.client
-
+    client = helium.Client(base_url=API_URL)
+    client.api_token = API_TOKEN
+    return client
 
 @pytest.fixture
 def sensors(client):

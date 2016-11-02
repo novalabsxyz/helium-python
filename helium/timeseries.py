@@ -5,29 +5,33 @@ from __future__ import unicode_literals
 from . import Resource, CB
 from . import to_iso_date
 from . import build_request_attributes
-from collections import Iterable, namedtuple
+from collections import Iterable, namedtuple, OrderedDict
+import sys
 
+PY_35 = sys.version_info >= (3, 5)
 
 AggregateValue = namedtuple('agg', ['min', 'max', 'avg'])
 AggregateValue.__new__.__defaults__ = (None,) * len(AggregateValue._fields)
 
 
 class DataPoint(Resource):
-    """Data points for timeseries.
+    """Data points for timeseries."""
 
-    A datapint represents readings for a given :class:`Timeseries`
-    instance and will always have at least the following attributes:
-
-    :port: The port for the datapoint represents a user or system
-        defined hint around what the value means
-
-    :value: The actual reading value, this can be any json value
-
-    :timestamp: An ISO8601 timestamp representing the time the
-        reading was taken
-
-    """
     def __init__(self, json, session, **kwargs):
+        """Construct a Datapoint.
+
+        A datapint represents readings for a given :class:`Timeseries`
+        instance and will always have at least the following attributes:
+
+        :port: The port for the datapoint represents a user or system
+            defined hint around what the value means
+
+        :value: The actual reading value, this can be any json value
+
+        :timestamp: An ISO8601 timestamp representing the time the
+            reading was taken
+
+        """
         self._is_aggregate = kwargs.pop("is_aggregate", False)
         super(DataPoint, self).__init__(json, session, **kwargs)
 
@@ -44,10 +48,10 @@ class DataPoint(Resource):
 class Timeseries(Iterable):
     """A timeseries readings container.
 
-    Objects of this class represents a single timeseries query. A
-    Timeseries instance will automatically page forward or backward
-    through the pages returned from the Helium API to return data
-    points that fit within the given arguments.
+    Instances of this class represents a single timeseries query. A
+    timeseries will automatically page forward or backward through the
+    pages returned from the Helium API to return data points that fit
+    within the given arguments.
 
     The timeseries instance is an :class:`Iterable` which can be used
     to lazily iterate over very large timeseries data sets. The
@@ -66,13 +70,11 @@ class Timeseries(Iterable):
 
     .. code-block:: python
 
-        from itertools import islice
-
         # Fetch a sensor
         timeseries = sensor.timeseries()
 
         # Get the first 10 readings
-        first10 = list(islice(timeseries, 10))
+        first10 = timeseries.take(10)
 
     Note that each call to ``sensor.timeseries()`` will return a new
     timeseries object which you can iterate over.
@@ -105,39 +107,6 @@ class Timeseries(Iterable):
         first = list(islice(timeseries, 1))[0]
         print(first.value.min)
 
-
-    Args:
-
-        session(Session): The session to use for timeseries requests
-
-        resource_class(Resource): The Resource subclass class to fetch
-            timeseries for
-
-        resource_id(uuid): Id of the resource (if applicable) to fetch
-            timeseries for
-
-    Keyword Args:
-
-        datapoint_class(Resource): The class to use to construct datapoints
-
-        datapoint_id(uuid): The datapoint id to start the timeseries
-
-        page_size(int): The size of pages to fetch (defaults to server
-            preference)
-
-        port(string): The port name to filter readings on
-
-        start(string): Start date for timeseries (inclusive)
-
-        end(string): End date for timeseries (exclusive)
-
-        agg_size(string): The size of the aggregation bucket
-
-        agg_type(string): The list of aggregations to perform
-
-        direction("prev" or "next"): Whether to go backward ("prev") or
-            forward ("next") in time
-
     """
 
     def __init__(self, session, resource_class, resource_id,
@@ -150,6 +119,41 @@ class Timeseries(Iterable):
                  agg_size=None,
                  agg_type=None,
                  port=None):
+        """Constrct a timeseries.
+
+        Args:
+
+            session(Session): The session to use for timeseries requests
+
+            resource_class(Resource): The Resource subclass class to fetch
+                timeseries for
+
+            resource_id(uuid): Id of the resource (if applicable) to fetch
+                timeseries for
+
+        Keyword Args:
+
+            datapoint_class(Resource): The class to use to construct datapoints
+
+            datapoint_id(uuid): The datapoint id to start the timeseries
+
+            page_size(int): The size of pages to fetch (defaults to server
+                preference)
+
+            port(string): The port name to filter readings on
+
+            start(string): Start date for timeseries (inclusive)
+
+            end(string): End date for timeseries (exclusive)
+
+            agg_size(string): The size of the aggregation bucket
+
+            agg_type(string): The list of aggregations to perform
+
+            direction("prev" or "next"): Whether to go backward ("prev") or
+                forward ("next") in time
+
+        """
         self._session = session
         self._datapoint_class = datapoint_class
 
@@ -161,7 +165,7 @@ class Timeseries(Iterable):
         self._direction = direction
         self._is_aggregate = False
 
-        params = {}
+        params = OrderedDict()
         if datapoint_id is not None:
             params['page[id]'] = datapoint_id
         if page_size is not None:
@@ -182,32 +186,23 @@ class Timeseries(Iterable):
 
     def __iter__(self):
         """Construct an iterator for this timeseries."""
-        session = self._session
-        datapoint_class = self._datapoint_class
-        direction = self._direction
-        params = self._params
-        is_aggregate = self._is_aggregate
+        return self._session.datapoints(self)
 
-        def _get_json(url):
-            json = session.get(url, CB.json(200, extract=None), params=params)
-            data = json.get('data')
-            link = json.get('links')
-            link = link.get(direction)
-            return (json, data, link)
+    def __aiter__(self):  # pragma: no cover
+        """Construct an async iterator for this timeseries."""
+        return self._session.datapoints(self)
 
-        json, data, url = _get_json(self._base_url)
+    def take(self, n):
+        """Return the next n datapoints.
 
-        finished = False
-        while not finished:
-            for entry in data:
-                datapoint = datapoint_class(entry, session,
-                                            is_aggregate=is_aggregate)
-                yield datapoint
+        Args:
+            n(int): The number of datapoints to retrieve
 
-            if url is None:
-                finished = True
-            else:
-                json, data, url = _get_json(url)
+        Returns:
+
+            A list of at most `n` datapoints.
+        """
+        return self._session.adapter.take(self, n)
 
     def create(self, port, value, timestamp=None):
         """Post a new reading to a timeseries.
@@ -244,8 +239,12 @@ class Timeseries(Iterable):
         if timestamp is not None:
             attributes['timestamp'] = to_iso_date(timestamp)
         attributes = build_request_attributes('data-point', None, attributes)
-        json = session.post(self._base_url, CB.json(201), json=attributes)
-        return datapoint_class(json, session)
+
+        def _process(json):
+            data = json.get('data')
+            return datapoint_class(data, session)
+        return session.post(self._base_url, CB.json(201, _process),
+                            json=attributes)
 
     def live(self):
         """Get a live stream of timeseries readings.
@@ -254,25 +253,21 @@ class Timeseries(Iterable):
         that the result will need to be closed since the system can
         not tell when you'll be done with it.
 
-        You can either call ``close`` on the endpoint when you're done
-        with it or use the handy ``contextlib.closing`` function:
+        You can either call ``close`` on the endpoint when you're or
+        use the context management facilities of the endpoint.
 
 
         .. code-block:: python
-
-            from contextlib import closing
 
             # Fetch a sensor
             timeseries = sensor.timeseries()
 
             # ensure live endpoint closed
-            with closing(timeseries.live()) as live:
+            with timeseries.live() as live:
                 # Wait for 10 readings
                 first10 = list(islice(live, 10))
 
         Returns:
-
-
 
         """
         session = self._session

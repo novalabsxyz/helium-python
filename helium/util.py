@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from datetime import datetime
-
+from collections import OrderedDict
 
 def from_iso_date(str):
     """Convert an ISO8601 to a datetime.
@@ -113,7 +113,7 @@ def build_request_include(include, params):
         include query parameter.
 
     """
-    params = params or {}
+    params = params or OrderedDict()
     if include is not None:
         params['include'] = ','.join([cls._resource_type() for cls in include])
     return params

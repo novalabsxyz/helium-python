@@ -30,7 +30,7 @@ def test_meta(first_sensor):
 def test_element(client):
     sensors = Sensor.all(client, include=[Element])
     found_sensors = list(filter(lambda s: s.element(use_included=True) is not None,
-                                sensors))
+                            sensors))
     assert len(found_sensors) > 0
     found_sensor = found_sensors[0]
     found_element = found_sensor.element(use_included=True)

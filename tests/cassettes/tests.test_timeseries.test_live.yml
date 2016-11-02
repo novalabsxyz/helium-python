@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: !!python/unicode '{"data": {"attributes": {"name": "test"}, "type": "sensor"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"c48179b1-487c-49e6-928e-241e3fd15b41","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"c48179b1-487c-49e6-928e-241e3fd15b41","meta":{"card":null,"mac":null,"created":"2016-11-05T22:42:01.919974Z","last-seen":null,"ports":[],"updated":"2016-11-05T22:42:01.919974Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [firm pat on the back]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['420']
+      content-type: [application/json]
+      date: ['Sat, 05 Nov 2016 22:42:01 GMT']
+      location: [/v1/sensor/c48179b1-487c-49e6-928e-241e3fd15b41]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode text/event-stream]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/c48179b1-487c-49e6-928e-241e3fd15b41/timeseries/live
+  response:
+    body: {string: !!python/unicode "event: sensor\ndata: {\"data\":{\"attributes\":{\"value\":42,\"timestamp\":\"2016-09-18T23:57:49.477274Z\",\"port\":\"test_post\"},\"relationships\":{\"sensor\":{\"data\":{\"id\":\"c48179b1-487c-49e6-928e-241e3fd15b41\",\"type\":\"sensor\"}}},\"id\":\"8646ef8b-6458-4267-90ce-849e78fb38c9\",\"meta\":{\"created\":\"2016-09-18T23:57:49.704603Z\"},\"type\":\"data-point\"}}\n\n\n\nevent: sensor\ndata: {\"data\":{\"attributes\":{\"value\":43,\"timestamp\":\"2016-09-18T23:57:59.245238Z\",\"port\":\"test_post\"},\"relationships\":{\"sensor\":{\"data\":{\"id\":\"c48179b1-487c-49e6-928e-241e3fd15b41\",\"type\":\"sensor\"}}},\"id\":\"8ff950ee-4749-41b8-85a2-9b030a52637c\",\"meta\":{\"created\":\"2016-09-18T23:57:59.251219Z\"},\"type\":\"data-point\"}}\n   \n\n"}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [shut it down]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04']
+      connection: [keep-alive]
+      date: ['Sat, 05 Nov 2016 22:42:01 GMT']
+      transfer-encoding: ['chunked']
+      content-type: [!!python/unicode text/event-stream]
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/c48179b1-487c-49e6-928e-241e3fd15b41
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['WARNING: ulimit -n is 1024']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Sat, 05 Nov 2016 22:42:01 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

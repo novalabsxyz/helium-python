@@ -1,0 +1,104 @@
+interactions:
+- request:
+    body: '{"data": {"attributes": {"name": "test"}, "type": "sensor"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"d16b0dd0-d31e-40da-b0b0-b7996d3479f1","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"d16b0dd0-d31e-40da-b0b0-b7996d3479f1","meta":{"card":null,"mac":null,"created":"2016-11-05T00:36:40.713181Z","last-seen":null,"ports":[],"updated":"2016-11-05T00:36:40.713181Z"},"type":"sensor"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [shut it down]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Sat, 05 Nov 2016 00:36:40 GMT']
+      Location: [/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1]
+      Server: [Warp/3.2.7]
+      content-length: ['420']
+    status: {code: 201, message: Created}
+- request:
+    body: '{"data": {"attributes": {"value": 22, "port": "test"}, "type": "data-point"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['77']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1/timeseries
+  response:
+    body: {string: '{"data":{"attributes":{"value":22,"timestamp":"2016-11-05T00:36:40.768451Z","port":"test"},"relationships":{"sensor":{"data":{"id":"d16b0dd0-d31e-40da-b0b0-b7996d3479f1","type":"sensor"}}},"id":"991ca0d5-69fd-488d-9044-f51f2e4a005b","meta":{"created":"2016-11-05T00:36:40.783728Z"},"type":"data-point"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: ['WARNING: ulimit -n is 1024']
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Sat, 05 Nov 2016 00:36:40 GMT']
+      Location: ['/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1/timeseries?page%5Bsize%5D=1&page%5Bid%5D=991ca0d5-69fd-488d-9044-f51f2e4a005b']
+      Server: [Warp/3.2.7]
+      content-length: ['303']
+    status: {code: 201, message: Created}
+- request:
+    body: '{"data": {"attributes": {"timestamp": "2016-08-25T00:00:00Z", "value":
+      24, "port": "test2"}, "type": "data-point"}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['115']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1/timeseries
+  response:
+    body: {string: '{"data":{"attributes":{"value":24,"timestamp":"2016-08-25T00:00:00Z","port":"test2"},"relationships":{"sensor":{"data":{"id":"d16b0dd0-d31e-40da-b0b0-b7996d3479f1","type":"sensor"}}},"id":"e20102e2-1c68-4bfb-9b6f-afb87d2a12a3","meta":{"created":"2016-11-05T00:36:40.851154Z"},"type":"data-point"}}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [firm pat on the back]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Sat, 05 Nov 2016 00:36:40 GMT']
+      Location: ['/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1/timeseries?page%5Bsize%5D=1&page%5Bid%5D=e20102e2-1c68-4bfb-9b6f-afb87d2a12a3']
+      Server: [Warp/3.2.7]
+      content-length: ['297']
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/d16b0dd0-d31e-40da-b0b0-b7996d3479f1
+  response:
+    body: {string: ''}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
+      Access-Control-Allow-Origin: ['*']
+      Airship-Quip: [shut it down]
+      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      Connection: [keep-alive]
+      Date: ['Sat, 05 Nov 2016 00:36:40 GMT']
+      Server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

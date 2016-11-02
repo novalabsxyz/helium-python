@@ -41,8 +41,11 @@ class Metadata(Resource):
         attributes = build_request_attributes(resource_type,
                                               target_resource_id,
                                               kwargs)
-        json = publish(url, CB.json(200), json=attributes)
-        return Metadata(json, session, target_resource_path)
+
+        def _process(json):
+            data = json.get('data')
+            return Metadata(data, session, target_resource_path)
+        return publish(url, CB.json(200, _process), json=attributes)
 
     def update(self, **kwargs):
         """Update metadata.
@@ -103,8 +106,11 @@ def metadata():
             resource_id = None if self.is_singleton() else self.id
             resource_path = cls._resource_path()
             url = session._build_url(resource_path, resource_id, 'metadata')
-            json = session.get(url, CB.json(200))
-            return Metadata(json, session, resource_path)
+
+            def _process(json):
+                data = json.get('data')
+                return Metadata(data, session, resource_path)
+            return session.get(url, CB.json(200, _process))
 
         method.__doc__ = method_doc
         setattr(cls, 'metadata', method)

@@ -1,11 +1,11 @@
 """Test for Timeseries."""
 
 from __future__ import unicode_literals
-from itertools import islice
 from helium import from_iso_date
 from datetime import datetime, timedelta
-from contextlib import closing
 from helium import DataPoint
+from itertools import islice
+import pytest
 
 
 def _feed_timeseries(timeseries, count):
@@ -14,13 +14,19 @@ def _feed_timeseries(timeseries, count):
 
 
 def test_iteration(tmp_sensor):
-    # construct a timeseries
+    # construct a timeseries and test empty
+    timeseries = tmp_sensor.timeseries()
+    assert len(timeseries.take(0)) == 0
+    assert len(timeseries.take(2)) == 0
+
+    # re-construct with guaranteed paging
     timeseries = tmp_sensor.timeseries(page_size=1)
+
     # post a few data points to it
     posted = _feed_timeseries(timeseries, 2)
 
     def _paired_datapoints(posted, timeseries):
-        datapoints = list(islice(timeseries, 10))
+        datapoints = timeseries.take(10)
         assert len(datapoints) == len(posted)
         return zip(posted, datapoints)
 
@@ -77,7 +83,7 @@ def test_aggrgation(first_sensor):
     timeseries = first_sensor.timeseries(agg_type="min,max,avg",
                                          agg_size="12h",
                                          port="t")
-    filter_points = list(islice(timeseries, 10))
+    filter_points = timeseries.take(10)
 
     assert len(filter_points) > 0
 
@@ -94,7 +100,7 @@ def test_aggrgation(first_sensor):
     timeseries = first_sensor.timeseries(agg_type="min",
                                          agg_size="6h",
                                          port="t")
-    filter_points = list(islice(timeseries, 1))
+    filter_points = timeseries.take(1)
     assert len(filter_points) > 0
     point = filter_points[0]
 
@@ -122,11 +128,10 @@ def test_live(tmp_sensor):
     # We're faking the cassette for a live session pretty hard
     # here. The cassette was manually edited to reflect the
     # event/text-stream data in a single request to work around
-    # betamax's problems with dealing with live sockets.
-    with closing(tmp_sensor.timeseries().live()) as live:
-        live_points = list(islice(live, 10))
+    # problems with dealing with live sockets.
+    with tmp_sensor.timeseries().live() as live:
+        live_points = live.take(10)
         assert len(live_points) == 2
-
 
 def test_datapoint():
     assert DataPoint._resource_type() == 'timeseries'

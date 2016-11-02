@@ -1,0 +1,240 @@
+interactions:
+- request:
+    body: '{"data": {"type": "sensor", "attributes": {"name": "test_sensor"}}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: '{"data":{"attributes":{"name":"test_sensor"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","meta":{"card":null,"mac":null,"created":"2016-11-08T19:21:43.283191Z","last-seen":null,"ports":[],"updated":"2016-11-08T19:21:43.283191Z"},"type":"sensor"}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : javascript doesn't have integers
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '246'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Location]
+      : /v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 201, message: Created}
+    url: https://api.helium.com/v1/sensor
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+  response:
+    body: {string: '{"data":[],"links":{}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : javascript doesn't have integers
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '42'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 200, message: OK}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+- request:
+    body: '{"data": {"type": "data-point", "attributes": {"value": 22, "port": "test_point"}}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+  response:
+    body: {string: '{"data":{"attributes":{"value":22,"timestamp":"2016-11-08T19:21:43.413143Z","port":"test_point"},"relationships":{"sensor":{"data":{"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","type":"sensor"}}},"id":"c8ca8a49-1f2a-47fb-971c-c077856dd333","meta":{"created":"2016-11-08T19:21:43.47216Z"},"type":"data-point"}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : javascript doesn't have integers
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '225'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Location]
+      : /v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bsize%5D=1&page%5Bid%5D=c8ca8a49-1f2a-47fb-971c-c077856dd333
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 201, message: Created}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+- request:
+    body: '{"data": {"type": "data-point", "attributes": {"value": 32, "port": "test_point"}}}'
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: POST
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+  response:
+    body: {string: '{"data":{"attributes":{"value":32,"timestamp":"2016-11-08T19:21:43.532146Z","port":"test_point"},"relationships":{"sensor":{"data":{"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","type":"sensor"}}},"id":"dc791414-8729-4213-942f-4a95e0927de3","meta":{"created":"2016-11-08T19:21:43.587486Z"},"type":"data-point"}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : firm pat on the back
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '223'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Location]
+      : /v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bsize%5D=1&page%5Bid%5D=dc791414-8729-4213-942f-4a95e0927de3
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 201, message: Created}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bsize%5D=1
+  response:
+    body: {string: '{"data":[{"attributes":{"value":32,"timestamp":"2016-11-08T19:21:43.532146Z","port":"test_point"},"relationships":{"sensor":{"data":{"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","type":"sensor"}}},"id":"dc791414-8729-4213-942f-4a95e0927de3","meta":{"created":"2016-11-08T19:21:43.587486Z"},"type":"data-point"}],"links":{"prev":"https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bid%5D=c8ca8a49-1f2a-47fb-971c-c077856dd333&page%5Bsize%5D=1"}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : firm pat on the back
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '324'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 200, message: OK}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bsize%5D=1
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bsize%5D=1
+  response:
+    body: {string: '{"data":[{"attributes":{"value":22,"timestamp":"2016-11-08T19:21:43.413143Z","port":"test_point"},"relationships":{"sensor":{"data":{"id":"f62f9b4a-57f5-4060-83dc-25e5160c8e37","type":"sensor"}}},"id":"c8ca8a49-1f2a-47fb-971c-c077856dd333","meta":{"created":"2016-11-08T19:21:43.47216Z"},"type":"data-point"}],"links":{"next":"https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bid%5D=dc791414-8729-4213-942f-4a95e0927de3&page%5Bsize%5D=1"}}'}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : firm pat on the back
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._multidict.istr [Content-Length]
+      : '324'
+      ? !!python/object/new:multidict._multidict.istr [Content-Type]
+      : application/json
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 200, message: OK}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37/timeseries?page%5Bid%5D=c8ca8a49-1f2a-47fb-971c-c077856dd333&page%5Bsize%5D=1&page%5Bsize%5D=1
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Charset: [utf-8]
+      Content-Type: [application/json]
+      User-Agent: [helium-python/0.2.3.post3]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37
+  response:
+    body: {string: ''}
+    headers:
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Headers]
+      : Origin, Content-Type, Accept, Authorization
+      ? !!python/object/new:multidict._multidict.istr [Access-Control-Allow-Origin]
+      : '*'
+      ? !!python/object/new:multidict._multidict.istr [Airship-Quip]
+      : shut it down
+      ? !!python/object/new:multidict._multidict.istr [Airship-Trace]
+      : b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20
+      ? !!python/object/new:multidict._multidict.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._multidict.istr [Date]
+      : Tue, 08 Nov 2016 19:21:43 GMT
+      ? !!python/object/new:multidict._multidict.istr [Server]
+      : Warp/3.2.7
+    status: {code: 204, message: No Content}
+    url: https://api.helium.com/v1/sensor/f62f9b4a-57f5-4060-83dc-25e5160c8e37
+version: 1

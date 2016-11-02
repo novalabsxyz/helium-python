@@ -5,9 +5,13 @@ environment:
     # For Python versions available on Appveyor, see
     # http://www.appveyor.com/docs/installed-software#python
     - PYTHON: "C:\\Python27"
+      TOX_ENV: "py27"
     - PYTHON: "C:\\Python35"
+      TOX_ENV: "py35"
     - PYTHON: "C:\\Python27-x64"
+      TOX_ENV: "py27"
     - PYTHON: "C:\\Python35-x64"
+      TOX_ENV: "py35"
 
 install:
   - "%PYTHON%\\python.exe -m pip install --disable-pip-version-check --upgrade pip"
@@ -17,4 +21,4 @@ install:
 build: off
 
 test_script:
-  - "%PYTHON%\\Scripts\\tox -e py"
+  - "%PYTHON%\\Scripts\\tox -e %TOX_ENV%"

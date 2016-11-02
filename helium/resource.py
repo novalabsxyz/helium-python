@@ -122,20 +122,24 @@ class Resource(Base):
         super(Resource, self).__init__(json)
 
     @classmethod
-    def _mk_one(cls, session, json, singleton=False, include=None):
-        included = json.get('included') if include else None
-        data = json.get('data')
-        result = cls(data, session, include=include, included=included)
-        if singleton:
-            setattr(result, '_singleton', True)
-        return result
+    def _mk_one(cls, session, singleton=False, include=None):
+        def func(json):
+            included = json.get('included') if include else None
+            data = json.get('data')
+            result = cls(data, session, include=include, included=included)
+            if singleton:
+                setattr(result, '_singleton', True)
+            return result
+        return func
 
     @classmethod
-    def _mk_many(cls, session, json, include=None):
-        included = json.get('included') if include else None
-        data = json.get('data')
-        return [cls(entry, session, include=include, included=included)
-                for entry in data]
+    def _mk_many(cls, session, include=None):
+        def func(json):
+            included = json.get('included') if include else None
+            data = json.get('data')
+            return [cls(entry, session, include=include, included=included)
+                    for entry in data]
+        return func
 
     @classmethod
     def all(cls, session, include=None):
@@ -174,8 +178,8 @@ class Resource(Base):
         """
         url = session._build_url(cls._resource_path())
         params = build_request_include(include, None)
-        json = session.get(url, CB.json(200, extract=None), params=params)
-        return cls._mk_many(session, json, include=include)
+        process = cls._mk_many(session, include=include)
+        return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
     def find(cls, session, resource_id, include=None):
@@ -201,8 +205,8 @@ class Resource(Base):
         """
         url = session._build_url(cls._resource_path(), resource_id)
         params = build_request_include(include, None)
-        json = session.get(url, CB.json(200, extract=None), params=params)
-        return cls._mk_one(session, json, include=include)
+        process = cls._mk_one(session, include=include)
+        return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
     def create(cls, session, **kwargs):
@@ -225,8 +229,8 @@ class Resource(Base):
         resource_path = cls._resource_path()
         url = session._build_url(resource_path)
         attributes = build_request_attributes(resource_type, None, kwargs)
-        json = session.post(url, CB.json(201, extract=None), json=attributes)
-        return cls._mk_one(session, json)
+        process = cls._mk_one(session)
+        return session.post(url, CB.json(201, process), json=attributes)
 
     @classmethod
     def singleton(cls, session, include=None):
@@ -249,8 +253,8 @@ class Resource(Base):
         """
         params = build_request_include(include, None)
         url = session._build_url(cls._resource_path())
-        json = session.get(url, CB.json(200, extract=None), params=params)
-        return cls._mk_one(session, json, singleton=True, include=include)
+        process = cls._mk_one(session, singleton=True, include=include)
+        return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
     def _resource_type(cls):
@@ -350,8 +354,8 @@ class Resource(Base):
         id = None if singleton else self.id
         url = session._build_url(resource_path, id)
         attributes = build_request_attributes(resource_type, self.id, kwargs)
-        json = session.patch(url, CB.json(200, extract=None), json=attributes)
-        return self._mk_one(session, json, singleton=singleton)
+        process = self._mk_one(session, singleton=singleton)
+        return session.patch(url, CB.json(200, process), json=attributes)
 
     def delete(self):
         """Delete the resource.
