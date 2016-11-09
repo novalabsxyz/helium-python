@@ -2,7 +2,7 @@ from setuptools import setup
 
 author = 'Helium'
 author_email = 'hello@helium.com'
-packages = ['helium']
+packages = ['helium', 'helium.adapter']
 requires = [
     "future>=0.15",
     "gevent>=1.1.2",
