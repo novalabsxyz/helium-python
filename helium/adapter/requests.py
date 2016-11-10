@@ -166,12 +166,12 @@ class Adapter(requests.Session):
         })
 
     def _http(self, callback, method, url,
-              params=None, json=None, headers=None):
-        ordered_params = OrderedDict(sorted(params.items())) if params else None
+              params=None, json=None, headers=None, files=None):
         response = super(Adapter, self).request(method, url,
                                                 params=params,
                                                 json=json,
-                                                headers=headers)
+                                                headers=headers,
+                                                files=files)
         body = response.text
         request = response.request
         return callback(Response(response.status_code, response.headers, body,
@@ -184,24 +184,23 @@ class Adapter(requests.Session):
                           headers=headers,
                           json=json)
 
-    def put(self, url, callback, params=None, json=None):  # noqa: D102
+    def put(self, url, callback,
+            params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'PUT', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers)
 
-    def post(self, url, callback, params=None, json=None):  # noqa: D102
+    def post(self, url, callback,
+             params=None, json=None, headers=None, files=None):  # noqa: D102
         return self._http(callback, 'POST', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers,
+                          files=files)
 
-    def patch(self, url, callback, params=None, json=None):  # noqa: D102
+    def patch(self, url, callback, params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'PATCH', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers)
 
     def delete(self, url, callback, json=None):  # noqa: D102
-        return self._http(callback, 'DELETE', url,
-                          json=json)
+        return self._http(callback, 'DELETE', url, json=json)
 
     def datapoints(self, timeseries):   # noqa: D102
         return DatapointIterator(timeseries)

@@ -126,9 +126,11 @@ class Resource(Base):
         def func(json):
             included = json.get('included') if include else None
             data = json.get('data')
-            result = cls(data, session, include=include, included=included)
-            if singleton:
-                setattr(result, '_singleton', True)
+            result = None
+            if data:
+                result = cls(data, session, include=include, included=included)
+                if singleton:
+                    setattr(result, '_singleton', True)
             return result
         return func
 

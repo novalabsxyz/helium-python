@@ -156,8 +156,14 @@ class Adapter(aiohttp.client.ClientSession):
         })
 
     async def _http(self, callback, method, url,
-                    params=None, json=None, headers=None):
-        data = dump_json(json) if json else None
+                    params=None, json=None,
+                    headers=None, files=None):
+        data = None
+        if files:
+            data = files
+        elif json:
+            data = dump_json(json)
+        data = files if files else data
         async with self.request(method, url,
                                 params=params,
                                 headers=headers,
@@ -167,28 +173,28 @@ class Adapter(aiohttp.client.ClientSession):
                                      method, url))
 
     def get(self, url, callback,
-            params=None,
-            json=None,
-            headers=None):  # noqa: D102
+            params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'GET', url,
                           params=params,
                           json=json,
                           headers=headers)
 
-    def put(self, url, callback, params=None, json=None):  # noqa: D102
+    def put(self, url, callback,
+            params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'PUT', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers)
 
-    def post(self, url, callback, params=None, json=None):  # noqa: D102
+    def post(self, url, callback,
+             params=None, json=None, headers=None,
+             files=None):  # noqa: D102
         return self._http(callback, 'POST', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers,
+                          files=files)
 
-    def patch(self, url, callback, params=None, json=None):  # noqa: D102
+    def patch(self, url, callback,
+              params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'PATCH', url,
-                          params=params,
-                          json=json)
+                          params=params, json=json, headers=headers)
 
     def delete(self, url, callback, json=None):  # noqa: D102
         return self._http(callback, 'DELETE', url,

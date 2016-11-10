@@ -132,8 +132,8 @@ class Session(object):
     def api_token(self, api_token):
         self.adapter.api_token = api_token
 
-    def get(self, url, callback, params=None, json=None,
-            stream=False, headers=None):
+    def get(self, url, callback,
+            params=None, json=None, headers=None):
         """Get a URL.
 
         Args:
@@ -155,11 +155,10 @@ class Session(object):
 
         """
         return self.adapter.get(url, callback,
-                                params=params,
-                                json=json,
-                                headers=headers)
+                                params=params, json=json, headers=headers)
 
-    def put(self, url, callback, params=None, json=None):
+    def put(self, url, callback,
+            params=None, json=None, headers=None):
         """Put to a URL.
 
         Args:
@@ -174,6 +173,8 @@ class Session(object):
 
             json(dict): JSON body for the request
 
+            headers(dict): HTTP headers for the request
+
         Returns:
 
             The result of the callback handling the resopnse from the
@@ -182,7 +183,8 @@ class Session(object):
         """
         return self.adapter.put(url, callback, params=params, json=json)
 
-    def post(self, url, callback, params=None, json=None):
+    def post(self, url, callback,
+             params=None, json=None, headers=None, files=None):
         """Post to a URL.
 
         Args:
@@ -190,6 +192,8 @@ class Session(object):
             url(string): URL for the request
 
             callback(func): The response callback function
+
+            headers(dict): HTTP headers for the request
 
         Keyword Args:
 
@@ -203,9 +207,12 @@ class Session(object):
                 executed request
 
         """
-        return self.adapter.post(url, callback, params=params, json=json)
+        return self.adapter.post(url, callback,
+                                 params=params, json=json,
+                                 headers=headers, files=files)
 
-    def patch(self, url, callback, params=None, json=None):
+    def patch(self, url, callback,
+              params=None, json=None, headers=None):
         """Patch a URL.
 
         Args:
@@ -213,6 +220,8 @@ class Session(object):
             url(string): URL for the request
 
             callback(func): The response callback function
+
+            headers(dict): HTTP headers for the request
 
         Keyword Args:
 
@@ -227,8 +236,7 @@ class Session(object):
 
         """
         return self.adapter.patch(url, callback,
-                                  params=params,
-                                  json=json)
+                                  params=params, json=json, headers=headers)
 
     def delete(self, url, callback, json=None):
         """Delete a URL.
