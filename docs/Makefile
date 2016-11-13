@@ -17,8 +17,9 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 .PHONY: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  livehtml   to serve a live updating site""
+	@echo "  apidoc     to regenerate the api docs for the package"
 	@echo "  html       to make standalone HTML files"
+	@echo "  livehtml   to serve a live updating site"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -48,6 +49,10 @@ help:
 .PHONY: clean
 clean:
 	rm -rf $(BUILDDIR)/*
+
+.PHONY: apidoc
+apidoc:
+	sphinx-apidoc -f -M -o . ../helium setup.py,tests
 
 .PHONY: livehtml
 livehtml:
@@ -96,9 +101,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/helium-python.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/helium.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/helium-python.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/helium.qhc"
 
 .PHONY: applehelp
 applehelp:
@@ -115,8 +120,8 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/helium-python"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/helium-python"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/helium"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/helium"
 	@echo "# devhelp"
 
 .PHONY: epub

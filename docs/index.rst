@@ -1,22 +1,23 @@
-helium-python
-==============
+.. helium documentation master file, created by
+   sphinx-quickstart on Fri Nov 11 21:13:32 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-Release v\ |version|
+Welcome to helium's documentation!
+==================================
 
-helium-python is a wrapper for the `Helium API`_ written in
-Python. The Helium API is based on the `JSONAPI`_ specification ad
-this library is designed to leverage the constructs heavily.
-
-Modules
+Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-   client
-   resources
+   helium
 
 
-.. links
+Indices and tables
+==================
 
-.. _Helium API: https://docs.helium.com
-.. _JSONAPI: https://jsonapi.org
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
