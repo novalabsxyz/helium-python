@@ -34,6 +34,8 @@ def test_iteration(tmp_sensor):
         assert point.id is not None
         assert point.port == posted.port
         assert point.value == posted.value
+        assert point.sensor_id is not None
+        assert point.sensor_id == tmp_sensor.id
 
     for pp, dp in _paired_datapoints(list(reversed(posted)), timeseries):
         # Ensure that the data points arrive in descending time order

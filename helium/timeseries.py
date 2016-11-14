@@ -44,6 +44,23 @@ class DataPoint(Resource):
             value = AggregateValue(**value)
         super(DataPoint, self)._promote_json_attribute(attribute, value)
 
+    @property
+    def sensor_id(self):
+        """The id of the sensor of this data point.
+
+        Returns:
+
+            The id of the sensor that generated this datapoint. `None`
+            if no sensor id is found.
+
+        """
+        if hasattr(self, '_sensor_id'):
+            return self._sensor_id
+        relationships = self._json_data.get('relationships')
+        sensor_id = relationships.get('sensor').get('data').get('id')
+        self._sensor_id = sensor_id
+        return sensor_id
+
 
 class Timeseries(Iterable):
     """A timeseries readings container.
