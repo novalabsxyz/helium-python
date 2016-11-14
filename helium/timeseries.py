@@ -50,8 +50,9 @@ class DataPoint(Resource):
 
         Returns:
 
-            The id of the sensor that generated this datapoint. `None`
-            if no sensor id is found.
+            The id of the sensor that generated this datapoint. Will
+            throw an AttributeError if no sensor id was found in the
+            underlyign data.
 
         """
         if hasattr(self, '_sensor_id'):
