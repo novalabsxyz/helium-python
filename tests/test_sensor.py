@@ -13,7 +13,9 @@ def test_sensors(sensors, first_sensor):
 
 
 def test_update(tmp_sensor):
-    updated_sensor = tmp_sensor.update(name='bar')
+    updated_sensor = tmp_sensor.update(attributes={
+        'name': 'bar'
+    })
     assert updated_sensor.name == 'bar'
     assert updated_sensor.id == tmp_sensor.id
 

@@ -146,7 +146,6 @@ class Adapter(aiohttp.client.ClientSession):
     @property
     def api_token(self):
         """The API token to use."""
-        print(self._default_headers)
         return self._default_headers.get('Authorization', None)
 
     @api_token.setter

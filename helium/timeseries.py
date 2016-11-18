@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from . import Resource, CB
 from . import to_iso_date
-from . import build_request_attributes
+from . import build_request_body
 from collections import Iterable, namedtuple, OrderedDict
 import sys
 
@@ -256,7 +256,8 @@ class Timeseries(Iterable):
         }
         if timestamp is not None:
             attributes['timestamp'] = to_iso_date(timestamp)
-        attributes = build_request_attributes('data-point', None, attributes)
+        attributes = build_request_body('data-point', None,
+                                        attributes=attributes)
 
         def _process(json):
             data = json.get('data')

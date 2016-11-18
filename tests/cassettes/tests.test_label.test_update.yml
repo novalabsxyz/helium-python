@@ -1,101 +1,153 @@
 interactions:
 - request:
-    body: '{"data": {"attributes": {"name": "temp-label"}, "type": "label"}}'
+    body: !!python/unicode '{"data": {"type": "sensor", "attributes": {"name": "test"}}}'
     headers:
-      Accept: [application/json]
-      Accept-Charset: [utf-8]
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['65']
-      Content-Type: [application/json]
-      User-Agent: [helium-python/0.2.3.post3]
+      Content-Length: ['60']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"8e90e469-bb40-4685-925c-cd95988ffb9c","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"8e90e469-bb40-4685-925c-cd95988ffb9c","meta":{"card":null,"mac":null,"created":"2016-11-18T19:43:44.979461Z","last-seen":null,"ports":[],"updated":"2016-11-18T19:43:44.979461Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [shut it down]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['420']
+      content-type: [application/json]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      location: [/v1/sensor/8e90e469-bb40-4685-925c-cd95988ffb9c]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: !!python/unicode '{"data": {"type": "label", "relationships": {"sensor":
+      {"data": [{"type": "sensor", "id": "8e90e469-bb40-4685-925c-cd95988ffb9c"}]}},
+      "attributes": {"name": "temp-label"}}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['172']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
     method: POST
     uri: https://api.helium.com/v1/label
   response:
-    body: {string: '{"data":{"attributes":{"name":"temp-label"},"relationships":{"metadata":{"data":{"id":"e1687625-fe82-4eb7-acd1-d805334b77df","type":"metadata"}},"sensor":{"data":[]}},"id":"e1687625-fe82-4eb7-acd1-d805334b77df","meta":{"created":"2016-11-04T23:55:17.668092Z","updated":"2016-11-04T23:55:17.668092Z"},"type":"label"}}'}
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"temp-label"},"relationships":{"metadata":{"data":{"id":"2c275f61-43b5-46f5-9962-4d09c577b6b0","type":"metadata"}},"sensor":{"data":[]}},"id":"2c275f61-43b5-46f5-9962-4d09c577b6b0","meta":{"created":"2016-11-18T19:43:45.036158Z","updated":"2016-11-18T19:43:45.036158Z"},"type":"label"}}'}
     headers:
-      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
-      Access-Control-Allow-Origin: ['*']
-      Airship-Quip: [sharkfed]
-      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      Date: ['Fri, 04 Nov 2016 23:55:16 GMT']
-      Location: [/v1/label/e1687625-fe82-4eb7-acd1-d805334b77df]
-      Server: [Warp/3.2.7]
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['$300,000 worth of cows']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
       content-length: ['316']
+      content-type: [application/json]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      location: [/v1/label/2c275f61-43b5-46f5-9962-4d09c577b6b0]
+      server: [Warp/3.2.7]
     status: {code: 201, message: Created}
 - request:
-    body: '{"data": []}'
+    body: !!python/unicode '{"data": [{"type": "sensor", "id": "8e90e469-bb40-4685-925c-cd95988ffb9c"}]}'
     headers:
-      Accept: [application/json]
-      Accept-Charset: [utf-8]
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['12']
-      Content-Type: [application/json]
-      User-Agent: [helium-python/0.2.3.post3]
+      Content-Length: ['76']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
     method: PATCH
-    uri: https://api.helium.com/v1/label/e1687625-fe82-4eb7-acd1-d805334b77df/relationships/sensor
+    uri: https://api.helium.com/v1/label/2c275f61-43b5-46f5-9962-4d09c577b6b0/relationships/sensor
   response:
-    body: {string: '{"data":[]}'}
+    body: {string: !!python/unicode '{"data":[{"id":"8e90e469-bb40-4685-925c-cd95988ffb9c","type":"sensor"}]}'}
     headers:
-      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
-      Access-Control-Allow-Origin: ['*']
-      Airship-Quip: [javascript doesn't have integers]
-      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      Date: ['Fri, 04 Nov 2016 23:55:16 GMT']
-      Server: [Warp/3.2.7]
-      content-length: ['11']
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [evacuation not done in time]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      connection: [keep-alive]
+      content-length: ['72']
+      content-type: [application/json]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      server: [Warp/3.2.7]
     status: {code: 200, message: OK}
 - request:
-    body: '{"data": {"attributes": {"name": "bar"}, "type": "label", "id": "e1687625-fe82-4eb7-acd1-d805334b77df"}}'
+    body: !!python/unicode '{"data": {"type": "label", "id": "2c275f61-43b5-46f5-9962-4d09c577b6b0",
+      "attributes": {"name": "bar"}}}'
     headers:
-      Accept: [application/json]
-      Accept-Charset: [utf-8]
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['104']
-      Content-Type: [application/json]
-      User-Agent: [helium-python/0.2.3.post3]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
     method: PATCH
-    uri: https://api.helium.com/v1/label/e1687625-fe82-4eb7-acd1-d805334b77df
+    uri: https://api.helium.com/v1/label/2c275f61-43b5-46f5-9962-4d09c577b6b0
   response:
-    body: {string: '{"data":{"attributes":{"name":"bar"},"id":"e1687625-fe82-4eb7-acd1-d805334b77df","meta":{"created":"2016-11-04T23:55:17.668092Z","updated":"2016-11-04T23:55:17.668092Z"},"type":"label"}}'}
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"bar"},"id":"2c275f61-43b5-46f5-9962-4d09c577b6b0","meta":{"created":"2016-11-18T19:43:45.036158Z","updated":"2016-11-18T19:43:45.036158Z"},"type":"label"}}'}
     headers:
-      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
-      Access-Control-Allow-Origin: ['*']
-      Airship-Quip: [sharkfed]
-      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
-      Connection: [keep-alive]
-      Content-Type: [application/json]
-      Date: ['Fri, 04 Nov 2016 23:55:16 GMT']
-      Server: [Warp/3.2.7]
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [blame me if inappropriate]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      connection: [keep-alive]
       content-length: ['186']
+      content-type: [application/json]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      server: [Warp/3.2.7]
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
-      Accept: [application/json]
-      Accept-Charset: [utf-8]
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['0']
-      Content-Type: [application/json]
-      User-Agent: [helium-python/0.2.3.post3]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
     method: DELETE
-    uri: https://api.helium.com/v1/label/e1687625-fe82-4eb7-acd1-d805334b77df
+    uri: https://api.helium.com/v1/label/2c275f61-43b5-46f5-9962-4d09c577b6b0
   response:
-    body: {string: ''}
+    body: {string: !!python/unicode ''}
     headers:
-      Access-Control-Allow-Headers: ['Origin, Content-Type, Accept, Authorization']
-      Access-Control-Allow-Origin: ['*']
-      Airship-Quip: [never breaks eye contact]
-      Airship-Trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [shut it down]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Date: ['Fri, 04 Nov 2016 23:55:16 GMT']
-      Server: [Warp/3.2.7]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.3.4.post1]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/8e90e469-bb40-4685-925c-cd95988ffb9c
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['$300,000 worth of cows']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Fri, 18 Nov 2016 19:43:44 GMT']
+      server: [Warp/3.2.7]
     status: {code: 204, message: No Content}
 version: 1

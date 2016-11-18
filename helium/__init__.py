@@ -6,7 +6,7 @@ from .exceptions import (
 )
 from .util import (
     from_iso_date, to_iso_date,
-    build_request_attributes, build_request_relationship,
+    build_request_body, build_request_relationship,
     build_request_include,
 )
 from .session import Session, CB
@@ -28,7 +28,7 @@ from .__about__ import (
 
 __all__ = (
     'from_iso_date', 'to_iso_date',
-    'build_request_attributes', 'build_request_relationship',
+    'build_request_body', 'build_request_relationship',
     'build_request_include',
     'Error',
     'ServerError',

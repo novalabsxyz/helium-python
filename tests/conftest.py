@@ -21,7 +21,6 @@ API_URL = os.environ.get('HELIUM_API_URL', 'https://api.helium.com/v1')
 RECORD_FOLDER = os.environ.get('HELIUM_RECORD_FOLDER', 'tests/cassettes')
 
 
-
 @pytest.fixture
 def recorder(request):
     """Generate and start a recorder using a helium.Client."""
@@ -63,20 +62,26 @@ def first_sensor(sensors):
     return sensors[0]
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def tmp_sensor(client):
-    sensor = helium.Sensor.create(client, name='test')
+    sensor = helium.Sensor.create(client, attributes={
+        'name': 'test'
+    })
     yield sensor
     sensor.delete()
 
 
-@pytest.yield_fixture
-def tmp_label(client):
+@pytest.fixture
+def tmp_label(client, tmp_sensor):
     """Yield a temporary label called 'temp-label'.
 
-    The label is deleted after the test completes.
+    The label has a temporary virtual sensor in it and both label and
+    sensor are deleted after the using test completes
+
     """
-    label = helium.Label.create(client, name='temp-label', sensors=[])
+    label = helium.Label.create(client, attributes={
+        'name': 'temp-label'
+    }, sensors=[tmp_sensor])
     yield label
     label.delete()
 

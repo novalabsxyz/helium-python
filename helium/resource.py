@@ -5,7 +5,7 @@ from future.utils import iteritems
 from builtins import filter as _filter
 from . import (
     CB,
-    build_request_attributes,
+    build_request_body,
     build_request_include,
     from_iso_date
 )
@@ -211,7 +211,7 @@ class Resource(Base):
         return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
-    def create(cls, session, **kwargs):
+    def create(cls, session, attributes=None, relationships=None):
         """Create a resource of the resource.
 
         This should only be called from sub-classes
@@ -220,7 +220,11 @@ class Resource(Base):
 
           session(Session): The session to create the resource in.
 
-          kwargs: Any attributes that are valid for the given resource type.
+          attributes(dict): Any attributes that are valid for the
+              given resource type.
+
+          relationships(dict): Any relationships that are valid for the
+              given resource type.
 
         Returns:
 
@@ -230,9 +234,11 @@ class Resource(Base):
         resource_type = cls._resource_type()
         resource_path = cls._resource_path()
         url = session._build_url(resource_path)
-        attributes = build_request_attributes(resource_type, None, kwargs)
+        json = build_request_body(resource_type, None,
+                                  attributes=attributes,
+                                  relationships=relationships)
         process = cls._mk_one(session)
-        return session.post(url, CB.json(201, process), json=attributes)
+        return session.post(url, CB.json(201, process), json=json)
 
     @classmethod
     def singleton(cls, session, include=None):
@@ -333,15 +339,15 @@ class Resource(Base):
         """Whether this instance is a singleton."""
         return hasattr(self, '_singleton')
 
-    def update(self, **kwargs):
-        """Update attributes of this resource.
+    def update(self, attributes=None):
+        """Update this resource.
 
-        Not all attributes can be updated. If the server rejects
-        attribute updates an error will be thrown.
+        Not all aspects of a resource can be updated. If the server
+        rejects updates an error will be thrown.
 
         Keyword Arguments:
 
-          kwargs: Attributes that are to be updated
+          attributes(dict): Attributes that are to be updated
 
         Returns:
 
@@ -355,7 +361,8 @@ class Resource(Base):
         singleton = self.is_singleton()
         id = None if singleton else self.id
         url = session._build_url(resource_path, id)
-        attributes = build_request_attributes(resource_type, self.id, kwargs)
+        attributes = build_request_body(resource_type, self.id,
+                                        attributes=attributes)
         process = self._mk_one(session, singleton=singleton)
         return session.patch(url, CB.json(200, process), json=attributes)
 

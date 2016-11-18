@@ -40,18 +40,22 @@ def to_iso_date(timestamp):
     return timestamp.isoformat() + 'Z'
 
 
-def build_request_attributes(type, id, attributes):
-    """Build a resource attributes object.
+def build_request_body(type, id, attributes=None, relationships=None):
+    """Build a request body  object.
 
-    A resource attributes JSON object is used for any of the
-    ``update`` methods on :class:`Resource` subclasses. In normal
-    library use you should not have to use this function directly.
+    A body JSON object is used for any of the ``update`` or ``create``
+    methods on :class:`Resource` subclasses. In normal library use you
+    should not have to use this function directly.
 
     Args:
 
         type(string): The resource type for the attribute
         id(uuid): The id of the object to update. This may be ``None``
+
+    Keyword Args:
+
         attributes(dict): A JSON dictionary of the attributes to set
+        relationships(dict) A JSON dictionary of relationships to set
 
     Returns:
 
@@ -61,12 +65,16 @@ def build_request_attributes(type, id, attributes):
     """
     result = {
         "data": {
-            "attributes": attributes,
             "type": type
         }
     }
+    data = result['data']
+    if attributes is not None:
+        data['attributes'] = attributes
+    if relationships is not None:
+        data['relationships'] = relationships
     if id is not None:
-        result['data']['id'] = id
+        data['id'] = id
     return result
 
 

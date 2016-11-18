@@ -6,7 +6,7 @@ import pytest
 
 def test_sensors(tmp_label, sensors, first_sensor):
     current_sensors = tmp_label.sensors()
-    assert len(current_sensors) == 0
+    assert len(current_sensors) == 1
     # Update all sensors
     assert tmp_label.update_sensors(sensors)
 
@@ -29,7 +29,9 @@ def test_sensors(tmp_label, sensors, first_sensor):
 
 
 def test_update(tmp_label):
-    updated = tmp_label.update(name='bar')
+    updated = tmp_label.update(attributes={
+        'name': 'bar'
+    })
     assert updated.name == 'bar'
     assert updated == tmp_label
 

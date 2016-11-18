@@ -1,7 +1,7 @@
 """The metadata resource."""
 
 from __future__ import unicode_literals
-from . import Resource, CB, build_request_attributes
+from . import Resource, CB, build_request_body
 
 
 class Metadata(Resource):
@@ -31,23 +31,23 @@ class Metadata(Resource):
         super(Metadata, self).__init__(json, session)
         self._target_resource_path = target_resource_path
 
-    def _publish_metadata(self, publish, **kwargs):
+    def _publish_metadata(self, publish, attributes):
         session = self._session
         resource_type = self.__class__._resource_type()
         target_resource_path = self._target_resource_path
         target_resource_id = None if self.is_singleton() else self.id
         url = session._build_url(target_resource_path, target_resource_id,
                                  resource_type)
-        attributes = build_request_attributes(resource_type,
-                                              target_resource_id,
-                                              kwargs)
+        attributes = build_request_body(resource_type,
+                                        target_resource_id,
+                                        attributes=attributes)
 
         def _process(json):
             data = json.get('data')
             return Metadata(data, session, target_resource_path)
         return publish(url, CB.json(200, _process), json=attributes)
 
-    def update(self, **kwargs):
+    def update(self, attributes):
         """Update metadata.
 
         Updates this metadata with the given attributes. Updating
@@ -56,17 +56,17 @@ class Metadata(Resource):
 
         Keyword Args:
 
-           **kwargs: Any set of keyword arguments that can be
-                 represented as JSON.
+           attributes(dict): A dictionary that can be represented as
+                 JSON.
 
         Returns:
 
             The updated metadata
 
         """
-        return self._publish_metadata(self._session.patch, **kwargs)
+        return self._publish_metadata(self._session.patch, attributes)
 
-    def replace(self, **kwargs):
+    def replace(self, attributes):
         """Replace the metadata.
 
         Replaces this metadata with the given attributes, removing all
@@ -74,15 +74,15 @@ class Metadata(Resource):
 
         Keyword Args:
 
-           **kwargs: Any set of keyword arguments that can be
-                 represented as JSON.
+           attributes(dict): A dictionary that can be represented as
+                 JSON.
 
         Returns:
 
             The replaced metadata
 
         """
-        return self._publish_metadata(self._session.put, **kwargs)
+        return self._publish_metadata(self._session.put, attributes)
 
 
 def metadata():

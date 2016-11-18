@@ -12,11 +12,15 @@ def test_organization(authorized_organization):
 
 def test_update(authorized_organization):
     current_name = authorized_organization.name
-    updated_org = authorized_organization.update(name="bar")
+    updated_org = authorized_organization.update(attributes={
+        'name': 'bar'
+    })
     assert updated_org.name == "bar"
     assert updated_org.is_singleton()
 
-    updated_org = authorized_organization.update(name=current_name)
+    updated_org = authorized_organization.update(attributes={
+        'name': current_name
+    })
     assert updated_org.name == current_name
 
 

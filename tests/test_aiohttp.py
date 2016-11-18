@@ -41,24 +41,31 @@ async def test_client(aclient):
 
     # patch
     sensor = sensors[0]
-    updated_sensor = await sensor.update(name=sensor.name)
+    updated_sensor = await sensor.update(attributes={
+        'name': sensor.name
+    })
     assert sensor.name == updated_sensor.name
 
     # post
-    label = await Label.create(aclient, name="test-label")
+    label = await Label.create(aclient, attributes={
+        'name': 'test-label'
+    })
     assert label is not None
-    await label.add_sensors([sensor])
 
     # put
     metadata = await label.metadata()
-    assert await metadata.replace(meta=25) == metadata
+    assert await metadata.replace({
+        'meta': 25
+    }) == metadata
 
     # delete
     assert await label.delete() is True
 
 
 async def test_datapoints(aclient):
-    sensor = await Sensor.create(aclient, name="test_sensor")
+    sensor = await Sensor.create(aclient, attributes={
+        'name': 'test_sensor'
+    })
     assert sensor is not None
 
     timeseries = sensor.timeseries()

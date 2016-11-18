@@ -5,11 +5,15 @@ from __future__ import unicode_literals
 
 def test_update(authorized_user):
     current_name = authorized_user.name
-    updated_user = authorized_user.update(name='bar')
+    updated_user = authorized_user.update(attributes={
+        'name': 'bar'
+    })
     assert updated_user.name == 'bar'
     assert updated_user == authorized_user
 
-    updated_user = authorized_user.update(name=current_name)
+    updated_user = authorized_user.update(attributes={
+        'name': current_name
+    })
     assert updated_user.name == current_name
 
 
