@@ -172,6 +172,8 @@ class Adapter(requests.Session):
                                                 json=json,
                                                 headers=headers,
                                                 files=files)
+        if not response.encoding:
+            response.encoding = 'utf8'
         body = response.text
         request = response.request
         return callback(Response(response.status_code, response.headers, body,
