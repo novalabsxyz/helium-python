@@ -28,3 +28,12 @@ def test_replace(tmp_sensor):
     assert updated is not None
     assert not hasattr(updated, 'foo')
     assert updated.bar == 42
+
+
+def test_singleton_update(authorized_organization):
+    metadata = authorized_organization.metadata()
+    assert metadata is not None
+    updated = metadata.update({
+        'test': 42
+    })
+    assert updated.test == 42

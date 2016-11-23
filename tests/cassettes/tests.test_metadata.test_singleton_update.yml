@@ -1,0 +1,75 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.1]
+    method: GET
+    uri: https://api.helium.com/v1/organization
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"dev-accounts","timezone":"US/Pacific"},"relationships":{"user":{"data":[{"id":"allenan+test14@helium.com","type":"user"},{"id":"allenan+password@helium.com","type":"user"},{"id":"mark+65@helium.com","type":"user"},{"id":"dan+@helium.com","type":"user"},{"id":"coco+1@helium.com","type":"user"},{"id":"allenan+test16@helium.com","type":"user"},{"id":"coco+344@helium.com","type":"user"},{"id":"coco+99@helium.com","type":"user"},{"id":"coco+92@helium.com","type":"user"},{"id":"dev-accounts@helium.co","type":"user"},{"id":"jared+put@helium.com","type":"user"},{"id":"coco+23@helium.com","type":"user"}]},"metadata":{"data":{"id":"dev-accounts","type":"metadata"}},"sensor":{"data":[{"id":"f928df8f-9cda-4313-9cf7-cffee5d57050","type":"sensor"},{"id":"01d53511-228d-4530-8eaf-74d43c17baa8","type":"sensor"},{"id":"c7b11d08-8534-46e4-a14d-0a9306c899b7","type":"sensor"},{"id":"c292f553-a72b-4582-951a-b900510f02d9","type":"sensor"},{"id":"3f37b3ad-e299-4e32-8db1-45787ce341f2","type":"sensor"},{"id":"aba370be-837d-4b41-bee5-686b0069d874","type":"sensor"},{"id":"66ae4160-64a2-41d9-bbe0-891b70e71b1e","type":"sensor"},{"id":"6774cda0-ef19-4c33-acb2-ee6addd2687c","type":"sensor"},{"id":"b427abef-ef0e-4429-9128-b919faea0bd4","type":"sensor"},{"id":"492759da-afb0-4d66-a83c-bb001d20c280","type":"sensor"},{"id":"08bab58b-d095-4c7c-912c-1f8024d91d95","type":"sensor"},{"id":"0d0a87ff-84c3-473c-b349-4af6122c1644","type":"sensor"},{"id":"51f3564d-bfb9-4b77-b868-fa83f1de2f39","type":"sensor"},{"id":"1e8bac50-4b6f-41cf-ac4c-619b73bf3593","type":"sensor"},{"id":"cbd3f1f5-5c9a-4b45-9f17-7f0b8d19b801","type":"sensor"},{"id":"3ad9123f-0f93-48cb-a67c-205d448f56df","type":"sensor"},{"id":"51667c26-2414-4106-b21d-08a5bce736dc","type":"sensor"},{"id":"7510e3af-cec8-40e1-b3f3-3d883f10c267","type":"sensor"},{"id":"d8aa41c3-ead6-4429-ae1a-c26fd0c8c574","type":"sensor"}]},"element":{"data":[{"id":"e3b161ee-597c-4577-bac7-ec8ab8dc2ddb","type":"element"},{"id":"a56ef1d0-61b9-4bfc-9371-d5349a1270c1","type":"element"},{"id":"d89ed12c-c7bb-4205-a48a-9fe59c96c459","type":"element"},{"id":"d9c3494b-31d3-4cf6-aba7-6fa608a1d7e8","type":"element"},{"id":"6111a24d-73e5-4e94-9e43-468cc4cc2b5a","type":"element"},{"id":"4cf1f111-6bba-4bdf-af9d-3a1dffe8f644","type":"element"},{"id":"de693f7e-c398-4fee-9eda-08bd2c5911f4","type":"element"},{"id":"ca580bcc-5232-4dd4-bf48-fcb0a2009d51","type":"element"},{"id":"f628ea12-ae13-4857-9aaf-103fadb7b431","type":"element"},{"id":"8a7a92ea-f7c7-4d7f-ac7f-86803d3279f2","type":"element"},{"id":"a4834cdc-36f5-48aa-a781-ee866bca023c","type":"element"},{"id":"5132bc26-1686-414e-856e-ca4df1025349","type":"element"},{"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","type":"element"},{"id":"c2ea34ec-3853-42ee-a504-ec0e98ba9370","type":"element"},{"id":"e1ce9f92-4ff2-4c9d-9836-b558b2ac6906","type":"element"},{"id":"81eebe36-d50c-471d-a53f-54d1c1260172","type":"element"},{"id":"ef701434-cd0a-400c-b0fd-64bf8209ad28","type":"element"},{"id":"c4e66787-5485-435d-a7e2-762539d63856","type":"element"},{"id":"aca58d2b-b0fa-41de-b269-f3176a3622cb","type":"element"},{"id":"56618098-5145-445c-a6db-805eaf37ff51","type":"element"},{"id":"acc6ea94-2f21-425a-a966-9aeba2f2bcf6","type":"element"},{"id":"66f09e7d-d994-401a-a882-a2728a4f7758","type":"element"}]},"label":{"data":[{"id":"d85ae875-1d02-4ed1-84f3-c5949bcda1d9","type":"label"},{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"},{"id":"d1e5ee93-14fd-44de-8a0e-77e49f451c5a","type":"label"},{"id":"bfd8e8ff-e4b7-4561-ac7e-81178b9868d5","type":"label"},{"id":"968cc881-737e-4bff-bdd6-2af45992fe86","type":"label"},{"id":"415e6377-2bc1-46c6-a76c-782e5e7c652d","type":"label"},{"id":"b5315d04-7bae-4184-8a7a-4f324dd11c8f","type":"label"},{"id":"da7412f3-1493-4d35-9534-b49e48eb0fe7","type":"label"},{"id":"ae4c96d5-cdc9-4dff-a3ec-c08f0565ef69","type":"label"},{"id":"eca18daf-6d17-4323-8e3d-c4423d164ae5","type":"label"},{"id":"f17dee16-df80-4b0a-84bb-3d8969747dbe","type":"label"},{"id":"76707cb0-6db6-493f-8203-040f9bc3645b","type":"label"},{"id":"0c228a65-ea5e-4b0d-a321-61009f3647b7","type":"label"},{"id":"f0008606-e12e-4a67-af95-bff56ba42eb9","type":"label"},{"id":"198d0e28-82e1-4954-a5fc-7b0326a23c6f","type":"label"},{"id":"5bfe6de7-5e67-4062-830c-b6f9ee2d987d","type":"label"},{"id":"be9b0034-d94c-4ef9-89fc-3ac39dde2852","type":"label"},{"id":"87e4641c-9e88-4770-a4d9-01a886b54d35","type":"label"},{"id":"f7c86b44-2006-46eb-9997-6d52d8a71e8a","type":"label"}]}},"id":"dev-accounts","meta":{"created":"2015-09-10T20:50:18.183896Z","updated":"2016-11-21T23:42:35.925564Z"},"type":"organization"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [never breaks eye contact]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['4611']
+      content-type: [application/json]
+      date: ['Wed, 23 Nov 2016 19:10:34 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.1]
+    method: GET
+    uri: https://api.helium.com/v1/organization/metadata
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"unit_preferences":{"motion":{"preference":"true/false","visible":true,"choices":["true/false"]},"door":{"preference":"open/close","visible":true,"choices":["open/close"]},"humidity":{"preference":"percent","visible":true,"choices":["percent"]},"temperature":{"preference":"fahrenheit","visible":true,"choices":["celcius","fahrenheit"]},"battery":{"preference":"volts","visible":true,"choices":["volts","millivolts"]},"pressure":{"preference":"psi","visible":true,"choices":["pascals","psi","bar","kpa"]},"timezone":{"preference":"America/Los_Angeles","choices":["UTC","America/New_York","America/Chicago","America/Denver","America/Phoenix","America/Los_Angeles","America/Anchorage","Pacific/Honolulu","Asia/Jerusalem","Asia/Hong_Kong","Asia/Riyadh","Asia/Singapore","Asia/Tokyo","Australia/Adelaide","Australia/Brisbane","Australia/Hobart","Australia/Melbourne","Australia/Perth","Australia/Sydney","Europe/Amsterdam","Europe/Athens","Europe/Berlin","Europe/Lisbon","Europe/London","Europe/Moscow","Europe/Paris","Europe/Rome"]},"light":{"preference":"percent","visible":true,"choices":["percent"]}}},"id":"dev-accounts","type":"metadata"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [evacuation not done in time]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['1164']
+      content-type: [application/json]
+      date: ['Wed, 23 Nov 2016 19:10:33 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"data": {"type": "metadata", "attributes": {"test": 42}}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['58']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.1]
+    method: PATCH
+    uri: https://api.helium.com/v1/organization/metadata
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"test":42,"unit_preferences":{"motion":{"preference":"true/false","visible":true,"choices":["true/false"]},"door":{"preference":"open/close","visible":true,"choices":["open/close"]},"humidity":{"preference":"percent","visible":true,"choices":["percent"]},"temperature":{"preference":"fahrenheit","visible":true,"choices":["celcius","fahrenheit"]},"battery":{"preference":"volts","visible":true,"choices":["volts","millivolts"]},"pressure":{"preference":"psi","visible":true,"choices":["pascals","psi","bar","kpa"]},"timezone":{"preference":"America/Los_Angeles","choices":["UTC","America/New_York","America/Chicago","America/Denver","America/Phoenix","America/Los_Angeles","America/Anchorage","Pacific/Honolulu","Asia/Jerusalem","Asia/Hong_Kong","Asia/Riyadh","Asia/Singapore","Asia/Tokyo","Australia/Adelaide","Australia/Brisbane","Australia/Hobart","Australia/Melbourne","Australia/Perth","Australia/Sydney","Europe/Amsterdam","Europe/Athens","Europe/Berlin","Europe/Lisbon","Europe/London","Europe/Moscow","Europe/Paris","Europe/Rome"]},"light":{"preference":"percent","visible":true,"choices":["percent"]}}},"id":"dev-accounts","type":"metadata"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [RB_GC_GUARD]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o20,o18']
+      connection: [keep-alive]
+      content-length: ['1174']
+      content-type: [application/json]
+      date: ['Wed, 23 Nov 2016 19:10:34 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+version: 1

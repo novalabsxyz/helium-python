@@ -109,7 +109,11 @@ def metadata():
 
             def _process(json):
                 data = json.get('data')
-                return Metadata(data, session, resource_path)
+                metadata = Metadata(data, session, resource_path)
+                if self.is_singleton():
+                    setattr(metadata, '_singleton', True)
+                return metadata
+
             return session.get(url, CB.json(200, _process))
 
         method.__doc__ = method_doc
