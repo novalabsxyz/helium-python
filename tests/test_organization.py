@@ -43,7 +43,7 @@ def test_sensors(authorized_organization):
 
 
 def test_labels(authorized_organization):
-    labels = authorized_organization.users()
+    labels = authorized_organization.labels()
     assert labels is not None
     assert len(labels) > 0
 
