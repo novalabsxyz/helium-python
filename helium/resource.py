@@ -21,13 +21,16 @@ class Base(object):
     Sub-classes can override methods to promote attribtues on
     construction or lazily, when they're requested
 
-    Arguments:
-
-        json(dict): A json dictionary to base attributes on
-
     """
 
     def __init__(self, json):
+        """Create a basic json based object.
+
+        Arguments:
+
+            json(dict): A json dictionary to base attributes on
+
+        """
         super(Base, self).__init__()
         self._json_data = json
         self._update_attributes(json)
@@ -95,45 +98,63 @@ class Resource(Base):
     specify this since the Resource retrieval methods like ``all`` and
     ``find`` take care of this behavior.
 
-    Args:
-
-      json(dict): The json to construct the resource from.
-
-      session(Session): The session use for this resource
-
-    Keyword Args:
-
-        include([Resource class]): Resource classes that are included
-
-        included([json]): A list of all included json resources
-
     """
 
     def __init__(self, json, session, include=None, included=None):
+        """Create a Resource.
+
+        Args:
+
+          json(dict): The json to construct the resource from.
+
+          session(Session): The session use for this resource
+
+        Keyword Args:
+
+            include([Resource class]): Resource classes that are included
+
+            included([json]): A list of all included json resources
+
+        """
         self._session = session
         self._include = include
         self._included = included
         super(Resource, self).__init__(json)
 
     @classmethod
-    def _mk_one(cls, session, singleton=False, include=None):
+    def _resource_class(cls, data, registry):
+        type = data.get('type')
+        return registry.get(type)
+
+    @classmethod
+    def _mk_one(cls, session,
+                singleton=False, include=None, resource_classes=None):
+        classes = resource_classes or [cls]
+        registry = {clazz._resource_type(): clazz for clazz in classes}
+
         def func(json):
             included = json.get('included') if include else None
             data = json.get('data')
             result = None
             if data:
-                result = cls(data, session, include=include, included=included)
+                clazz = cls._resource_class(data, registry)
+                result = clazz(data, session,
+                               include=include, included=included)
                 if singleton:
                     setattr(result, '_singleton', True)
             return result
         return func
 
     @classmethod
-    def _mk_many(cls, session, include=None):
+    def _mk_many(cls, session, include=None, resource_classes=None):
+        classes = resource_classes or [cls]
+        registry = {clazz._resource_type(): clazz for clazz in classes}
+
         def func(json):
             included = json.get('included') if include else None
             data = json.get('data')
-            return [cls(entry, session, include=include, included=included)
+            return [cls._resource_class(entry, registry)
+                    (entry, session, include=include, included=included)
                     for entry in data]
         return func
 
@@ -286,19 +307,17 @@ class Resource(Base):
 
             def _filter_included(resource_type):
                 # Get the relationship list and store the ids
-                related = relationships.get(resource_type, {}).get('data', None) or []
+                related = relationships.get(resource_type, {})
+                related = related.get('data', None) or []
                 if isinstance(related, dict):
                     # to one relationship
-                    related = [related.get('id')]
+                    related = frozenset([related.get('id')])
                 else:
                     related = frozenset([r.get('id') for r in related])
 
                 def _resource_filter(resource):
-                    if resource.get('type') != resource_type:
-                        return False
                     return resource.get('id') in related
-                # Filter all included objects for the resource type
-                # and whether they're related to this resource
+                # Filter all included objects for the resources
                 return list(_filter(_resource_filter, self._included))
 
             # Construct a dictionary of filtered included resources

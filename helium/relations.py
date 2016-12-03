@@ -33,7 +33,7 @@ class RelationType(object):
     """Use the direct relationship approach"""
 
 
-def to_one(dest_class, type=RelationType.DIRECT,
+def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
            reverse=None, reverse_type=RelationType.DIRECT):
     """Create a one to one relation to a given target :class:`Resource`.
 
@@ -70,7 +70,6 @@ def to_one(dest_class, type=RelationType.DIRECT,
 
     """
     def method_builder(cls):
-        src_resource_path = cls._resource_path()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type.replace('-', '_')
 
@@ -90,17 +89,23 @@ def to_one(dest_class, type=RelationType.DIRECT,
                 error = "{} was not included".format(dest_class.__name__)
                 raise AttributeError(error)
             included = self._included.get(dest_resource_type)
-            if len(included) > 0:
-                return dest_class(included[0], session)
-            return None
+            if len(included) == 0:
+                return None
+            mk_one = dest_class._mk_one(session,
+                                        resource_classes=resource_classes)
+            return mk_one({
+                'data': included[0]
+            })
 
         def fetch_relationship_direct(self, use_included=False):
             if use_included:
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_path, id, dest_resource_type)
-            process = dest_class._mk_one(session)
+            url = session._build_url(self._resource_path(), id,
+                                     dest_resource_type)
+            process = dest_class._mk_one(session,
+                                         resource_classes=resource_classes)
             return session.get(url, CB.json(200, process))
 
         def fetch_relationship_include(self, use_included=False):
@@ -108,14 +113,19 @@ def to_one(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_path, id)
+            url = session._build_url(self._resource_path(), id)
             params = build_request_include([dest_class], None)
 
             def _process(json):
                 included = json.get('included')
-                if len(included) > 0:
-                    return dest_class(included[0], session)
-                return None
+                if len(included) == 0:
+                    return None
+
+                mk_one = dest_class._mk_one(session,
+                                            resource_classes=resource_classes)
+                return mk_one({
+                    'data': included[0]
+                })
             return session.get(url, CB.json(200, _process),
                                params=params)
 
@@ -192,8 +202,6 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
     """
     def method_builder(cls):
-        src_resource_type = cls._resource_type()
-        src_resource_path = cls._resource_path()
         dest_resource_type = dest_class._resource_type()
         dest_method_name = pluralize(dest_resource_type).replace('-', '_')
         doc_variables = {
@@ -218,19 +226,21 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 error = "{} was not included".format(dest_class.__name__)
                 raise AttributeError(error)
             included = self._included.get(dest_resource_type)
-            return [dest_class(entry, session) for entry in included]
+            mk_one = dest_class._mk_one(session)
+            return [mk_one({'data': entry}) for entry in included]
 
         def fetch_relationship_include(self, use_included=False):
             if use_included:
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_path, id)
+            url = session._build_url(self._resource_path(), id)
             params = build_request_include([dest_class], None)
 
             def _process(json):
                 included = json.get('included')
-                return [dest_class(entry, session) for entry in included]
+                mk_one = dest_class._mk_one(session)
+                return [mk_one({'data': entry}) for entry in included]
             return session.get(url, CB.json(200, _process), params=params)
 
         def fetch_relationship_direct(self, use_included=False):
@@ -238,7 +248,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 return _fetch_relationship_included(self)
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_path, id, dest_resource_type)
+            url = session._build_url(self._resource_path(), id,
+                                     dest_resource_type)
             process = dest_class._mk_many(session)
             return session.get(url, CB.json(200, process))
 
@@ -254,7 +265,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
         def _build_relatonship(self, objs):
             session = self._session
             id = None if self.is_singleton() else self.id
-            url = session._build_url(src_resource_path, id,
+            url = session._build_url(self._resource_path(), id,
                                      'relationships', dest_resource_type)
             json = build_request_relationship(dest_resource_type,
                                               [obj.id for obj in objs])

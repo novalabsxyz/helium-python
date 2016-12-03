@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from datetime import datetime
 from collections import OrderedDict
+from builtins import str
+
 
 def from_iso_date(str):
     """Convert an ISO8601 to a datetime.
@@ -89,16 +91,22 @@ def build_request_relationship(type, ids):
     Args:
 
         type(string): The resource type for the ids in the relationship
-        ids([uuid]): The list of resource uuids to use in the relationship
+        ids([uuid] or uuid): Just one or a list of resource uuids to use
+            in the relationship
 
     Returns:
 
         A ready to use relationship JSON object.
 
     """
-    return {
-        "data": [{"id": id, "type": type} for id in ids]
-    }
+    if isinstance(ids, str):
+        return {
+            'data': {'id': ids, 'type': type}
+        }
+    else:
+        return {
+            "data": [{"id": id, "type": type} for id in ids]
+        }
 
 
 def build_request_include(include, params):

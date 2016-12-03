@@ -106,3 +106,14 @@ def authorized_user(client):
 @pytest.fixture
 def authorized_organization(client):
     return client.authorized_organization()
+
+
+@pytest.fixture
+def tmp_configuration(client):
+    config = helium.Configuration.create(client, {
+        'test': 42,
+        'location': 'office',
+        'available': True
+    })
+    yield config
+    config.delete()

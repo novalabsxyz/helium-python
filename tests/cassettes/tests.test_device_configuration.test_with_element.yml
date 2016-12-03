@@ -1,0 +1,231 @@
+interactions:
+- request:
+    body: !!python/unicode '{"data": {"attributes": {"available": true, "location":
+      "office", "test": 42}, "type": "configuration"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['104']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: POST
+    uri: https://api.helium.com/v1/configuration
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"location":"office","test":42,"available":true},"relationships":{"device-configuration":{"data":[]}},"id":"ab17b05b-97d0-4b00-a19b-6d80cad46978","meta":{"created":"2016-12-07T22:29:27.662494Z"},"type":"configuration"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [blame me if inappropriate]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['241']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      location: [/v1/configuration/ab17b05b-97d0-4b00-a19b-6d80cad46978]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: GET
+    uri: https://api.helium.com/v1/element
+  response:
+    body: {string: !!python/unicode '{"data":[{"attributes":{"name":"SF Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","type":"metadata"}},"sensor":{"data":[]}},"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","meta":{"connected":false,"mac":"6081f9fffe0002a9","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.69071Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"2d92e084-0049-4de0-8bc9-b9ddad47ef24","type":"metadata"}},"sensor":{"data":[]}},"id":"2d92e084-0049-4de0-8bc9-b9ddad47ef24","meta":{"connected":true,"mac":"6081f9fffe000b54","created":"2016-12-02T01:35:01.041802Z","last-seen":"2016-12-07T18:40:48.766828Z","updated":"2016-12-02T01:35:01.041802Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"43ea2e3e-c8d4-4121-8f0f-40e2478fff8a","type":"metadata"}},"sensor":{"data":[]}},"id":"43ea2e3e-c8d4-4121-8f0f-40e2478fff8a","meta":{"connected":false,"mac":"6081f9fffe000e5a","created":"2016-12-02T01:25:54.578313Z","last-seen":null,"updated":"2016-12-02T01:25:54.578313Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"4cf1f111-6bba-4bdf-af9d-3a1dffe8f644","type":"metadata"}},"sensor":{"data":[]}},"id":"4cf1f111-6bba-4bdf-af9d-3a1dffe8f644","meta":{"connected":false,"mac":"6081f9fffe000346","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.68675Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"5132bc26-1686-414e-856e-ca4df1025349","type":"metadata"}},"sensor":{"data":[]}},"id":"5132bc26-1686-414e-856e-ca4df1025349","meta":{"connected":false,"mac":"6081f9fffe00034e","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.690326Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[{"id":"85a9bbf9-0ff7-4678-b071-03342b6c7f91","type":"device-configuration"}]},"metadata":{"data":{"id":"56618098-5145-445c-a6db-805eaf37ff51","type":"metadata"}},"sensor":{"data":[]}},"id":"56618098-5145-445c-a6db-805eaf37ff51","meta":{"connected":false,"mac":"6081f9fffe00029e","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.693805Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"60daaaa8-5f5e-40da-b158-ac3f27420014","type":"metadata"}},"sensor":{"data":[]}},"id":"60daaaa8-5f5e-40da-b158-ac3f27420014","meta":{"connected":false,"mac":"6081f9fffe000b5b","created":"2016-12-02T01:40:00.162393Z","last-seen":null,"updated":"2016-12-02T01:40:00.162393Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"6111a24d-73e5-4e94-9e43-468cc4cc2b5a","type":"metadata"}},"sensor":{"data":[]}},"id":"6111a24d-73e5-4e94-9e43-468cc4cc2b5a","meta":{"connected":false,"mac":"6081f9fffe000345","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.686224Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"66f09e7d-d994-401a-a882-a2728a4f7758","type":"metadata"}},"sensor":{"data":[]}},"id":"66f09e7d-d994-401a-a882-a2728a4f7758","meta":{"connected":false,"mac":"6081f9fffe0002a8","created":"2016-04-27T18:19:06.520815Z","last-seen":"2016-09-27T19:34:58.399228Z","updated":"2016-11-18T01:05:34.694402Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"79f28655-87d9-4fe4-a871-2c457ff6defc","type":"metadata"}},"sensor":{"data":[]}},"id":"79f28655-87d9-4fe4-a871-2c457ff6defc","meta":{"connected":false,"mac":"6081f9fffe000e24","created":"2016-12-02T01:20:03.380779Z","last-seen":null,"updated":"2016-12-02T01:20:03.380779Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"81eebe36-d50c-471d-a53f-54d1c1260172","type":"metadata"}},"sensor":{"data":[]}},"id":"81eebe36-d50c-471d-a53f-54d1c1260172","meta":{"connected":false,"mac":"6081f9fffe000333","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.692011Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"844ac898-c640-4f8d-a424-941572ec675d","type":"metadata"}},"sensor":{"data":[]}},"id":"844ac898-c640-4f8d-a424-941572ec675d","meta":{"connected":false,"mac":"6081f9fffe000b63","created":"2016-12-02T01:38:54.765523Z","last-seen":null,"updated":"2016-12-02T01:38:54.765523Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"896a7a82-6656-4cbf-91a3-1bf050993ff6","type":"metadata"}},"sensor":{"data":[]}},"id":"896a7a82-6656-4cbf-91a3-1bf050993ff6","meta":{"connected":false,"mac":"6081f9fffe000b62","created":"2016-12-02T01:37:30.061482Z","last-seen":null,"updated":"2016-12-02T01:37:30.061482Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"8a7a92ea-f7c7-4d7f-ac7f-86803d3279f2","type":"metadata"}},"sensor":{"data":[]}},"id":"8a7a92ea-f7c7-4d7f-ac7f-86803d3279f2","meta":{"connected":false,"mac":"6081f9fffe00033f","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.689565Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"8b9b2e41-4400-4845-bf1d-2f4827dfb050","type":"metadata"}},"sensor":{"data":[]}},"id":"8b9b2e41-4400-4845-bf1d-2f4827dfb050","meta":{"connected":false,"mac":"6081f9fffe000e49","created":"2016-12-02T01:23:12.293851Z","last-seen":null,"updated":"2016-12-02T01:23:12.293851Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"934922cb-a6de-4fcb-a255-3881c97bd97b","type":"metadata"}},"sensor":{"data":[]}},"id":"934922cb-a6de-4fcb-a255-3881c97bd97b","meta":{"connected":false,"mac":"6081f9fffe000b5d","created":"2016-12-02T01:38:13.383273Z","last-seen":null,"updated":"2016-12-02T01:38:13.383273Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"a4834cdc-36f5-48aa-a781-ee866bca023c","type":"metadata"}},"sensor":{"data":[]}},"id":"a4834cdc-36f5-48aa-a781-ee866bca023c","meta":{"connected":false,"mac":"6081f9fffe00029a","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.689951Z"},"type":"element"},{"attributes":{"name":"Element
+        6"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"a56ef1d0-61b9-4bfc-9371-d5349a1270c1","type":"metadata"}},"sensor":{"data":[]}},"id":"a56ef1d0-61b9-4bfc-9371-d5349a1270c1","meta":{"connected":true,"mac":"6081f9fffe000608","created":"2016-05-24T20:38:53.220166Z","last-seen":"2016-12-06T22:31:31.189144Z","updated":"2016-11-18T01:05:34.683931Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"a84ee069-9fcc-481f-bd07-a18f5f76a657","type":"metadata"}},"sensor":{"data":[]}},"id":"a84ee069-9fcc-481f-bd07-a18f5f76a657","meta":{"connected":false,"mac":"6081f9fffe000e4f","created":"2016-12-02T01:21:58.999824Z","last-seen":null,"updated":"2016-12-02T01:21:58.999824Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"aca58d2b-b0fa-41de-b269-f3176a3622cb","type":"metadata"}},"sensor":{"data":[]}},"id":"aca58d2b-b0fa-41de-b269-f3176a3622cb","meta":{"connected":false,"mac":"6081f9fffe000335","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.693295Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"acc6ea94-2f21-425a-a966-9aeba2f2bcf6","type":"metadata"}},"sensor":{"data":[]}},"id":"acc6ea94-2f21-425a-a966-9aeba2f2bcf6","meta":{"connected":false,"mac":"6081f9fffe000285","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.694773Z"},"type":"element"},{"attributes":{"name":"SF
+        Office 1"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"c2ea34ec-3853-42ee-a504-ec0e98ba9370","type":"metadata"}},"sensor":{"data":[]}},"id":"c2ea34ec-3853-42ee-a504-ec0e98ba9370","meta":{"connected":false,"mac":"6081f9fffe000342","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.691097Z"},"type":"element"},{"attributes":{"name":"SF
+        Office 99"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"c4e66787-5485-435d-a7e2-762539d63856","type":"metadata"}},"sensor":{"data":[]}},"id":"c4e66787-5485-435d-a7e2-762539d63856","meta":{"connected":false,"mac":"6081f9fffe000350","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.692922Z"},"type":"element"},{"attributes":{"name":"Compound
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"c53a27a4-e916-4496-a1d9-db210c7dbf4d","type":"metadata"}},"sensor":{"data":[]}},"id":"c53a27a4-e916-4496-a1d9-db210c7dbf4d","meta":{"connected":false,"mac":"6081f9fffe000e56","created":"2016-12-02T01:36:20.942903Z","last-seen":null,"updated":"2016-12-02T01:36:20.942903Z"},"type":"element"},{"attributes":{"name":"COS
+        Office - Scott"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"ca580bcc-5232-4dd4-bf48-fcb0a2009d51","type":"metadata"}},"sensor":{"data":[]}},"id":"ca580bcc-5232-4dd4-bf48-fcb0a2009d51","meta":{"connected":false,"mac":"6081f9ffff000148","created":"2016-04-27T18:19:06.520815Z","last-seen":"2016-11-22T21:23:47.968029Z","updated":"2016-11-18T01:05:34.688545Z"},"type":"element"},{"attributes":{"name":"Mark
+        Primary Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"d89ed12c-c7bb-4205-a48a-9fe59c96c459","type":"metadata"}},"sensor":{"data":[{"id":"6774cda0-ef19-4c33-acb2-ee6addd2687c","type":"sensor"},{"id":"3f37b3ad-e299-4e32-8db1-45787ce341f2","type":"sensor"}]}},"id":"d89ed12c-c7bb-4205-a48a-9fe59c96c459","meta":{"connected":true,"mac":"6081f9fffe0001a9","created":"2016-04-27T18:19:06.520815Z","last-seen":"2016-12-06T20:33:17.312132Z","updated":"2016-11-30T20:06:44.461978Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"d9c3494b-31d3-4cf6-aba7-6fa608a1d7e8","type":"metadata"}},"sensor":{"data":[]}},"id":"d9c3494b-31d3-4cf6-aba7-6fa608a1d7e8","meta":{"connected":false,"mac":"6081f9fffe000286","created":"2016-04-27T18:19:06.520815Z","last-seen":"2016-11-04T08:19:29.932307Z","updated":"2016-11-18T01:05:34.685689Z"},"type":"element"},{"attributes":{"name":"Another
+        Element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"de693f7e-c398-4fee-9eda-08bd2c5911f4","type":"metadata"}},"sensor":{"data":[]}},"id":"de693f7e-c398-4fee-9eda-08bd2c5911f4","meta":{"connected":false,"mac":"6081f9fffe0000d3","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.687302Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"e1ce9f92-4ff2-4c9d-9836-b558b2ac6906","type":"metadata"}},"sensor":{"data":[]}},"id":"e1ce9f92-4ff2-4c9d-9836-b558b2ac6906","meta":{"connected":false,"mac":"6081f9fffe000359","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.691479Z"},"type":"element"},{"attributes":{"name":"SF
+        Cell element"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"e3b161ee-597c-4577-bac7-ec8ab8dc2ddb","type":"metadata"}},"sensor":{"data":[]}},"id":"e3b161ee-597c-4577-bac7-ec8ab8dc2ddb","meta":{"connected":true,"mac":"6081f9fffe00022f","created":"2016-06-17T18:47:22.910163Z","last-seen":"2016-12-06T23:49:03.14923Z","updated":"2016-11-18T01:05:34.684859Z"},"type":"element"},{"attributes":{"name":"SF
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"ef701434-cd0a-400c-b0fd-64bf8209ad28","type":"metadata"}},"sensor":{"data":[]}},"id":"ef701434-cd0a-400c-b0fd-64bf8209ad28","meta":{"connected":false,"mac":"6081f9fffe000347","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.692558Z"},"type":"element"},{"attributes":{"name":"COS
+        bridge"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"f628ea12-ae13-4857-9aaf-103fadb7b431","type":"metadata"}},"sensor":{"data":[]}},"id":"f628ea12-ae13-4857-9aaf-103fadb7b431","meta":{"connected":false,"mac":"6081f9fffe000001","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.688942Z"},"type":"element"}]}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [blame me if inappropriate]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['13412']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"data": {"relationships": {"configuration": {"data":
+      {"id": "ab17b05b-97d0-4b00-a19b-6d80cad46978", "type": "configuration"}}, "device":
+      {"data": {"id": "0bdde274-0f81-4a3b-8aea-78e4e60a7ec6", "type": "element"}}},
+      "type": "device-configuration"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['248']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: POST
+    uri: https://api.helium.com/v1/device-configuration
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{},"relationships":{"device":{"data":{"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","type":"element"}},"configuration":{"data":{"id":"ab17b05b-97d0-4b00-a19b-6d80cad46978","type":"configuration"}}},"id":"73854470-4a23-4fdc-97c9-c90ca48e3cf5","meta":{"loaded":null,"created":"2016-12-07T22:29:27.792226Z"},"type":"device-configuration"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['WARNING: ulimit -n is 1024']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['356']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      location: [/v1/device-configuration/73854470-4a23-4fdc-97c9-c90ca48e3cf5]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: GET
+    uri: https://api.helium.com/v1/device-configuration/73854470-4a23-4fdc-97c9-c90ca48e3cf5/configuration
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"location":"office","test":42,"available":true},"relationships":{"device-configuration":{"data":[{"id":"73854470-4a23-4fdc-97c9-c90ca48e3cf5","type":"device-configuration"}]}},"id":"ab17b05b-97d0-4b00-a19b-6d80cad46978","meta":{"created":"2016-12-07T22:29:27.662494Z"},"type":"configuration"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['$300,000 worth of cows']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['316']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: GET
+    uri: https://api.helium.com/v1/device-configuration/73854470-4a23-4fdc-97c9-c90ca48e3cf5/device
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"SF Office"},"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","meta":{"connected":false,"mac":"6081f9fffe0002a9","created":"2016-04-27T18:19:06.520815Z","last-seen":null,"updated":"2016-11-18T01:05:34.69071Z"},"type":"element"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['WARNING: ulimit -n is 1024']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['253']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: GET
+    uri: https://api.helium.com/v1/element/0bdde274-0f81-4a3b-8aea-78e4e60a7ec6/device-configuration
+  response:
+    body: {string: !!python/unicode '{"data":[{"attributes":{},"relationships":{"device":{"data":{"id":"0bdde274-0f81-4a3b-8aea-78e4e60a7ec6","type":"element"}},"configuration":{"data":{"id":"ab17b05b-97d0-4b00-a19b-6d80cad46978","type":"configuration"}}},"id":"73854470-4a23-4fdc-97c9-c90ca48e3cf5","meta":{"loaded":null,"created":"2016-12-07T22:29:27.792226Z"},"type":"device-configuration"}]}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['WARNING: ulimit -n is 1024']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['358']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: DELETE
+    uri: https://api.helium.com/v1/device-configuration/73854470-4a23-4fdc-97c9-c90ca48e3cf5
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [shut it down]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.4.3.post2]
+    method: DELETE
+    uri: https://api.helium.com/v1/configuration/ab17b05b-97d0-4b00-a19b-6d80cad46978
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [blame me if inappropriate]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Wed, 07 Dec 2016 22:29:27 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

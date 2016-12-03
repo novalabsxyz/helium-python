@@ -15,9 +15,12 @@ from .relations import RelationType, to_many, to_one
 from .metadata import Metadata, metadata
 from .user import User
 from .timeseries import Timeseries, DataPoint, AggregateValue, timeseries
+from .device import Device
 from .sensor import Sensor
-from .label import Label
 from .element import Element
+from .configuration import Configuration
+from .device_configuration import DeviceConfiguration
+from .label import Label
 from .organization import Organization
 from .client import Client
 from .__about__ import (
@@ -40,6 +43,7 @@ __all__ = (
     'Organization',
     'User',
     'Timeseries', 'DataPoint', 'timeseries', 'AggregateValue',
+    'DeviceConfiguration', 'Configuration', 'Device',
     'Sensor',
     'Metadata', 'metadata',
     'Element',
