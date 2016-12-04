@@ -47,8 +47,8 @@ def test_update(tmp_sensor):
 def test_meta(tmp_sensor):
     meta = tmp_sensor.meta
     assert meta is not None
-    assert isinstance(meta.created, datetime)
-    assert isinstance(meta.updated, datetime)
+    assert meta.created is not None
+    assert meta.updated is not None
 
 
 def test_basic(client, tmp_sensor):

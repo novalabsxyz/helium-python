@@ -72,17 +72,11 @@ class ResourceMeta(Base):
     Most of this information is specific to the given resource, but
     all meta instances have at least a ``created`` and ``updated``
     attribute which are timestamps of when the resource was created
-    and last updated, respectively.
+    and last updated, respectively. These timestamps are in ISO8601
+    format. To convert them to `datetime`s use the `from_iso_date`
+    utility function.
 
     """
-
-    def _promote_json_attribute(self, attribute, value):
-        if attribute == 'created':
-            value = from_iso_date(value)
-        elif attribute == 'updated':
-            value = from_iso_date(value)
-        return super(ResourceMeta, self)._promote_json_attribute(attribute,
-                                                                 value)
 
 
 class Resource(Base):
