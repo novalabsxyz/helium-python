@@ -16,9 +16,6 @@ class Label(Resource):
             sensor_ids = [r.id for r in sensors]
             relationships['sensor'] = build_request_relationship('sensor',
                                                                  sensor_ids)
-        label = super(Label, cls).create(session,
-                                         attributes=attributes,
-                                         relationships=relationships)
-        if sensors is not None:
-            label.update_sensors(sensors)
-        return label
+        return super(Label, cls).create(session,
+                                        attributes=attributes,
+                                        relationships=relationships)

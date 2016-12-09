@@ -3,7 +3,7 @@
 from __future__ import unicode_literals, absolute_import
 
 import requests
-from collections import Iterable, Iterator, deque, OrderedDict
+from collections import Iterable, Iterator, deque
 from json import loads as load_json
 from helium.__about__ import __version__
 from helium.session import Response, CB
@@ -138,7 +138,7 @@ class DatapointIterator(Iterator):
         """Python 2 iterator compatibility."""
         # We remove coverage here to pacify coverage since this method
         # used in python 2.7 but no longer in python 3.5
-        return self.__next__()  #pragma: no cover
+        return self.__next__()  # pragma: no cover
 
 
 class Adapter(requests.Session):
@@ -197,7 +197,8 @@ class Adapter(requests.Session):
                           params=params, json=json, headers=headers,
                           files=files)
 
-    def patch(self, url, callback, params=None, json=None, headers=None):  # noqa: D102
+    def patch(self, url, callback,
+              params=None, json=None, headers=None):  # noqa: D102
         return self._http(callback, 'PATCH', url,
                           params=params, json=json, headers=headers)
 

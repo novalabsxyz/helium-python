@@ -1,7 +1,7 @@
 """The element resource."""
 
 from __future__ import unicode_literals
-from . import Resource, Sensor
+from . import Device, Sensor
 from . import RelationType, to_many, to_one
 from . import timeseries, metadata
 
@@ -10,5 +10,5 @@ from . import timeseries, metadata
          reverse=to_one, reverse_type=RelationType.DIRECT)
 @timeseries()
 @metadata()
-class Element(Resource):
+class Element(Device):
     pass
