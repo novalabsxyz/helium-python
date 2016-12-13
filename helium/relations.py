@@ -43,8 +43,11 @@ def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
 
     Keyword Args:
 
-        **kwargs: Any keyword arguments are ignored for this
-              relationship
+        type(RelationType): The relationship approach to use.
+        reverse(to_may or to_one): An *optional* reverse relationship.
+        reverse_type(RelationType): The reverse relationship approach.
+        resource_classes(Resource): The kinds of Resources to expect
+            in the relationship
 
     Returns:
 
@@ -149,7 +152,7 @@ def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
 
 def to_many(dest_class, type=RelationType.DIRECT,
             reverse=None, reverse_type=RelationType.DIRECT,
-            writable=False):
+            resource_classes=None, writable=False):
     """Create a one to many relation to a given target :class:`Resource`.
 
     Args:
@@ -162,6 +165,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
         writable(bool): Whether the relationship is mutable.
         reverse(to_may or to_one): An *optional* reverse relationship.
         reverse_type(RelationType): The reverse relationship approach.
+        resource_classes(Resource): The kinds of Resources to expect
+            in the relationship
 
 
     Returns:
@@ -226,7 +231,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 error = "{} was not included".format(dest_class.__name__)
                 raise AttributeError(error)
             included = self._included.get(dest_resource_type)
-            mk_one = dest_class._mk_one(session)
+            mk_one = dest_class._mk_one(session,
+                                        resource_classes=resource_classes)
             return [mk_one({'data': entry}) for entry in included]
 
         def fetch_relationship_include(self, use_included=False):
@@ -239,7 +245,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
             def _process(json):
                 included = json.get('included')
-                mk_one = dest_class._mk_one(session)
+                mk_one = dest_class._mk_one(session,
+                                            resource_classes=resource_classes)
                 return [mk_one({'data': entry}) for entry in included]
             return session.get(url, CB.json(200, _process), params=params)
 
@@ -250,7 +257,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
             id = None if self.is_singleton() else self.id
             url = session._build_url(self._resource_path(), id,
                                      dest_resource_type)
-            process = dest_class._mk_many(session)
+            process = dest_class._mk_many(session,
+                                          resource_classes=resource_classes)
             return session.get(url, CB.json(200, process))
 
         if type == RelationType.DIRECT:

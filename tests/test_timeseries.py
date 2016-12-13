@@ -136,4 +136,5 @@ def test_live(tmp_sensor):
         assert len(live_points) == 2
 
 def test_datapoint():
-    assert DataPoint._resource_type() == 'timeseries'
+    assert DataPoint._resource_type() == 'data-point'
+    assert DataPoint._resource_path() == 'timeseries'
