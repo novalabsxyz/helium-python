@@ -99,7 +99,11 @@ def build_request_relationship(type, ids):
         A ready to use relationship JSON object.
 
     """
-    if isinstance(ids, str):
+    if ids is None:
+        return {
+            'data': None
+        }
+    elif isinstance(ids, str):
         return {
             'data': {'id': ids, 'type': type}
         }

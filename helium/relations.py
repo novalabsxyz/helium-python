@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from inflection import pluralize
 from . import (
     CB,
+    Resource,
     build_request_relationship,
     build_request_include
 )
@@ -33,8 +34,24 @@ class RelationType(object):
     """Use the direct relationship approach"""
 
 
+def _build_relatonship(self, dest_resource_type, objs):
+    session = self._session
+    id = None if self.is_singleton() else self.id
+    url = session._build_url(self._resource_path(), id,
+                             'relationships', dest_resource_type)
+    if objs is None:
+        json = build_request_relationship(dest_resource_type, objs)
+    elif isinstance(objs, Resource):
+        json = build_request_relationship(dest_resource_type, objs.id)
+    else:
+        json = build_request_relationship(dest_resource_type,
+                                          [obj.id for obj in objs])
+    return (session, url, json)
+
+
 def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
-           reverse=None, reverse_type=RelationType.DIRECT):
+           reverse=None, reverse_type=RelationType.DIRECT,
+           writable=False):
     """Create a one to one relation to a given target :class:`Resource`.
 
     Args:
@@ -75,8 +92,13 @@ def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
     def method_builder(cls):
         dest_resource_type = dest_class._resource_type()
         dest_method_name = dest_resource_type.replace('-', '_')
+        doc_variables = {
+            'from_class': cls.__name__,
+            'to_class': dest_class.__name__,
+            'to_name': dest_method_name
+        }
 
-        method_doc = """Fetch the {2} associated with this :class:`{0}`.
+        fetch_method_doc = """Fetch the {2} associated with this :class:`{0}`.
 
         Returns:
 
@@ -139,8 +161,31 @@ def to_one(dest_class, type=RelationType.DIRECT, resource_classes=None,
         else:  # pragma: no cover
             raise ValueError("Invalid RelationType: {}".format(type))
 
-        fetch_relationship.__doc__ = method_doc
-        setattr(cls, dest_method_name, fetch_relationship)
+        fetch_relationship.__doc__ = fetch_method_doc
+
+        def update_method(self, resource):
+            """Set the {to_name} for this :class:`{from_class}`.
+
+            Args:
+
+              resource: The :class:`{to_class}` to set
+
+            Returns:
+
+                True if successful
+            """
+            session, url, json = _build_relatonship(self, dest_resource_type,
+                                                    resource)
+            return session.patch(url, CB.boolean(200), json=json)
+
+        methods = [(dest_method_name, fetch_relationship)]
+        if writable:
+            methods.extend([
+                ('update_{}'.format(dest_method_name), update_method)
+            ])
+        for name, method in methods:
+            method.__doc__ = method.__doc__.format(**doc_variables)
+            setattr(cls, name, method)
 
         if reverse is not None:
             reverse(cls, type=reverse_type)(dest_class)
@@ -270,15 +315,6 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
         fetch_relationship.__doc__ = fetch_method_doc
 
-        def _build_relatonship(self, objs):
-            session = self._session
-            id = None if self.is_singleton() else self.id
-            url = session._build_url(self._resource_path(), id,
-                                     'relationships', dest_resource_type)
-            json = build_request_relationship(dest_resource_type,
-                                              [obj.id for obj in objs])
-            return (session, url, json)
-
         def add_many(self, resources):
             """Add {to_name} to this :class:`{from_class}`.
 
@@ -290,7 +326,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
                 True if the relationship was mutated, False otherwise
             """
-            session, url, json = _build_relatonship(self, resources)
+            session, url, json = _build_relatonship(self, dest_resource_type,
+                                                    resources)
             return session.post(url, CB.boolean(200, false_code=204),
                                 json=json)
 
@@ -305,7 +342,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
                 True if the relationship was mutated, False otherwise
             """
-            session, url, json = _build_relatonship(self, resources)
+            session, url, json = _build_relatonship(self, dest_resource_type,
+                                                    resources)
             return session.delete(url, CB.boolean(200, false_code=204),
                                   json=json)
 
@@ -322,7 +360,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
 
                 True if successful
             """
-            session, url, json = _build_relatonship(self, resources)
+            session, url, json = _build_relatonship(self, dest_resource_type,
+                                                    resources)
             return session.patch(url, CB.boolean(200), json=json)
 
         methods = [(dest_method_name, fetch_relationship)]
