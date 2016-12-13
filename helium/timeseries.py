@@ -8,8 +8,6 @@ from . import build_request_body
 from collections import Iterable, namedtuple, OrderedDict
 import sys
 
-PY_35 = sys.version_info >= (3, 5)
-
 AggregateValue = namedtuple('agg', ['min', 'max', 'avg'])
 AggregateValue.__new__.__defaults__ = (None,) * len(AggregateValue._fields)
 
@@ -37,6 +35,10 @@ class DataPoint(Resource):
 
     @classmethod
     def _resource_type(cls):
+        return "data-point"
+
+    @classmethod
+    def _resource_path(cls):
         return "timeseries"
 
     def _promote_json_attribute(self, attribute, value):
