@@ -6,7 +6,8 @@ from . import Resource, CB
 from . import to_iso_date
 from . import build_request_body
 from collections import Iterable, namedtuple, OrderedDict
-import sys
+from future.utils import iteritems
+
 
 AggregateValue = namedtuple('agg', ['min', 'max', 'avg'])
 AggregateValue.__new__.__defaults__ = (None,) * len(AggregateValue._fields)
@@ -293,9 +294,12 @@ class Timeseries(Iterable):
         """
         session = self._session
         url = "{}/live".format(self._base_url)
+        supported_params = frozenset(['filter[port]'])
+        params = {k: v for k, v in iteritems(self._params)
+                  if k in supported_params}
         return session.live(url, self._datapoint_class, {
             'is_aggregate': self._is_aggregate
-        })
+        }, params=params)
 
 
 def timeseries():

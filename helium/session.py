@@ -262,7 +262,7 @@ class Session(object):
     def datapoints(self, timeseries):
         return self.adapter.datapoints(timeseries)
 
-    def live(self, url, resource_class, resource_args):
+    def live(self, url, resource_class, resource_args, params=None):
         """Get a live endpoint.
 
         Args:
@@ -275,6 +275,10 @@ class Session(object):
             resource_args(dict): Additional arguments to pass to the
                 `resource_class` constructor
 
+        Keyword Args:
+
+            params(dict): Request parameters for the live url
+
         Returns:
 
             An iterator over the live endpoint. Depending on the
@@ -283,7 +287,8 @@ class Session(object):
                 iterating over the response of this method.
 
         """
-        return self.adapter.live(self, url, resource_class, resource_args)
+        return self.adapter.live(self, url, resource_class, resource_args,
+                                 params=params)
 
     def _build_url(self, *args, **kwargs):
         parts = [kwargs.get('base_url', self.base_url)]

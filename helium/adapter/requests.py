@@ -211,11 +211,14 @@ class Adapter(requests.Session):
     def take(self, iter, n):   # noqa: D102
         return list(islice(iter, n))
 
-    def live(self, session, url, resource_class, resource_args):  # noqa: D102
+    def live(self, session, url, resource_class, resource_args, params=None):  # noqa: D102
         headers = {
             'Accept': 'text/event-stream',
         }
-        response = super(Adapter, self).get(url, stream=True, headers=headers)
+        response = super(Adapter, self).get(url,
+                                            stream=True,
+                                            headers=headers,
+                                            params=params)
         # Validate the response code
         CB.boolean(200)(Response(response.status_code, response.headers, None,
                                  response.request.method, url))
