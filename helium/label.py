@@ -1,11 +1,18 @@
 """The label resource."""
 
 from __future__ import unicode_literals
-from . import Resource, Sensor
-from . import to_many, metadata, build_request_relationship
+from . import (
+    Resource,
+    Sensor,
+    to_many,
+    timeseries,
+    metadata,
+    build_request_relationship
+)
 
 
 @to_many(Sensor, writable=True, reverse=to_many)
+@timeseries()
 @metadata()
 class Label(Resource):
     @classmethod
