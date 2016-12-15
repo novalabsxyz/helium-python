@@ -200,12 +200,14 @@ class Adapter(aiohttp.client.ClientSession):
                           json=json)
 
     def live(self, session, url,
-             resource_class, resource_args):  # noqa: D102
+             resource_class, resource_args,
+             params=None):  # noqa: D102
         headers = {
             'Accept': 'text/event-stream',
         }
         response = super(Adapter, self).get(url,
                                             read_until_eof=False,
+                                            params=params,
                                             headers=headers)
         return LiveIterator(response, session, resource_class, resource_args)
 
