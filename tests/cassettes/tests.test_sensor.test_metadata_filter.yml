@@ -1,0 +1,125 @@
+interactions:
+- request:
+    body: !!python/unicode '{"data": {"type": "sensor", "attributes": {"name": "test"}}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.6.4]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"f5101810-e7af-426c-8dff-b2e91de652e5","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"f5101810-e7af-426c-8dff-b2e91de652e5","meta":{"card":null,"mac":null,"created":"2016-12-21T14:10:30.590469Z","last-seen":null,"ports":[],"updated":"2016-12-21T14:10:30.590469Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [never breaks eye contact]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['420']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 21 Dec 2016 14:10:30 GMT']
+      location: [/v1/sensor/f5101810-e7af-426c-8dff-b2e91de652e5]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.6.4]
+    method: GET
+    uri: https://api.helium.com/v1/sensor/f5101810-e7af-426c-8dff-b2e91de652e5/metadata
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{},"id":"f5101810-e7af-426c-8dff-b2e91de652e5","type":"metadata"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [sharkfed]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['88']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 21 Dec 2016 14:10:30 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"data": {"type": "metadata", "attributes": {"foo": 22},
+      "id": "f5101810-e7af-426c-8dff-b2e91de652e5"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['103']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.6.4]
+    method: PUT
+    uri: https://api.helium.com/v1/sensor/f5101810-e7af-426c-8dff-b2e91de652e5/metadata
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"foo":22},"id":"f5101810-e7af-426c-8dff-b2e91de652e5","type":"metadata"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [RB_GC_GUARD]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o14,p11,o20,o18']
+      connection: [keep-alive]
+      content-length: ['96']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 21 Dec 2016 14:10:30 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.6.4]
+    method: GET
+    uri: https://api.helium.com/v1/sensor?filter%5Bmetadata%5D=%7B%22foo%22%3A+22%7D
+  response:
+    body: {string: !!python/unicode '{"data":[{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"f5101810-e7af-426c-8dff-b2e91de652e5","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"f5101810-e7af-426c-8dff-b2e91de652e5","meta":{"card":null,"mac":null,"created":"2016-12-21T14:10:30.590469Z","last-seen":null,"ports":[],"updated":"2016-12-21T14:10:30.590469Z"},"type":"sensor"}]}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [firm pat on the back]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['422']
+      content-type: [application/json;charset=utf8]
+      date: ['Wed, 21 Dec 2016 14:10:30 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.6.4]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/f5101810-e7af-426c-8dff-b2e91de652e5
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['$300,000 worth of cows']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Wed, 21 Dec 2016 14:10:30 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1

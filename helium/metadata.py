@@ -38,14 +38,13 @@ class Metadata(Resource):
         target_resource_id = None if self.is_singleton() else self.id
         url = session._build_url(target_resource_path, target_resource_id,
                                  resource_type)
-        attributes = build_request_body(resource_type,
-                                        target_resource_id,
-                                        attributes=attributes)
-
+        body = build_request_body(resource_type,
+                                  target_resource_id,
+                                  attributes=attributes)
         def _process(json):
             data = json.get('data')
             return Metadata(data, session, target_resource_path)
-        return publish(url, CB.json(200, _process), json=attributes)
+        return publish(url, CB.json(200, _process), json=body)
 
     def update(self, attributes):
         """Update metadata.

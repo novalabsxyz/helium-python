@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 from future.utils import iteritems
 from builtins import filter as _filter
+from json import dumps as to_json
 from . import (
     CB,
     build_request_body,
@@ -170,7 +171,7 @@ class Resource(Base):
 
         .. code-block:: python
 
-            org = Organization.singleton(include=[Sensor])
+            org = Organization.singleton(session, include=[Sensor])
             org.sensors(use_included=True)
 
         Will fetch the sensors for the authorized organization as part
@@ -193,10 +194,7 @@ class Resource(Base):
                 this type
 
         """
-        url = session._build_url(cls._resource_path())
-        params = build_request_include(include, None)
-        process = cls._mk_many(session, include=include)
-        return session.get(url, CB.json(200, process), params=params)
+        return cls.where(session, include=include)
 
     @classmethod
     def find(cls, session, resource_id, include=None):
@@ -223,6 +221,59 @@ class Resource(Base):
         url = session._build_url(cls._resource_path(), resource_id)
         params = build_request_include(include, None)
         process = cls._mk_one(session, include=include)
+        return session.get(url, CB.json(200, process), params=params)
+
+    @classmethod
+    def where(cls, session, include=None, metadata=None):
+        """Get filtered resources of the given resource class.
+
+        This should be called on sub-classes only.
+
+        The include argument allows relationship fetches to be
+        optimized by including the target resources in the request of
+        the containing resource. For example::
+
+        .. code-block:: python
+
+            org = Organization.singleton(session, include=[Sensor])
+            org.sensors(use_included=True)
+
+        Will fetch the sensors for the authorized organization as part
+        of retrieving the organization. The ``use_included`` forces
+        the use of included resources and avoids making a separate
+        request to get the sensors for the organization.
+
+        The metadata argument enables filtering on resources that
+        support metadata filters. For example::
+
+        .. code-block:: puython
+
+            sensors = Sensor.where(session, metadata={ 'asset_id': '23456' })
+
+        Will fetch all sensors that match the given metadata attribute.
+
+        Args:
+
+            session(Session): The session to look up the resources in
+
+        Keyword Args:
+
+            incldue(list): The resource classes to include in the
+                request.
+
+            metadata(dict or list): The metadata filter to apply
+
+        Returns:
+
+            iterable(Resource): An iterator over all found resources
+                of this type
+
+        """
+        url = session._build_url(cls._resource_path())
+        params = build_request_include(include, None)
+        if metadata is not None:
+            params['filter[metadata]'] = to_json(metadata)
+        process = cls._mk_many(session, include=include)
         return session.get(url, CB.json(200, process), params=params)
 
     @classmethod

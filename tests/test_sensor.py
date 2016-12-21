@@ -25,6 +25,18 @@ def test_metadata(first_sensor):
     assert metadata is not None
 
 
+def test_metadata_filter(client, tmp_sensor):
+    metadata = tmp_sensor.metadata()
+    updated = metadata.replace({
+        'foo': 22
+    })
+    assert updated.foo == 22
+    found = Sensor.where(client, metadata={
+        'foo': 22
+    })
+    assert tmp_sensor in found
+
+
 def test_meta(first_sensor):
     assert first_sensor.meta is not None
 
@@ -32,7 +44,7 @@ def test_meta(first_sensor):
 def test_element(client):
     sensors = Sensor.all(client, include=[Element])
     found_sensors = list(filter(lambda s: s.element(use_included=True) is not None,
-                            sensors))
+                                sensors))
     assert len(found_sensors) > 0
     found_sensor = found_sensors[0]
     found_element = found_sensor.element(use_included=True)
