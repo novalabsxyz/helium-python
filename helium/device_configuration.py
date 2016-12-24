@@ -21,7 +21,7 @@ class DeviceConfiguration(Resource):
         return 'device-configuration'
 
     @classmethod
-    def create(cls, session, device=None, configuration=None):
+    def create(cls, session, device=None, configuration=None, **kwargs):
         """Create a device configuration.
 
         Create a device configuration with the given device and
@@ -45,7 +45,7 @@ class DeviceConfiguration(Resource):
             any failure occurs.
 
         """
-        rels = {}
+        rels = kwargs.setdefault('relationships', {})
         if configuration is not None:
             rel = build_request_relationship(configuration._resource_type(),
                                              configuration.id)
@@ -57,7 +57,7 @@ class DeviceConfiguration(Resource):
             rels['device'] = rel
 
         return super(DeviceConfiguration, cls).create(session,
-                                                      relationships=rels)
+                                                      **kwargs)
 
     def is_loaded(self):
         """Check is a device configuration is loaded.

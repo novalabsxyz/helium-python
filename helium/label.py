@@ -17,12 +17,13 @@ from . import (
 class Label(Resource):
     @classmethod
     def create(cls, session,
-               attributes=None, sensors=None, relationships=None):
+               attributes=None, sensors=None, **kwargs):
         if sensors is not None:
-            relationships = relationships or {}
+            relationships = kwargs.setdefault('relationships', {})
             sensor_ids = [r.id for r in sensors]
             relationships['sensor'] = build_request_relationship('sensor',
                                                                  sensor_ids)
+
         return super(Label, cls).create(session,
                                         attributes=attributes,
-                                        relationships=relationships)
+                                        **kwargs)
