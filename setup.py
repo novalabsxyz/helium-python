@@ -6,7 +6,7 @@ packages = ['helium', 'helium.adapter']
 requires = [
     "future>=0.15",
     "gevent>=1.1.2",
-    "requests<2.11",
+    "requests>=2.12.5",
     "inflection>=0.3",
 ]
 setup_requires = [
