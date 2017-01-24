@@ -28,6 +28,30 @@ def test_sensors(tmp_label, sensors, first_sensor):
     assert set(sensors) == set(current_sensors)
 
 
+def test_elements(tmp_label, elements, first_element):
+    current_elements = tmp_label.elements()
+    assert len(current_elements) == 0
+    # Update to all elements
+    assert tmp_label.update_elements(elements)
+
+    # Remove an element
+    assert tmp_label.remove_elements([first_element])
+    assert first_element not in tmp_label.elements()
+    assert not tmp_label.remove_elements([first_element])
+
+    # Add an element
+    assert tmp_label.add_elements([first_element])
+    assert first_element in tmp_label.elements()
+    assert not tmp_label.add_elements([first_element])
+
+    # Ensure element is in label
+    assert tmp_label in first_element.labels()
+
+    # And check final result reflects the complete set
+    current_elements = tmp_label.elements()
+    assert set(elements) == set(current_elements)
+
+
 def test_update(tmp_label):
     updated = tmp_label.update(attributes={
         'name': 'bar'

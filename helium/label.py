@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from . import (
     Resource,
     Sensor,
+    Element,
     to_many,
     timeseries,
     metadata,
@@ -12,17 +13,23 @@ from . import (
 
 
 @to_many(Sensor, writable=True, reverse=to_many)
+@to_many(Element, writable=True, reverse=to_many)
 @timeseries()
 @metadata()
 class Label(Resource):
     @classmethod
-    def create(cls, session,
-               attributes=None, sensors=None, **kwargs):
-        if sensors is not None:
+    def create(cls, session, attributes=None,
+               sensors=None, elements=None, **kwargs):
+
+        def _relate_resources(name, type, resources):
+            if resources is None:
+                return
             relationships = kwargs.setdefault('relationships', {})
-            sensor_ids = [r.id for r in sensors]
-            relationships['sensor'] = build_request_relationship('sensor',
-                                                                 sensor_ids)
+            resource_ids = [r.id for r in resources]
+            relationships[name] = build_request_relationship(type,
+                                                             resource_ids)
+        _relate_resources('sensor', 'sensor', sensors)
+        _relate_resources('element', 'element', elements)
 
         return super(Label, cls).create(session,
                                         attributes=attributes,
