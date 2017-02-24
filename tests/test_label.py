@@ -1,7 +1,25 @@
 """Test for Labels."""
 
 from __future__ import unicode_literals
+from helium import Label
 import pytest
+
+
+def test_create(client, first_sensor, first_element):
+    label = None
+    try:
+        label = Label.create(client,
+                             sensors=[first_sensor],
+                             elements=[first_element],
+                             attributes = {
+                                 'name': "test_label"
+                             })
+        assert label is not None
+        assert first_element in label.elements()
+        assert first_sensor in label.sensors()
+    finally:
+        if label:
+            label.delete()
 
 
 def test_sensors(tmp_label, sensors, first_sensor):
