@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 from inflection import pluralize
+from builtins import filter as _filter
 from . import (
     CB,
     Resource,
@@ -267,7 +268,7 @@ def to_many(dest_class, type=RelationType.DIRECT,
               iterable({to_class}): The {to_name} of :class:`{from_class}`
         """
 
-        def _fetch_relationship_included(self):
+        def _fetch_relationship_included(self, filter=None):
             session = self._session
             include = self._include
             if include is None or dest_class not in include:
@@ -278,11 +279,12 @@ def to_many(dest_class, type=RelationType.DIRECT,
             included = self._included.get(dest_resource_type)
             mk_one = dest_class._mk_one(session,
                                         resource_classes=resource_classes)
-            return [mk_one({'data': entry}) for entry in included]
+            result = [mk_one({'data': entry}) for entry in included]
+            return result if filter is None else list(_filter(filter, result))
 
-        def fetch_relationship_include(self, use_included=False):
+        def fetch_relationship_include(self, use_included=False, filter=None):
             if use_included:
-                return _fetch_relationship_included(self)
+                return _fetch_relationship_included(self, filter=filter)
             session = self._session
             id = None if self.is_singleton() else self.id
             url = session._build_url(self._resource_path(), id)
@@ -292,10 +294,11 @@ def to_many(dest_class, type=RelationType.DIRECT,
                 included = json.get('included')
                 mk_one = dest_class._mk_one(session,
                                             resource_classes=resource_classes)
-                return [mk_one({'data': entry}) for entry in included]
+                result = [mk_one({'data': entry}) for entry in included]
+                return result if filter is None else list(_filter(filter, result))
             return session.get(url, CB.json(200, _process), params=params)
 
-        def fetch_relationship_direct(self, use_included=False):
+        def fetch_relationship_direct(self, use_included=False, filter=None):
             if use_included:
                 return _fetch_relationship_included(self)
             session = self._session
@@ -303,7 +306,8 @@ def to_many(dest_class, type=RelationType.DIRECT,
             url = session._build_url(self._resource_path(), id,
                                      dest_resource_type)
             process = dest_class._mk_many(session,
-                                          resource_classes=resource_classes)
+                                          resource_classes=resource_classes,
+                                          filter=filter)
             return session.get(url, CB.json(200, process))
 
         if type == RelationType.DIRECT:

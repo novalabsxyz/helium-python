@@ -37,12 +37,17 @@ def test_metadata_filter(client, tmp_sensor):
     assert tmp_sensor in found
 
 
+def test_where(client, tmp_sensor):
+    found_sensors = Sensor.where(client, filter=lambda s: s.id == tmp_sensor.id)
+    assert len(found_sensors) == 1 and found_sensors[0] == tmp_sensor
+
+
 def test_meta(first_sensor):
     assert first_sensor.meta is not None
 
 
 def test_element(client):
-    sensors = Sensor.all(client, include=[Element])
+    sensors = Sensor.where(client, include=[Element])
     found_sensors = list(filter(lambda s: s.element(use_included=True) is not None,
                                 sensors))
     assert len(found_sensors) > 0
