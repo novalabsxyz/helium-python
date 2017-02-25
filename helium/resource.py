@@ -147,16 +147,17 @@ class Resource(Base):
         return func
 
     @classmethod
-    def _mk_many(cls, session, include=None, resource_classes=None):
+    def _mk_many(cls, session, include=None, resource_classes=None, filter=None):
         classes = resource_classes or [cls]
         registry = {clazz._resource_type(): clazz for clazz in classes}
 
         def func(json):
             included = json.get('included') if include else None
             data = json.get('data')
-            return [cls._resource_class(entry, registry)
-                    (entry, session, include=include, included=included)
-                    for entry in data]
+            result = [cls._resource_class(entry, registry)
+                      (entry, session, include=include, included=included)
+                      for entry in data]
+            return result if filter is None else list(_filter(filter, result))
         return func
 
     @classmethod
@@ -224,7 +225,7 @@ class Resource(Base):
         return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
-    def where(cls, session, include=None, metadata=None):
+    def where(cls, session, include=None, metadata=None, filter=None):
         """Get filtered resources of the given resource class.
 
         This should be called on sub-classes only.
@@ -246,11 +247,22 @@ class Resource(Base):
         The metadata argument enables filtering on resources that
         support metadata filters. For example::
 
-        .. code-block:: puython
+        .. code-block:: python
 
             sensors = Sensor.where(session, metadata={ 'asset_id': '23456' })
 
         Will fetch all sensors that match the given metadata attribute.
+
+        The filter argument enables filtering the resulting resources
+        based on a passed in function. For example::
+
+        .. code-block::python
+
+            sensors = Sensor.where(session, filter=lambda s: s.name.startswith("a"))
+
+        Will fetch all sensors and apply the given filter to only
+        return sensors who's name start with the given string.
+
 
         Args:
 
@@ -273,7 +285,7 @@ class Resource(Base):
         params = build_request_include(include, None)
         if metadata is not None:
             params['filter[metadata]'] = to_json(metadata)
-        process = cls._mk_many(session, include=include)
+        process = cls._mk_many(session, include=include, filter=filter)
         return session.get(url, CB.json(200, process), params=params)
 
     @classmethod
