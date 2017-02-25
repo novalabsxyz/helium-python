@@ -348,7 +348,7 @@ class Resource(Base):
         # promote id
         self.id = json.get('id', None)
         # promote all top level attributes
-        for (k, v) in iteritems(json.pop('attributes', {})):
+        for (k, v) in iteritems(json.get('attributes', {})):
             self._promote_json_attribute(k, v)
         # process includes if specified
         if self._include is not None:
