@@ -1,0 +1,91 @@
+interactions:
+- request:
+    body: !!python/unicode '{"data": {"attributes": {"name": "test"}, "type": "sensor"}}'
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['60']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.8.1.post2]
+    method: POST
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"88eb19e3-e1d5-44a2-848e-4c8ef052d07e","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"88eb19e3-e1d5-44a2-848e-4c8ef052d07e","meta":{"card":null,"mac":null,"created":"2017-02-25T19:59:19.485204Z","last-seen":null,"ports":[],"device-type":null,"updated":"2017-02-25T19:59:19.485204Z"},"type":"sensor"}}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: ['$300,000 worth of cows']
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,n11,p11']
+      connection: [keep-alive]
+      content-length: ['439']
+      content-type: [application/json;charset=utf8]
+      date: ['Sat, 25 Feb 2017 19:59:19 GMT']
+      location: [/v1/sensor/88eb19e3-e1d5-44a2-848e-4c8ef052d07e]
+      server: [Warp/3.2.7]
+    status: {code: 201, message: Created}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.8.1.post2]
+    method: GET
+    uri: https://api.helium.com/v1/sensor
+  response:
+    body: {string: !!python/unicode '{"data":[{"attributes":{"name":"weather-94945"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"11b5a9e9-e098-4d57-9c10-ddb08f81ecfa","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"91293050-f5cb-45ef-9eac-c26c9dbdd515","type":"label"},{"id":"ec2b4ffb-ce77-455e-a3b3-cc2d99c2f843","type":"label"},{"id":"f9a3632d-df6a-4096-9699-c20c517434c4","type":"label"},{"id":"e0192913-b1e5-49ae-b2da-8049eed90d9d","type":"label"}]}},"id":"11b5a9e9-e098-4d57-9c10-ddb08f81ecfa","meta":{"card":null,"mac":null,"created":"2016-12-14T22:13:48.883309Z","last-seen":"2017-02-25T19:58:16.633294Z","ports":["t","h","p"],"device-type":null,"updated":"2016-12-14T22:13:48.883309Z"},"type":"sensor"},{"attributes":{"name":"Amir''s
+        Dev Board"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"28ea925a-c7d1-43c1-993c-50b9a4c86d0a","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"28ea925a-c7d1-43c1-993c-50b9a4c86d0a","meta":{"card":{"id":16},"mac":"6081f9fffe000b67","created":"2016-07-26T21:24:21.529879Z","last-seen":"2017-02-25T19:59:09.00786Z","ports":["_se","_b","t","h","p","v","c"],"device-type":"dev","updated":"2017-01-27T04:32:48.147404Z"},"type":"sensor"},{"attributes":{"name":"weather-94103"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"3ad9123f-0f93-48cb-a67c-205d448f56df","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"91293050-f5cb-45ef-9eac-c26c9dbdd515","type":"label"},{"id":"ec2b4ffb-ce77-455e-a3b3-cc2d99c2f843","type":"label"},{"id":"f9a3632d-df6a-4096-9699-c20c517434c4","type":"label"},{"id":"e0192913-b1e5-49ae-b2da-8049eed90d9d","type":"label"}]}},"id":"3ad9123f-0f93-48cb-a67c-205d448f56df","meta":{"card":null,"mac":null,"created":"2016-11-19T19:27:17.849498Z","last-seen":"2017-02-25T19:58:16.473452Z","ports":["t","h","p"],"device-type":null,"updated":"2016-12-14T22:59:27.103255Z"},"type":"sensor"},{"attributes":{"name":"Mark
+        Office Probeless"},"relationships":{"device-configuration":{"data":[{"id":"c00f0567-51c3-438d-89ca-3b0484fbb09a","type":"device-configuration"}]},"metadata":{"data":{"id":"3f37b3ad-e299-4e32-8db1-45787ce341f2","type":"metadata"}},"element":{"data":{"id":"d89ed12c-c7bb-4205-a48a-9fe59c96c459","type":"element"}},"label":{"data":[]}},"id":"3f37b3ad-e299-4e32-8db1-45787ce341f2","meta":{"card":{"id":1},"mac":"6081f9fffe0004df","created":"2016-06-15T19:01:37.358728Z","last-seen":"2017-01-29T10:10:09.314306Z","ports":["_se","d","_b","b"],"device-type":"blue","updated":"2016-12-13T00:34:54.167478Z"},"type":"sensor"},{"attributes":{"name":"Andrew
+        SP02"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"492759da-afb0-4d66-a83c-bb001d20c280","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"492759da-afb0-4d66-a83c-bb001d20c280","meta":{"card":{"id":1},"mac":"6081f9fffe0001a8","created":"2016-03-31T19:40:51.624362Z","last-seen":"2017-02-25T19:50:29.919303Z","ports":["t","b","_se","d"],"device-type":"blue","updated":"2016-12-23T23:07:55.565357Z"},"type":"sensor"},{"attributes":{"name":"Helium
+        Metrics"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"51667c26-2414-4106-b21d-08a5bce736dc","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"51667c26-2414-4106-b21d-08a5bce736dc","meta":{"card":null,"mac":null,"created":"2016-10-10T20:03:50.324721Z","last-seen":"2017-02-25T18:23:29.816846Z","ports":["sensor.count"],"device-type":null,"updated":"2016-10-10T20:03:50.324721Z"},"type":"sensor"},{"attributes":{"name":"SF
+        Teal Door"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"63c4911c-330c-405c-afed-1e3daf3e7c57","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"},{"id":"ce9aad92-70d0-44a3-9ba4-8bc834d71256","type":"label"},{"id":"8c058249-ce71-47c5-aa97-282ee37d887e","type":"label"},{"id":"e919712a-eb39-4abc-8580-ed5c75505049","type":"label"}]}},"id":"63c4911c-330c-405c-afed-1e3daf3e7c57","meta":{"card":{"id":1},"mac":"6081f9fffe0000eb","created":"2015-11-05T23:20:37.076492Z","last-seen":"2017-02-25T19:54:24.928014Z","ports":["_b","t","b","_se","d","Glowfish
+        Alert Level"],"device-type":"blue","updated":"2016-12-13T00:23:24.886815Z"},"type":"sensor"},{"attributes":{"name":"Mark
+        Office"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"6774cda0-ef19-4c33-acb2-ee6addd2687c","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"6774cda0-ef19-4c33-acb2-ee6addd2687c","meta":{"card":{"id":1},"mac":"6081f9fffe0004db","created":"2016-03-17T16:45:12.688781Z","last-seen":"2016-12-22T19:45:16.395257Z","ports":["glowfish_sensor_performance","b","t","d","_se"],"device-type":"blue","updated":"2016-12-13T00:30:52.991585Z"},"type":"sensor"},{"attributes":{"name":"Marc''s
+        Dev Board"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"7132021b-d7ff-4a61-a014-c99b77810ff4","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"7132021b-d7ff-4a61-a014-c99b77810ff4","meta":{"card":{"id":16},"mac":"6081f9fffe000fba","created":"2016-09-13T20:16:03.571533Z","last-seen":"2017-02-24T01:21:39.806805Z","ports":["_se","values","string","_b","test","t","p","h"],"device-type":"dev","updated":"2017-02-23T22:49:29.008367Z"},"type":"sensor"},{"attributes":{"name":"SF
+        Front Door"},"relationships":{"device-configuration":{"data":[{"id":"0609820f-0bd4-404b-bc2f-1abe06018a02","type":"device-configuration"}]},"metadata":{"data":{"id":"85fc3b72-5a3a-471d-9bda-d18e29a42d24","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"},{"id":"ce9aad92-70d0-44a3-9ba4-8bc834d71256","type":"label"},{"id":"e919712a-eb39-4abc-8580-ed5c75505049","type":"label"}]}},"id":"85fc3b72-5a3a-471d-9bda-d18e29a42d24","meta":{"card":{"id":1},"mac":"6081f9fffe000166","created":"2015-11-05T18:36:41.791751Z","last-seen":"2017-02-25T19:55:21.660036Z","ports":["_b","t","b","_se","d","Glowfish
+        Alert Level"],"device-type":"blue","updated":"2016-12-13T00:22:22.079652Z"},"type":"sensor"},{"attributes":{"name":"test"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"88eb19e3-e1d5-44a2-848e-4c8ef052d07e","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"88eb19e3-e1d5-44a2-848e-4c8ef052d07e","meta":{"card":null,"mac":null,"created":"2017-02-25T19:59:19.485204Z","last-seen":null,"ports":[],"device-type":null,"updated":"2017-02-25T19:59:19.485204Z"},"type":"sensor"},{"attributes":{"name":"SF
+        Marc Desk"},"relationships":{"device-configuration":{"data":[{"id":"767dc65c-6001-4cad-aad3-82d2c4328c4d","type":"device-configuration"}]},"metadata":{"data":{"id":"aba370be-837d-4b41-bee5-686b0069d874","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"}]}},"id":"aba370be-837d-4b41-bee5-686b0069d874","meta":{"card":{"id":1},"mac":"6081f9fffe000475","created":"2016-03-30T20:52:26.314159Z","last-seen":"2017-02-25T19:01:01.361865Z","ports":["_e.info","m","h","t","b","_b","p","_se","l","lr"],"device-type":"green","updated":"2016-12-13T23:53:38.261321Z"},"type":"sensor"},{"attributes":{"name":"weather-60618"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"b61c08c2-98ec-4800-8e59-1b24e844132c","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"91293050-f5cb-45ef-9eac-c26c9dbdd515","type":"label"},{"id":"ec2b4ffb-ce77-455e-a3b3-cc2d99c2f843","type":"label"},{"id":"e0192913-b1e5-49ae-b2da-8049eed90d9d","type":"label"}]}},"id":"b61c08c2-98ec-4800-8e59-1b24e844132c","meta":{"card":null,"mac":null,"created":"2016-12-14T22:15:56.827473Z","last-seen":"2017-02-25T19:58:16.584731Z","ports":["t","h","p"],"device-type":null,"updated":"2016-12-14T22:15:56.827473Z"},"type":"sensor"},{"attributes":{"name":"SF
+        Teal Ceiling"},"relationships":{"device-configuration":{"data":[{"id":"c6ad5c1d-2870-45b0-a969-d45f40cfe047","type":"device-configuration"}]},"metadata":{"data":{"id":"efdea376-d80b-4ca4-af04-0fba62c183f3","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"},{"id":"ce9aad92-70d0-44a3-9ba4-8bc834d71256","type":"label"},{"id":"8c058249-ce71-47c5-aa97-282ee37d887e","type":"label"},{"id":"e919712a-eb39-4abc-8580-ed5c75505049","type":"label"}]}},"id":"efdea376-d80b-4ca4-af04-0fba62c183f3","meta":{"card":{"id":1},"mac":"6081f9fffe00062b","created":"2016-03-31T21:20:09.859344Z","last-seen":"2017-02-25T19:19:29.545239Z","ports":["_se","l","p","b","m","_b","h","t","_e.info","Glowfish
+        Alert Level"],"device-type":"green","updated":"2016-12-13T00:23:39.854631Z"},"type":"sensor"},{"attributes":{"name":"Amir''s
+        Dev Board 2"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"f92258f1-80f8-45b3-9741-5d55fb207823","type":"metadata"}},"element":{"data":null},"label":{"data":[]}},"id":"f92258f1-80f8-45b3-9741-5d55fb207823","meta":{"card":{"id":16},"mac":"6081f9fffe000fc4","created":"2016-09-13T20:16:34.787341Z","last-seen":"2017-02-25T19:58:25.164266Z","ports":["_se","_b","t","p","v","c"],"device-type":"dev","updated":"2017-02-23T22:49:04.4244Z"},"type":"sensor"},{"attributes":{"name":"SF
+        Kitchen Wall"},"relationships":{"device-configuration":{"data":[]},"metadata":{"data":{"id":"fd56a7e7-ccc7-4263-9a89-05a9cc0eed6f","type":"metadata"}},"element":{"data":null},"label":{"data":[{"id":"d81df823-a7a9-4476-b624-888f9fc56390","type":"label"},{"id":"ce9aad92-70d0-44a3-9ba4-8bc834d71256","type":"label"},{"id":"e919712a-eb39-4abc-8580-ed5c75505049","type":"label"}]}},"id":"fd56a7e7-ccc7-4263-9a89-05a9cc0eed6f","meta":{"card":{"id":1},"mac":"6081f9fffe000530","created":"2016-03-31T21:21:10.493288Z","last-seen":"2017-01-31T16:09:46.702607Z","ports":["_b","h","t","_se","l","p","_e.info","b","m","Glowfish
+        Alert Level"],"device-type":"green","updated":"2016-12-13T00:22:55.390141Z"},"type":"sensor"}]}'}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [shut it down]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,n16,o16,o17,o18']
+      connection: [keep-alive]
+      content-length: ['10095']
+      content-type: [application/json;charset=utf8]
+      date: ['Sat, 25 Feb 2017 19:59:18 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [!!python/unicode application/json]
+      Accept-Charset: [!!python/unicode utf-8]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Content-Type: [!!python/unicode application/json]
+      User-Agent: [!!python/unicode helium-python/0.8.1.post2]
+    method: DELETE
+    uri: https://api.helium.com/v1/sensor/88eb19e3-e1d5-44a2-848e-4c8ef052d07e
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      access-control-allow-headers: ['Origin, Content-Type, Accept, Authorization']
+      access-control-allow-origin: ['*']
+      airship-quip: [evacuation not done in time]
+      airship-trace: ['b13,b12,b11,b10,b09,b08,b07,b06,b05,b04,b03,c03,c04,d04,e05,e06,f06,f07,g07,g08,h10,i12,l13,m16,m20,o20']
+      connection: [keep-alive]
+      date: ['Sat, 25 Feb 2017 19:59:19 GMT']
+      server: [Warp/3.2.7]
+    status: {code: 204, message: No Content}
+version: 1
