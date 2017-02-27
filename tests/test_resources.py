@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import pytest
 import helium
+import pickle
 from datetime import datetime
 
 
@@ -61,3 +62,7 @@ def test_basic(client, tmp_sensor):
     # __getattr__ lookup
     with pytest.raises(AttributeError):
         tmp_sensor.no_such_attribute
+
+def test_pickles(tmp_sensor):
+    pickled = pickle.dumps(tmp_sensor)
+    assert pickle.loads(pickled) == tmp_sensor

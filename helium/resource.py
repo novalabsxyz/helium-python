@@ -58,6 +58,10 @@ class Base(object):
         and promote it into the attributes of this resource.
 
         """
+
+        if attribute.startswith('__'):
+            return super(Base, self).__getattr__(attribute)
+
         value = self._json_data.get(attribute, None)
         if value is None:
             value = self._json_data.get(attribute.replace('_', '-'), None)
