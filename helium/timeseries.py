@@ -139,7 +139,8 @@ class Timeseries(Iterable):
                  end=None,
                  agg_size=None,
                  agg_type=None,
-                 port=None):
+                 port=None,
+                 **kwargs):
         """Constrct a timeseries.
 
         Args:
